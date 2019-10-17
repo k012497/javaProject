@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextArea layoutX="14.0" layoutY="243.0" prefHeight="297.0" prefWidth="467.0" />
+      <Label layoutX="28.0" layoutY="212.0" text="후기내용" />
+      <Label layoutX="76.0" layoutY="30.0" text="소중한 별점을 남겨 주세요!">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="394.0" layoutY="212.0" text="(300자이내)" />
+      <Button layoutX="410.0" layoutY="551.0" mnemonicParsing="false" text="cencel" />
+      <Button layoutX="359.0" layoutY="551.0" mnemonicParsing="false" text="OK" />
+      <HBox layoutX="316.0" layoutY="143.0" prefHeight="27.0" prefWidth="137.0">
+         <children>
+            <ImageView fitHeight="27.0" fitWidth="27.0">
+               <image>
+                  <Image url="@../images/star.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="27.0" fitWidth="27.0">
+               <image>
+                  <Image url="@../images/star.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="27.0" fitWidth="27.0">
+               <image>
+                  <Image url="@../images/star.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="27.0" fitWidth="27.0">
+               <image>
+                  <Image url="@../images/star.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="27.0" fitWidth="27.0">
+               <image>
+                  <Image url="@../images/star.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

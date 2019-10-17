@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.TabPane?>
+
+
+<TabPane prefHeight="500.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <tabs>
+      <Tab text="정보수정">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button layoutX="480.0" layoutY="31.0" mnemonicParsing="false" text="수정확인" />
+                  <Button layoutX="480.0" layoutY="72.0" mnemonicParsing="false" text="회원탈퇴" />
+                  <TextField layoutX="15.0" layoutY="31.0" prefHeight="46.0" prefWidth="440.0" promptText="e) 김시스터즈" />
+                  <Button layoutX="441.0" layoutY="418.0" mnemonicParsing="false" text="메인으로 돌아가기" />
+                  <TextField layoutX="15.0" layoutY="87.0" prefHeight="46.0" prefWidth="440.0" promptText="e) 010-0101-0101" />
+                  <TextField layoutX="15.0" layoutY="147.0" prefHeight="46.0" prefWidth="440.0" promptText="e) 서울특별시 강남구 논현동" />
+                  <TextField layoutX="15.0" layoutY="208.0" prefHeight="46.0" prefWidth="440.0" promptText="비밀번호(Password)" />
+                  <TextField layoutX="15.0" layoutY="268.0" prefHeight="46.0" prefWidth="440.0" promptText="비밀번호확인(Password Check)" />
+                  <Label layoutX="15.0" layoutY="325.0" prefHeight="19.0" prefWidth="440.0" text="* 비밀번호가 일치 하지 않습니다 재 입력 해주세요" textFill="RED" />
+                  <Label layoutX="15.0" layoutY="354.0" prefHeight="19.0" prefWidth="450.0" text="* 비밀번호가 일치 합니다 [확인]을 눌러주세요" textFill="#0032ff" />
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="my 찜뽕">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView layoutX="21.0" layoutY="90.0" prefHeight="359.0" prefWidth="564.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="C1" />
+                      <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="my review">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+         </content>
+      </Tab>
+   </tabs>
+</TabPane>
