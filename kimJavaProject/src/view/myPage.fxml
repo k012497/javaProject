@@ -1,27 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.TabPane?>
 
-
-<TabPane prefHeight="500.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<TabPane prefHeight="550.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <tabs>
       <Tab text="정보수정">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="480.0" layoutY="31.0" mnemonicParsing="false" text="수정확인" />
-                  <Button layoutX="480.0" layoutY="72.0" mnemonicParsing="false" text="회원탈퇴" />
-                  <TextField layoutX="15.0" layoutY="31.0" prefHeight="46.0" prefWidth="440.0" promptText="e) 김시스터즈" />
-                  <Button layoutX="441.0" layoutY="418.0" mnemonicParsing="false" text="메인으로 돌아가기" />
-                  <TextField layoutX="15.0" layoutY="87.0" prefHeight="46.0" prefWidth="440.0" promptText="e) 010-0101-0101" />
-                  <TextField layoutX="15.0" layoutY="147.0" prefHeight="46.0" prefWidth="440.0" promptText="e) 서울특별시 강남구 논현동" />
-                  <TextField layoutX="15.0" layoutY="208.0" prefHeight="46.0" prefWidth="440.0" promptText="비밀번호(Password)" />
-                  <TextField layoutX="15.0" layoutY="268.0" prefHeight="46.0" prefWidth="440.0" promptText="비밀번호확인(Password Check)" />
-                  <Label layoutX="15.0" layoutY="325.0" prefHeight="19.0" prefWidth="440.0" text="* 비밀번호가 일치 하지 않습니다 재 입력 해주세요" textFill="RED" />
-                  <Label layoutX="15.0" layoutY="354.0" prefHeight="19.0" prefWidth="450.0" text="* 비밀번호가 일치 합니다 [확인]을 눌러주세요" textFill="#0032ff" />
+                  <Button fx:id="btnEdit" layoutX="37.0" layoutY="340.0" mnemonicParsing="false" prefWidth="88.0" text="수정확인" />
+                  <Button fx:id="btnLeave" layoutX="37.0" layoutY="383.0" mnemonicParsing="false" prefWidth="88.0" text="회원탈퇴" />
+                  <TextField fx:id="txtName" layoutX="165.0" layoutY="96.0" prefHeight="46.0" prefWidth="176.0" promptText="e) 김시스터즈" />
+                  <Button fx:id="btnCancel" layoutX="37.0" layoutY="298.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="88.0" text="메인으로" />
+                  <TextField fx:id="txtNumber" layoutX="165.0" layoutY="176.0" prefHeight="46.0" prefWidth="176.0" promptText="e) 010-0101-0101" />
+                  <TextField fx:id="txtAddress" layoutX="165.0" layoutY="254.0" prefHeight="46.0" prefWidth="365.0" promptText="e) 서울특별시 강남구 논현동" />
+                  <TextField fx:id="txtPw" layoutX="165.0" layoutY="332.0" prefHeight="46.0" prefWidth="365.0" promptText="비밀번호(Password)" />
+                  <TextField fx:id="txtPwAgain" layoutX="167.0" layoutY="413.0" prefHeight="46.0" prefWidth="365.0" promptText="비밀번호확인(Password Check)" />
+                  <Label layoutX="166.0" layoutY="465.0" text="* password check message" textFill="#808080">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Separator layoutX="14.0" layoutY="61.0" prefHeight="0.0" prefWidth="500.0" style="-fx-background-color: #dcdcdc;" />
+                  <Label layoutX="16.0" layoutY="20.0" text="Information modification">
+                     <font>
+                        <Font size="29.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="166.0" layoutY="384.0" text="Password Check">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="166.0" layoutY="305.0" text="Password">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="166.0" layoutY="227.0" text="Address">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="167.0" layoutY="147.0" prefHeight="21.0" prefWidth="78.0" text="Number">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="166.0" layoutY="70.0" text="Name">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="119.0" fitWidth="106.0" layoutX="32.0" layoutY="91.0">
+                     <image>
+                        <Image url="@../images/card.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="358.0" layoutY="70.0" text="Age Group">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="txtAgeGrou" layoutX="358.0" layoutY="96.0" prefWidth="150.0" promptText="연령대 선택" />
                </children>
             </AnchorPane>
         </content>
@@ -30,19 +77,41 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView layoutX="21.0" layoutY="90.0" prefHeight="359.0" prefWidth="564.0">
+                  <TableView fx:id="favTable" layoutX="13.0" layoutY="57.0" prefHeight="443.0" prefWidth="519.0">
                     <columns>
                       <TableColumn prefWidth="75.0" text="C1" />
                       <TableColumn prefWidth="75.0" text="C2" />
                     </columns>
                   </TableView>
+                  <HBox alignment="CENTER" layoutX="28.0" layoutY="14.0" prefHeight="34.0" prefWidth="490.0">
+                     <children>
+                        <Label fx:id="lblfavKind" prefHeight="34.0" prefWidth="281.0" text="사용자가 선호하는 메뉴는 ">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label text="???">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </AnchorPane>
         </content>
       </Tab>
       <Tab text="my review">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="reviewTable" layoutX="7.0" layoutY="7.0" prefHeight="496.0" prefWidth="530.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="C1" />
+                      <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
          </content>
       </Tab>
    </tabs>

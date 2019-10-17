@@ -8,19 +8,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="720.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextArea layoutX="14.0" layoutY="243.0" prefHeight="297.0" prefWidth="467.0" />
-      <Label layoutX="28.0" layoutY="212.0" text="후기내용" />
-      <Label layoutX="76.0" layoutY="30.0" text="소중한 별점을 남겨 주세요!">
+      <TextArea fx:id="txtArea" layoutX="10.0" layoutY="526.0" prefHeight="142.0" prefWidth="481.0" promptText="이 식당의 후기를 100자 이내로 적어주세요!" />
+      <Label layoutX="15.0" layoutY="505.0" text="[내용]" />
+      <Label layoutX="76.0" layoutY="18.0" text="소중한 별점을 남겨 주세요!">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <Label layoutX="394.0" layoutY="212.0" text="(300자이내)" />
-      <Button layoutX="410.0" layoutY="551.0" mnemonicParsing="false" text="cencel" />
-      <Button layoutX="359.0" layoutY="551.0" mnemonicParsing="false" text="OK" />
-      <HBox layoutX="316.0" layoutY="143.0" prefHeight="27.0" prefWidth="137.0">
+      <Button fx:id="btnCancel" layoutX="432.0" layoutY="677.0" mnemonicParsing="false" text="cancel" />
+      <Button fx:id="btnOk" layoutX="381.0" layoutY="677.0" mnemonicParsing="false" text="OK" />
+      <HBox layoutX="333.0" layoutY="179.0" prefHeight="27.0" prefWidth="137.0">
          <children>
             <ImageView fitHeight="27.0" fitWidth="27.0">
                <image>
@@ -47,6 +46,33 @@
                   <Image url="@../images/star.png" />
                </image>
             </ImageView>
+         </children>
+      </HBox>
+      <Slider fx:id="sldSize" layoutX="56.0" layoutY="156.0" prefHeight="18.0" prefWidth="389.0" />
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="51.0" layoutY="179.0">
+         <image>
+            <Image url="@../images/star.png" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="9.0" layoutY="250.0" prefHeight="218.0" prefWidth="482.0" style="-fx-background-color: #dcdcdc;">
+         <children>
+            <ImageView fx:id="imageView" fitHeight="233.0" fitWidth="357.0" layoutX="11.0" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="btnChange" layoutX="380.0" layoutY="10.0" mnemonicParsing="false" text="Image Upload" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="12.0" layoutY="227.0" text="[포토리뷰]" />
+      <HBox alignment="CENTER" layoutX="166.0" layoutY="78.0" prefHeight="61.0" prefWidth="178.0">
+         <children>
+            <Label fx:id="txtNum" text="??">
+               <font>
+                  <Font size="56.0" />
+               </font>
+            </Label>
+            <Label text="점">
+               <font>
+                  <Font size="45.0" />
+               </font>
+            </Label>
          </children>
       </HBox>
    </children>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="270.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="340.0" prefWidth="270.0" spacing="10.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="69.0" prefWidth="270.0" spacing="10.0">
+               <children>
+                  <Label alignment="CENTER" text="OPEN HOURS">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
+               <children>
+                  <Label text="월" />
+                  <ComboBox fx:id="cbMonOpen" prefHeight="27.0" prefWidth="63.0" />
+                  <Label text="~" />
+                  <ComboBox fx:id="cbMonClose" prefHeight="27.0" prefWidth="63.0" />
+                  <CheckBox fx:id="chkMonOff" mnemonicParsing="false" text="off" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
+               <children>
+                  <Label text="화" />
+                  <ComboBox fx:id="cbTueOpen" prefHeight="27.0" prefWidth="63.0" />
+                  <Label text="~" />
+                  <ComboBox fx:id="cbTueClose" prefHeight="27.0" prefWidth="63.0" />
+                  <CheckBox fx:id="chkTueOff" mnemonicParsing="false" text="off" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
+               <children>
+                  <Label text="수" />
+                  <ComboBox fx:id="cbWedOpen" prefHeight="27.0" prefWidth="63.0" />
+                  <Label text="~" />
+                  <ComboBox fx:id="cbWedClose" prefHeight="27.0" prefWidth="63.0" />
+                  <CheckBox fx:id="chkWedOff" mnemonicParsing="false" text="off" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
+               <children>
+                  <Label text="목" />
+                  <ComboBox fx:id="cbThuOpen" prefHeight="27.0" prefWidth="63.0" />
+                  <Label text="~" />
+                  <ComboBox fx:id="cbThuClose" prefHeight="27.0" prefWidth="63.0" />
+                  <CheckBox fx:id="chkThuOff" mnemonicParsing="false" text="off" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
+               <children>
+                  <Label text="금" />
+                  <ComboBox fx:id="cbFriOpen" prefHeight="27.0" prefWidth="63.0" />
+                  <Label text="~" />
+                  <ComboBox fx:id="cbFriClose" prefHeight="27.0" prefWidth="63.0" />
+                  <CheckBox fx:id="chkFriOff" mnemonicParsing="false" text="off" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
+               <children>
+                  <Label text="토" />
+                  <ComboBox fx:id="cbSatOpen" prefHeight="27.0" prefWidth="63.0" />
+                  <Label text="~" />
+                  <ComboBox fx:id="cbSatClose" prefHeight="27.0" prefWidth="63.0" />
+                  <CheckBox fx:id="chkSatOff" mnemonicParsing="false" text="off" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
+               <children>
+                  <Label text="일" />
+                  <ComboBox fx:id="cbSunOpen" prefHeight="27.0" prefWidth="63.0" />
+                  <Label text="~" />
+                  <ComboBox fx:id="cbSunClose" prefHeight="27.0" prefWidth="63.0" />
+                  <CheckBox fx:id="chkSunOff" mnemonicParsing="false" text="off" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Button fx:id="btnOk" layoutX="117.0" layoutY="352.0" mnemonicParsing="false" text="OK" />
+   </children>
+</AnchorPane>

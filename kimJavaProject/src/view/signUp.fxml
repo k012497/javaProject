@@ -7,53 +7,53 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="700.0" prefWidth="350.0" style="-fx-background-color: #0489B1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="700.0" prefWidth="351.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField layoutX="41.0" layoutY="198.0" prefHeight="45.0" prefWidth="161.0" promptText="이름(Name)" />
-      <TextField layoutX="40.0" layoutY="448.0" prefHeight="45.0" prefWidth="268.0" promptText="아이디(ID)" />
-      <TextField layoutX="42.0" layoutY="254.0" prefHeight="45.0" prefWidth="268.0" promptText="전화번호(PhoneNumber)" />
-      <TextField layoutX="41.0" layoutY="503.0" prefHeight="45.0" prefWidth="268.0" promptText="비밀번호(Password)" />
-      <TextField layoutX="41.0" layoutY="557.0" prefHeight="45.0" prefWidth="268.0" promptText="비밀번호확인(Check Password)" />
-      <Label layoutX="42.0" layoutY="409.0" text="연령대 Age range" textFill="WHITE">
+      <TextField fx:id="txtId" layoutX="41.0" layoutY="198.0" prefHeight="45.0" prefWidth="161.0" promptText="아이디(ID)" />
+      <TextField fx:id="txtPhoneNum" layoutX="40.0" layoutY="448.0" prefHeight="45.0" prefWidth="268.0" promptText="전화번호(PhoneNumber)" />
+      <TextField fx:id="txtName" layoutX="42.0" layoutY="254.0" prefHeight="45.0" prefWidth="268.0" promptText="이름(Name)" />
+      <TextField fx:id="txtPw" layoutX="41.0" layoutY="503.0" prefHeight="45.0" prefWidth="268.0" promptText="비밀번호(Password)" />
+      <TextField fx:id="txtPwCheck" layoutX="41.0" layoutY="557.0" prefHeight="45.0" prefWidth="268.0" promptText="비밀번호 확인(Confirm Password)" />
+      <Label layoutX="42.0" layoutY="409.0" text="연령대 Age Group">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Button layoutX="85.0" layoutY="649.0" mnemonicParsing="false" style="-fx-background-color: #FA5858;" text="Sign up" />
-      <Button layoutX="183.0" layoutY="649.0" mnemonicParsing="false" style="-fx-background-color: #FA5858;" text="Cancel" />
-      <ImageView fitHeight="141.0" fitWidth="142.0" layoutX="93.0" layoutY="16.0">
-         <image>
-            <Image url="@../../../Users/user/Desktop/새%20폴더/icons8-cute-color-64%20(1).png" />
-         </image>
-      </ImageView>
-      <Label layoutX="39.0" layoutY="155.0" text="Sign Up" textFill="WHITE">
+      <Button fx:id="btnSignUp" layoutX="85.0" layoutY="649.0" mnemonicParsing="false" text="Sign up" />
+      <Button fx:id="btnCancel" layoutX="183.0" layoutY="649.0" mnemonicParsing="false" text="Cancel" />
+      <Label layoutX="39.0" layoutY="155.0" text="Sign Up">
          <font>
             <Font size="27.0" />
          </font>
       </Label>
-      <Button layoutX="209.0" layoutY="198.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: #FA5858;" text="Check" />
-      <Label layoutX="41.0" layoutY="375.0" text="성별 Gander" textFill="WHITE">
+      <Button fx:id="btnIdCheck" layoutX="209.0" layoutY="198.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="101.0" text="ID Check" />
+      <Label layoutX="41.0" layoutY="375.0" text="성별 Gender">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <RadioButton layoutX="248.0" layoutY="374.0" mnemonicParsing="false" text="Man" textFill="WHITE">
+      <RadioButton fx:id="rdoMale" layoutX="261.0" layoutY="374.0" mnemonicParsing="false" text="남">
          <font>
             <Font size="16.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="157.0" layoutY="374.0" mnemonicParsing="false" text="Female" textFill="WHITE">
+      <RadioButton fx:id="rdoFemale" layoutX="196.0" layoutY="374.0" mnemonicParsing="false" text="여">
          <font>
             <Font size="16.0" />
          </font>
       </RadioButton>
-      <ComboBox layoutX="190.0" layoutY="404.0" prefHeight="29.0" prefWidth="119.0" promptText="e) 20대" />
-      <Label layoutX="67.0" layoutY="610.0" text="*비밀번호가 일치 하지 않습니다" textFill="RED" />
-      <ComboBox layoutX="41.0" layoutY="334.0" prefHeight="29.0" prefWidth="130.0" promptText="e) 강남구" />
-      <ComboBox layoutX="178.0" layoutY="334.0" prefHeight="29.0" prefWidth="130.0" promptText="e) 논현동" />
-      <Label layoutX="40.0" layoutY="307.0" text="주소 Address" textFill="WHITE">
+      <ComboBox fx:id="cbAge" layoutX="190.0" layoutY="404.0" prefHeight="29.0" prefWidth="119.0" promptText="연령대 선택" />
+      <Label fx:id="lblPwCheck" alignment="CENTER" layoutX="45.0" layoutY="608.0" text="* password check message" textFill="#868686" />
+      <ComboBox fx:id="cbGu" layoutX="41.0" layoutY="334.0" prefHeight="29.0" prefWidth="130.0" promptText="구 선택" />
+      <ComboBox fx:id="cbDong" layoutX="178.0" layoutY="334.0" prefHeight="29.0" prefWidth="130.0" promptText="동 선택" />
+      <Label layoutX="40.0" layoutY="307.0" text="주소 Address">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
+      <ImageView fitHeight="94.0" fitWidth="92.0" layoutX="129.0" layoutY="39.0">
+         <image>
+            <Image url="@../images/person.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

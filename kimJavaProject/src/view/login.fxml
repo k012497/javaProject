@@ -7,32 +7,45 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="300.0" prefWidth="560.0" style="-fx-background-color: #F5BCA9;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <children>
-      <TextField layoutX="261.0" layoutY="133.0" prefHeight="39.0" prefWidth="274.0" promptText="PASSWORD" />
-      <TextField layoutX="261.0" layoutY="83.0" prefHeight="39.0" prefWidth="274.0" promptText="ID (EMAIL)" />
-      <Button layoutX="262.0" layoutY="185.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="274.0" style="-fx-background-color: #F79F81;" text="LOGIN" />
-      <Button layoutX="379.0" layoutY="239.0" mnemonicParsing="false" style="-fx-background-color: #F79F81;" text="Find ID" />
-      <Button layoutX="459.0" layoutY="239.0" mnemonicParsing="false" style="-fx-background-color: #F79F81;" text="Find PW" />
-      <Label layoutX="261.0" layoutY="12.0" text="Famous Restaurant">
+      <TextField fx:id="txtId" layoutX="38.0" layoutY="297.0" prefHeight="39.0" prefWidth="274.0" promptText="ID" />
+      <Button fx:id="btnSignIn" layoutX="39.0" layoutY="396.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="274.0" text="SIGN IN" />
+      <Label layoutX="39.0" layoutY="234.0" text="Famous Restaurant">
          <font>
             <Font name="Ink Free" size="32.0" />
          </font>
       </Label>
-      <Button layoutX="263.0" layoutY="239.0" mnemonicParsing="false" style="-fx-background-color: #F79F81;" text="JOIN" />
-      <Button layoutY="263.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="4.0" style="-fx-background-color: #F5BCA9;">
-         <graphic>
-            <ImageView fitHeight="26.0" fitWidth="29.0" smooth="false">
-               <image>
-                  <Image url="@Images/setting.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="25.0" layoutY="39.0">
+      <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="76.0" layoutY="18.0">
          <image>
-            <Image url="@Images/map.png" />
+            <Image url="@../images/map.png" />
          </image>
       </ImageView>
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="447.0" prefHeight="13.0" prefWidth="323.0" spacing="10.0">
+         <children>
+            <Label fx:id="lblSignUp" text="SIGN UP">
+               <font>
+                  <Font size="12.0" />
+               </font></Label>
+            <Separator orientation="VERTICAL" prefHeight="20.0" style="-fx-background-color: #dcdcdc;" />
+            <Label fx:id="lblFindId" text="FIND ID">
+               <font>
+                  <Font size="12.0" />
+               </font></Label>
+            <Separator orientation="VERTICAL" prefHeight="20.0" style="-fx-background-color: #dcdcdc;" />
+            <Label fx:id="lblFindPw" text="FIND PASSWORD">
+               <font>
+                  <Font size="12.0" />
+               </font></Label>
+            <Separator orientation="VERTICAL" prefHeight="20.0" style="-fx-background-color: #dcdcdc;" />
+            <ImageView fx:id="imgAdmin" fitHeight="29.0" fitWidth="28.0">
+               <image>
+                  <Image url="@../images/setting.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <PasswordField fx:id="txtPw" layoutX="39.0" layoutY="345.0" prefHeight="39.0" prefWidth="274.0" promptText="Password" />
+      <Button fx:id="btnCancel" layoutX="315.0" layoutY="4.0" mnemonicParsing="false" text="X" />
    </children>
 </AnchorPane>
