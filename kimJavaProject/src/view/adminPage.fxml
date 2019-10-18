@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+
+<TabPane fx:id="tabPane" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="controller.AdminController">
+	<tabs>
+		<Tab fx:id="memberPage" closable="false" text="회원 관리">
+			<content>
+				<fx:include source="manageMember.fxml" />
+			</content>
+		</Tab>
+		<Tab fx:id="restaurantPage" closable="false" text="식당 관리">
+			<content>
+				<fx:include source="manageRest.fxml" />
+			</content>
+		</Tab>
+		<Tab fx:id="chartPage" closable="false" text="차트 분석">
+			<content>
+				<fx:include source="manageChart.fxml" />
+			</content>
+		</Tab>
+
+	</tabs>
+</TabPane>
