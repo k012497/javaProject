@@ -18,8 +18,8 @@ public class MemberVO {
 		this.memberID = memberID;
 		this.password = password;
 		this.name = name;
-		this.address = address;
 		this.phoneNumer = phoneNumer;
+		this.address = address;
 		this.gender = gender;
 		this.ageGroup = ageGroup;
 	}

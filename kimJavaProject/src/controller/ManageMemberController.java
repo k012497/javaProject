@@ -78,25 +78,25 @@ public class ManageMemberController implements Initializable {
 		colId.setStyle("-fx-alignment:CENTER;");
 		colId.setCellValueFactory(new PropertyValueFactory("memberID"));
 
+		TableColumn colPw = new TableColumn("비밀번호");
+		colPw.setMaxWidth(160);
+		colPw.setStyle("-fx-alignment:CENTER;");
+		colPw.setCellValueFactory(new PropertyValueFactory("password"));
+		
 		TableColumn colName = new TableColumn("이름");
 		colName.setMaxWidth(80);
 		colName.setStyle("-fx-alignment:CENTER;");
 		colName.setCellValueFactory(new PropertyValueFactory("name"));
 
-		TableColumn colPw = new TableColumn("비밀번호");
-		colPw.setMaxWidth(160);
-		colPw.setStyle("-fx-alignment:CENTER;");
-		colPw.setCellValueFactory(new PropertyValueFactory("password"));
+		TableColumn colPhoneNum = new TableColumn("전화번호");
+		colPhoneNum.setMaxWidth(140);
+		colPhoneNum.setStyle("-fx-alignment:CENTER;");
+		colPhoneNum.setCellValueFactory(new PropertyValueFactory("phoneNumer"));
 
 		TableColumn colAddr = new TableColumn("주소");
 		colPw.setMaxWidth(160);
 		colPw.setStyle("-fx-alignment:CENTER;");
 		colPw.setCellValueFactory(new PropertyValueFactory("address"));
-
-		TableColumn colPhoneNum = new TableColumn("전화번호");
-		colPhoneNum.setMaxWidth(100);
-		colPhoneNum.setStyle("-fx-alignment:CENTER;");
-		colPhoneNum.setCellValueFactory(new PropertyValueFactory("phoneNumer"));
 
 		TableColumn colGender = new TableColumn("성별");
 		colGender.setMaxWidth(40);
@@ -110,7 +110,7 @@ public class ManageMemberController implements Initializable {
 
 		// 컬럼 객체들을 테이블 뷰에 추가 & 항목 추가
 		memTable.setItems(data);
-		memTable.getColumns().addAll(colId, colName, colPw, colAddr, colPhoneNum, colGender, colAge);
+		memTable.getColumns().addAll(colId, colPw, colName, colPhoneNum, colAddr, colGender, colAge);
 
 	} // end of memberTableViewSetting
 

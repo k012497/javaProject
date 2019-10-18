@@ -47,12 +47,7 @@
       <Label layoutX="366.0" layoutY="497.0" text="메뉴명" />
       <TextField fx:id="txtMenuPrice" layoutX="365.0" layoutY="572.0" prefHeight="27.0" prefWidth="209.0" promptText="음식종류" />
       <Label layoutX="26.0" layoutY="448.0" text="[대표 메뉴]" />
-      <TableView fx:id="menuTable" layoutX="23.0" layoutY="467.0" prefHeight="193.0" prefWidth="332.0">
-         <columns>
-            <TableColumn prefWidth="75.0" text="C1" />
-            <TableColumn prefWidth="75.0" text="C2" />
-         </columns>
-      </TableView>
+      <TableView fx:id="menuTable" layoutX="23.0" layoutY="467.0" prefHeight="193.0" prefWidth="332.0" />
       <Button fx:id="btnNewRest" layoutX="525.0" layoutY="7.0" mnemonicParsing="false" text="+ NEW" />
       <Button fx:id="btnNewMenu" layoutX="514.0" layoutY="452.0" mnemonicParsing="false" text="+ NEW" />
       <Separator layoutX="14.0" layoutY="433.0" prefHeight="11.0" prefWidth="571.0" />
