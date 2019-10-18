@@ -191,5 +191,56 @@ public class AdminController implements Initializable {
 		}
 	}//end of totalList
 	
-	
+	public void handlerTableViewPressedAction() {
+		// 테이블 뷰 객체 없는 부분 클릭 시 방어
+		try {
+			// 누른 위치와 해당 객체를 가져온다
+			selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+			selectedMember = tableView.getSelectionModel().getSelectedItems();
+
+			// 가져온 정보를 데이터 필드에 출력
+			txtMemId.setText(selectedMember.get(0).getMemberID());
+			cbMemAge.setValue(selectedMember.get(0).get);
+			txtBan.setText(selectedMember.get(0).getBan());
+			txtKo.setText(String.valueOf(selectedMember.get(0).getKorean()));
+			txtEng.setText(String.valueOf(selectedMember.get(0).getEnglish()));
+			txtMath.setText(String.valueOf(selectedMember.get(0).getMath()));
+			txtSic.setText(String.valueOf(selectedMember.get(0).getSic()));
+			txtSoc.setText(String.valueOf(selectedStudent.get(0).getSoc()));
+			txtMusic.setText(String.valueOf(selectedStudent.get(0).getMusic()));
+			txtTotal.setText(String.valueOf(selectedStudent.get(0).getTotal()));
+			txtAvg.setText(String.valueOf(selectedStudent.get(0).getAvg()));
+
+			// 클릭 시 이미지뷰 세팅
+			String fileName = selectedStudent.get(0).getFilename();
+			selectedFile = new File("/Users/kimsojin/Desktop/code/images/" + fileName);
+			if (selectedFile != null) {
+				// 이미지 파일 경로
+				localUrl = selectedFile.toURI().toURL().toString();
+				localImage = new Image(localUrl, false);
+				imageView.setImage(localImage);
+				imageView.setFitHeight(250);
+				imageView.setFitWidth(230);
+			}
+
+			if (selectedStudent.get(0).getGender().equals("남성")) {
+				rbMale.setSelected(true);
+				rbFemale.setSelected(false);
+			} else {
+				rbMale.setSelected(false);
+				rbFemale.setSelected(true);
+			}
+
+			// 텍스트 필드 수정 못 하도록
+			// 성별 수정 못 하도록
+			textFieldinitSetting(true, true, true, true, true, true, true, true, true, true);
+
+			// 수정/삭제 버튼 활성화
+			edit = true;
+			buttonInitSetting(true, true, false, true, false, false, false);
+		} catch (Exception e) {
+			buttonInitSetting(false, true, false, true, false, true, true);
+			edit = false;
+		}
+	}
 }
