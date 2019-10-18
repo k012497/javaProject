@@ -1,10 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controller.ManageRestController">
-	<!-- TODO Add Nodes -->
+<AnchorPane prefHeight="685.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageRestController">
+   <children>
+      <Label layoutX="146.0" layoutY="308.0" text="즐겨찾기 등록 수 " />
+      <TextField fx:id="txtRestFav" layoutX="248.0" layoutY="303.0" prefHeight="27.0" prefWidth="69.0" promptText="즐겨찾기 수" />
+      <Button fx:id="btnImage" layoutX="463.0" layoutY="368.0" mnemonicParsing="false" text="사진 불러오기" />
+      <Label layoutX="143.0" layoutY="275.0" text="채식 종류" />
+      <TextField fx:id="txtRestVegeKind" layoutX="201.0" layoutY="270.0" prefHeight="27.0" prefWidth="69.0" promptText="채식종류" />
+      <ImageView fx:id="imgOpenHours" fitHeight="27.0" fitWidth="21.0" layoutX="414.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/external_link.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="361.0" layoutY="243.0" text="운영시간" />
+      <ImageView fx:id="imgView" fitHeight="124.0" fitWidth="143.0" layoutX="441.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="277.0" layoutY="275.0" text="등록 일자" />
+      <TextField fx:id="txtRestDate" layoutX="337.0" layoutY="270.0" prefHeight="27.0" prefWidth="97.0" promptText="등록 일자" />
+      <TextField fx:id="txtRestStars" layoutX="70.0" layoutY="303.0" prefHeight="27.0" prefWidth="69.0" promptText="별점" />
+      <TextField fx:id="txtRestTakeout" layoutX="70.0" layoutY="335.0" prefHeight="27.0" prefWidth="49.0" promptText="포장" />
+      <Label layoutX="132.0" layoutY="340.0" text="예약" />
+      <TextField fx:id="txtRestReserve" layoutX="162.0" layoutY="335.0" prefHeight="27.0" prefWidth="49.0" promptText="예약" />
+      <Label layoutX="17.0" layoutY="16.0" text="[식당 목록]" />
+      <TableView fx:id="restTable" layoutX="15.0" layoutY="38.0" prefHeight="193.0" prefWidth="571.0" />
+      <TextField fx:id="txtRestName" layoutX="70.0" layoutY="238.0" prefHeight="27.0" prefWidth="229.0" promptText="상호명" />
+      <TextField fx:id="txtResFoodtKind" layoutX="69.0" layoutY="270.0" prefHeight="27.0" prefWidth="69.0" promptText="음식종류" />
+      <TextField fx:id="txtRestPark" layoutX="252.0" layoutY="335.0" prefHeight="27.0" prefWidth="49.0" promptText="주차" />
+      <TextField fx:id="txtRestAddr" layoutX="70.0" layoutY="368.0" prefHeight="27.0" prefWidth="365.0" promptText="주소" />
+      <Label layoutX="24.0" layoutY="243.0" text="상호명" />
+      <Label layoutX="11.0" layoutY="275.0" text="음식 종류" />
+      <Label layoutX="222.0" layoutY="340.0" text="주차" />
+      <Label layoutX="31.0" layoutY="373.0" text="주 소" />
+      <Label layoutX="10.0" layoutY="308.0" text="평균 별점" />
+      <Label layoutX="37.0" layoutY="340.0" text="포장" />
+      <Button fx:id="btnRestEdit" layoutX="206.0" layoutY="403.0" mnemonicParsing="false" text="정보 수정" />
+      <Button fx:id="btnRestDelete" layoutX="286.0" layoutY="403.0" mnemonicParsing="false" text="식당 삭제" />
+      <Button fx:id="btnMenuDelete" layoutX="472.0" layoutY="625.0" mnemonicParsing="false" text="메뉴삭제" />
+      <Button fx:id="btnMenuEdit" layoutX="392.0" layoutY="625.0" mnemonicParsing="false" text="메뉴 수정" />
+      <TextField fx:id="txtMenuName" layoutX="365.0" layoutY="516.0" prefHeight="27.0" prefWidth="209.0" promptText="음식종류" />
+      <Label layoutX="366.0" layoutY="555.0" text="가격" />
+      <Label layoutX="366.0" layoutY="497.0" text="메뉴명" />
+      <TextField fx:id="txtMenuPrice" layoutX="365.0" layoutY="572.0" prefHeight="27.0" prefWidth="209.0" promptText="음식종류" />
+      <Label layoutX="26.0" layoutY="448.0" text="[대표 메뉴]" />
+      <TableView fx:id="menuTable" layoutX="23.0" layoutY="467.0" prefHeight="193.0" prefWidth="332.0">
+         <columns>
+            <TableColumn prefWidth="75.0" text="C1" />
+            <TableColumn prefWidth="75.0" text="C2" />
+         </columns>
+      </TableView>
+      <Button fx:id="btnNewRest" layoutX="525.0" layoutY="7.0" mnemonicParsing="false" text="+ NEW" />
+      <Button fx:id="btnNewMenu" layoutX="514.0" layoutY="452.0" mnemonicParsing="false" text="+ NEW" />
+      <Separator layoutX="14.0" layoutY="433.0" prefHeight="11.0" prefWidth="571.0" />
+   </children>
 </AnchorPane>

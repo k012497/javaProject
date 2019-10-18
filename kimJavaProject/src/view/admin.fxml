@@ -60,12 +60,7 @@
                         <TextField fx:id="txtRestPark" layoutX="252.0" layoutY="358.0" prefHeight="27.0" prefWidth="49.0" promptText="주차" />
                         <TextField fx:id="txtResFoodtKind" layoutX="69.0" layoutY="293.0" prefHeight="27.0" prefWidth="69.0" promptText="음식종류" />
                         <TextField fx:id="txtRestName" layoutX="70.0" layoutY="261.0" prefHeight="27.0" prefWidth="229.0" promptText="상호명" />
-                        <TableView fx:id="restTable" layoutX="15.0" layoutY="28.0" prefHeight="221.0" prefWidth="571.0">
-                           <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
-                           </columns>
-                        </TableView>
+                        <TableView fx:id="restTable" layoutX="15.0" layoutY="28.0" prefHeight="221.0" prefWidth="571.0" />
                         <Label layoutX="17.0" layoutY="6.0" text="[식당 목록]" />
                         <TextField fx:id="txtRestReserve" layoutX="162.0" layoutY="358.0" prefHeight="27.0" prefWidth="49.0" promptText="예약" />
                         <Label layoutX="132.0" layoutY="363.0" text="예약" />

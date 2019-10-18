@@ -25,11 +25,6 @@
       <TextField fx:id="txtMemName" layoutX="123.0" layoutY="313.0" prefHeight="27.0" prefWidth="126.0" promptText="이름" />
       <TextField fx:id="txtMemGender" layoutX="123.0" layoutY="386.0" prefHeight="27.0" prefWidth="65.0" promptText="성별" />
       <TextField fx:id="txtMemId" layoutX="123.0" layoutY="276.0" prefHeight="27.0" prefWidth="145.0" promptText="아이디" />
-      <TableView fx:id="memTable" layoutX="17.0" layoutY="42.0" prefHeight="221.0" prefWidth="571.0">
-         <columns>
-            <TableColumn prefWidth="75.0" text="C1" />
-            <TableColumn prefWidth="75.0" text="C2" />
-         </columns>
-      </TableView>
+      <TableView fx:id="memTable" layoutX="17.0" layoutY="42.0" prefHeight="221.0" prefWidth="571.0" />
    </children>
 </AnchorPane>

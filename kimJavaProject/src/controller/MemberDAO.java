@@ -128,10 +128,10 @@ public class MemberDAO {
 	}
 
 	// update
-	public MemberVO getStudentUpdate(MemberVO mvo, int no) throws Exception {
+	public MemberVO getMemberUpdate(MemberVO mvo, String id) throws Exception {
 		// 데이터 처리를 위한 SQL 문
 		String dml = "update memberTBL set "
-				+ " memberID=?, password=?, name=?, phoneNumber=?, address=?, gender=?, ageGroup=? where no = ?";
+				+ " memberID=?, password=?, name=?, phoneNumber=?, address=?, gender=?, ageGroup=? where memberID = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -148,6 +148,7 @@ public class MemberDAO {
 			pstmt.setString(5, mvo.getAddress());
 			pstmt.setString(6, mvo.getGender());
 			pstmt.setString(7, mvo.getAgeGroup());
+			pstmt.setString(8, mvo.getMemberID());
 
 			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
@@ -177,9 +178,9 @@ public class MemberDAO {
 	}
 
 	// delete
-	public void getMemberDelete(int no) throws Exception {
+	public void getMemberDelete(String id) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
-		String dml = "delete from memberTBL where no = ?";
+		String dml = "delete from memberTBL where memberID = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -189,7 +190,7 @@ public class MemberDAO {
 
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			pstmt = con.prepareStatement(dml);
-			pstmt.setInt(1, no);
+			pstmt.setString(1, id);
 
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();

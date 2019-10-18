@@ -1,11 +1,12 @@
 package controller;
 
-import javafx.beans.value.ObservableValue;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
-public class AdminController {
+public class AdminController{
 
     @FXML private TabPane tabPane;
 
@@ -13,13 +14,13 @@ public class AdminController {
     @FXML private Tab restaurantPage;
     @FXML private Tab chartPage;
     
-//    // Inject controller
-//    @FXML private BarTabController barTabPageController;
+    @FXML private Button btnSignOut;
 
     public void init() {
-        tabPane.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Tab> observable,
-                                                                        Tab oldValue, Tab newValue) -> {
-
-        });
+//    	Stage stage  = (Stage)(btnSignOut.getScene().getWindow());
+//    	btnSignOut.setOnAction((e)-> stage.close());
+    	btnSignOut.setOnAction((e)-> Platform.exit());
     }
+
+
 }

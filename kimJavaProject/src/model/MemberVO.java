@@ -4,8 +4,8 @@ public class MemberVO {
 	private String memberID;
 	private String password;
 	private String name;
-	private String address;
 	private String phoneNumer;
+	private String address;
 	private String gender;
 	private String ageGroup;
 	
@@ -18,8 +18,8 @@ public class MemberVO {
 		this.memberID = memberID;
 		this.password = password;
 		this.name = name;
-		this.phoneNumer = phoneNumer;
 		this.address = address;
+		this.phoneNumer = phoneNumer;
 		this.gender = gender;
 		this.ageGroup = ageGroup;
 	}
@@ -48,6 +48,14 @@ public class MemberVO {
 		this.name = name;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public String getPhoneNumer() {
 		return phoneNumer;
 	}
@@ -72,12 +80,6 @@ public class MemberVO {
 		this.ageGroup = ageGroup;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
+	
 
 }
