@@ -10,8 +10,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -19,11 +23,13 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 public class MainController implements Initializable {
@@ -79,11 +85,33 @@ public class MainController implements Initializable {
 		RecommendlabelSetting();
 		AddressComboBoxSetting();
 		buttonInitSetting(true, true);
-		btnSearch.setOnMousePressed((e) -> handlerSearchAction(e));
-
+		
+		btnSearch.setOnAction((e) -> handlerSearchAction(e));
+		btnMyPage.setOnAction((e) -> handlerMyPageAction(e));
 	}
 
-	public void handlerSearchAction(MouseEvent e) {
+	public void handlerMyPageAction(ActionEvent e) {
+			Parent mainView = null;
+			Stage mainStage = null;
+
+			try {
+				mainView = FXMLLoader.load(getClass().getResource("/view/myPage.fxml"));
+				Scene scene = new Scene(mainView);
+				mainStage = new Stage(StageStyle.UTILITY);
+				mainStage.initModality(Modality.WINDOW_MODAL);
+				mainStage.initOwner(btnMyPage.getScene().getWindow());
+				mainStage.setTitle("My Page");
+				
+				mainStage.setScene(scene);
+				mainStage.setResizable(true);
+
+				mainStage.show();
+			} catch (Exception e1) {
+				SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+			}
+	}
+
+	public void handlerSearchAction(ActionEvent e) {
 		try {
 			if (cbDong.getValue().equals("")) {
 				buttonInitSetting(true, true);
@@ -136,45 +164,59 @@ public class MainController implements Initializable {
 		RestaurantDAO restaurantDAO = new RestaurantDAO();
 		int maxCount = 0;
 		String gu = "";
+		int count1 = restaurantDAO.getCountbyGu("강남구");
+		int count2 = restaurantDAO.getCountbyGu("관악구");
+		int count3 = restaurantDAO.getCountbyGu("광진구");
+		int count4 = restaurantDAO.getCountbyGu("동대문구");
+		int count5 = restaurantDAO.getCountbyGu("마포구");
+		int count6 = restaurantDAO.getCountbyGu("서대문구");
+		int count7 = restaurantDAO.getCountbyGu("성동구");
+		int count8 = restaurantDAO.getCountbyGu("성북구");
+		int count9 = restaurantDAO.getCountbyGu("용산구");
+		int count10 = restaurantDAO.getCountbyGu("은평구");
+		int count11 = restaurantDAO.getCountbyGu("종로구");
+		int count12 = restaurantDAO.getCountbyGu("중구");
+		int count13 = restaurantDAO.getCountbyGu("중랑구");
+		
 		for (int i = 0; i < 13; i++) {
-			if (maxCount < restaurantDAO.getCountbyGu("강남구")) {
-				maxCount = restaurantDAO.getCountbyGu("강남구");
+			if (maxCount < count1) {
+				maxCount = count1;
 				gu = "강남구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("관악구")) {
-				maxCount = restaurantDAO.getCountbyGu("관악구");
+			} else if (maxCount < count2) {
+				maxCount = count2;
 				gu = "관악구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("광진구")) {
-				maxCount = restaurantDAO.getCountbyGu("광진구");
+			} else if (maxCount < count3) {
+				maxCount = count3;
 				gu = "광진구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("동대문구")) {
-				maxCount = restaurantDAO.getCountbyGu("동대문구");
+			} else if (maxCount < count4) {
+				maxCount = count4;
 				gu = "동대문구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("마포구")) {
-				maxCount = restaurantDAO.getCountbyGu("마포구");
+			} else if (maxCount < count5) {
+				maxCount = count5;
 				gu = "마포구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("서대문구")) {
-				maxCount = restaurantDAO.getCountbyGu("서대문구");
+			} else if (maxCount < count6) {
+				maxCount = count6;
 				gu = "서대문구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("성동구")) {
-				maxCount = restaurantDAO.getCountbyGu("성동구");
+			} else if (maxCount < count7) {
+				maxCount = count7;
 				gu = "성동구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("성북구")) {
-				maxCount = restaurantDAO.getCountbyGu("성북구");
+			} else if (maxCount < count8) {
+				maxCount = count8;
 				gu = "성북구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("용산구")) {
-				maxCount = restaurantDAO.getCountbyGu("용산구");
+			} else if (maxCount < count9) {
+				maxCount = count9;
 				gu = "용산구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("은평구")) {
-				maxCount = restaurantDAO.getCountbyGu("은평구");
+			} else if (maxCount < count10) {
+				maxCount = count10;
 				gu = "은평구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("종로구")) {
-				maxCount = restaurantDAO.getCountbyGu("종로구");
-				gu = "강남구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("중구")) {
-				maxCount = restaurantDAO.getCountbyGu("중구");
+			} else if (maxCount < count11) {
+				maxCount = count11;
+				gu = "종로구";
+			} else if (maxCount < count12) {
+				maxCount = count12;
 				gu = "중구";
-			} else if (maxCount < restaurantDAO.getCountbyGu("중랑구")) {
-				maxCount = restaurantDAO.getCountbyGu("중랑구");
+			} else if (maxCount < count13) {
+				maxCount = count13;
 				gu = "중랑구";
 			}
 		}

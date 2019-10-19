@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -41,6 +43,52 @@ public class LoginController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		lblFindId.setOnMousePressed((e) -> handlerLabelFindId());
 		lblFindPw.setOnMousePressed((e) -> handlerLabelFindPw());
+		btnSignIn.setOnAction((e) -> handlerBtnSignInAction(e));
+		lblSignUp.setOnMousePressed((e) -> handlerLabelSignUpAction(e));
+	}
+
+	// 1. SingIn으로 로그인
+	public void handlerBtnSignInAction(ActionEvent e) {
+		if (txtId.getText().equals("") || txtPw.getText().equals("")) {
+			SharedMethod.alertDisplay(1, "로그인 실패", "아이디, 패스워드 미입력", "다시 제대로 입력하시오");
+		} else {
+
+			Parent mainView = null;
+			Stage mainStage = null;
+
+			try {
+				mainView = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+				Scene scene = new Scene(mainView);
+				mainStage = new Stage();
+				mainStage.setTitle("[김시스터즈]");
+				mainStage.setScene(scene);
+				mainStage.setResizable(true);
+				// 현재의 스테이지를 닫고 새로운창을 연다.
+				((Stage) btnSignIn.getScene().getWindow()).close();
+				mainStage.show();
+			} catch (Exception e1) {
+				SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+			}
+		}
+	}
+
+	// 2. 회원가입 이벤트 처리
+	public void handlerLabelSignUpAction(MouseEvent e) {
+		Parent mainView = null;
+		Stage mainStage = null;
+
+		try {
+			mainView = FXMLLoader.load(getClass().getResource("/view/signUp.fxml"));
+			Scene scene = new Scene(mainView);
+			mainStage = new Stage();
+			mainStage.setTitle("[김시스터즈]");
+			mainStage.setScene(scene);
+			mainStage.setResizable(true);
+			((Stage) btnSignIn.getScene().getWindow()).close();
+			mainStage.show();
+		} catch (Exception e1) {
+			SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+		}
 	}
 
 	public void handlerLabelFindPw() {
@@ -83,7 +131,7 @@ public class LoginController implements Initializable {
 			TextField txtPhoneNum = (TextField) barChartRoot.lookup("#txtPhoneNum");
 
 			btnOk.setOnAction((event) -> {
-	            inputDecimalFormatThirteenDigit(txtPhoneNum);
+				SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
 				String existID = null;
 				try {
 					existID = MemberDAO.findIDByPhone(txtPhoneNum.getText(), txtName.getText());
@@ -115,28 +163,4 @@ public class LoginController implements Initializable {
 
 	}
 
-	public static void inputDecimalFormatThirteenDigit(TextField textField) {
-		// 숫자만 입력(정수만 입력받음), 실수입력받고싶으면new DecimalFormat("###.#");
-		DecimalFormat format = new DecimalFormat("##############");
-
-		// 점수 입력시 길이 제한 이벤트 처리
-		textField.setTextFormatter(new TextFormatter<>(event -> {
-			// 입력받은 내용이 없으면 이벤트를 리턴함.
-			if (event.getControlNewText().isEmpty()) {
-				return event;
-			}
-			// 구문을 분석할 시작 위치를 지정함. 세자리까지 계속해서 점검하겠다.
-			ParsePosition parsePosition = new ParsePosition(0);
-			// 입력받은 내용과 분석위치 를 지정한지점부터 format 내용과 일치한지 분석함.
-			Object object = format.parse(event.getControlNewText(), parsePosition);
-			// 리턴값이 null 이거나,입력한길이와 구문분석위치값이 적어버리면(다 분석하지못했음을 뜻함)거나,입력한길이가 4이면(3자리를 넘었음을
-			// 뜻함.) 이면 null 리턴함.
-			if (object == null || parsePosition.getIndex() < event.getControlNewText().length()
-					|| event.getControlNewText().length() == 12) {
-				return null;
-			} else {
-				return event; // 값을 돌려주겠다.
-			}
-		}));
-	}
 }
