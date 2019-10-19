@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,9 +44,12 @@ public class MainController implements Initializable{
 	
 	@FXML private Label lblRecommend;
 	
-	@FXML private ComboBox<String> cbDong;
 	@FXML private ComboBox<String> cbGu;
+	ObservableList<String> addressGuList;
+	@FXML private ComboBox<String> cbDong;
+	ObservableList<String> addressDongList;
 	@FXML private ComboBox<String> cbArrange;
+	ObservableList<String> arrangeList = FXCollections.observableArrayList("기본 정렬", "별점순");
 	
 	@FXML private ListView<RestImageList> listView;
 	private final ObservableList<RestImageList> imageData = FXCollections.observableArrayList();
@@ -54,6 +59,27 @@ public class MainController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		RecommendlabelSetting();
+		
+		AddressDAO addressDAO = new AddressDAO();
+		addressGuList = addressDAO.getGu();
+		cbGu.setItems(addressGuList);
+		cbGu.valueProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				addressDongList = addressDAO.getDong(cbGu.getValue());
+				cbDong.setItems(addressDongList);
+				cbDong.valueProperty().addListener(new ChangeListener<String>() {
+
+					@Override
+					public void changed(ObservableValue<? extends String> observable, String oldValue,
+							String newValue) {
+						System.out.println("sdf");
+						
+					}
+				});
+			}
+		});
 		
 	}
 
