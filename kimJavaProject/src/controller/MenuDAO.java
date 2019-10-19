@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
 import model.MenuVO;
 
 public class MenuDAO {
-	// ① 신규 학생 점수 등록 (data 입력 부분 - insert)
+	// ① 신규 등록 (data 입력 부분 - insert)
 	public int getMenuregiste(MenuVO mvo, int restId) throws Exception {
 
 		String dml = "insert into menuTBL " + "(menuID, restaurantID, menuName, menuPrice)" + " values "
@@ -50,7 +50,7 @@ public class MenuDAO {
 		return count;
 	}
 
-	// data(학생 전체 리스트) 가져오기 - select
+	// 모든 메뉴 가져오기
 	public ArrayList<MenuVO> getMenuTotal(int restId) {
 		ArrayList<MenuVO> list = new ArrayList<MenuVO>();
 		String dml = "select * from menuTBL";

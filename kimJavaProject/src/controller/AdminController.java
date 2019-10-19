@@ -22,5 +22,4 @@ public class AdminController{
     	btnSignOut.setOnAction((e)-> Platform.exit());
     }
 
-
 }

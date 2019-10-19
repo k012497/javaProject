@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.MenuVO;
 import model.RestaurantVO;
 
 public class RestaurantDAO {
@@ -34,7 +37,7 @@ public class RestaurantDAO {
 			pstmt.setString(6, rvo.getImageFileName());
 			pstmt.setInt(7, rvo.getFavCount());
 			pstmt.setDouble(8, rvo.getAvgStars());
-			
+
 			pstmt.setString(9, rvo.getTakeout());
 			pstmt.setString(10, rvo.getParking());
 			pstmt.setString(11, rvo.getReservation());
@@ -59,7 +62,7 @@ public class RestaurantDAO {
 		return count;
 	}
 
-	// data(학생 전체 리스트) 가져오기 - select
+	// data(전체 리스트) 가져오기 - select
 	public ArrayList<RestaurantVO> getRestTotal() {
 		ArrayList<RestaurantVO> list = new ArrayList<RestaurantVO>();
 		String dml = "select * from restaurantTBL";
@@ -74,8 +77,9 @@ public class RestaurantDAO {
 			pstmt = con.prepareStatement(dml);
 			rs = pstmt.executeQuery();
 			while (rs.next()) { // 다음 레코드가 있을 동안
-				emVo = new RestaurantVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), 
-						rs.getString(6), rs.getString(7), rs.getInt(8), rs.getDouble(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13));
+				emVo = new RestaurantVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getDouble(9),
+						rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13));
 				list.add(emVo);
 			}
 		} catch (SQLException se) {
@@ -95,7 +99,119 @@ public class RestaurantDAO {
 		}
 		return list;
 	}
-	
+
+	// 음식 종류별 식당 카운트 가져오기
+	public int getCountbyKind(String kind) {
+		int count = 0;
+		String dml = "select count(*) from restaurantTBL where kind = ?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			pstmt.setString(1, kind);
+			rs = pstmt.executeQuery();
+			int i = 0;
+			while (rs.next()) { // 다음 레코드가 있을 동안
+				count = rs.getInt(1);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return count;
+	}
+
+	// 구별 식당 카운트 가져오기
+	public int getCountbyGu(String gu) {
+		int count = 0;
+		String dml = "select count(*) from restaurantTBL where address like ?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
+
+		RestaurantVO retval = null;
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			String guToSearch = "%" + gu + "%";
+			pstmt.setString(1, guToSearch);
+			rs = pstmt.executeQuery();
+			int i = 0;
+			while (rs.next()) { // 다음 레코드가 있을 동안
+				count = rs.getInt(1);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return count;
+	}
+
+	// 별점순 10개 가져오기
+	public ArrayList<RestaurantVO> getRest10() {
+		ArrayList<RestaurantVO> list = new ArrayList<RestaurantVO>();
+		String dml = "select * from restaurantTBL order by avgStars desc limit 10";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
+		RestaurantVO emVo = null;
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			rs = pstmt.executeQuery();
+			while (rs.next()) { // 다음 레코드가 있을 동안
+				emVo = new RestaurantVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getDouble(9),
+						rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13));
+				list.add(emVo);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return list;
+	}
 
 	// data 삭제 기능 - delete
 	public void getRestDelete(int no) throws Exception {
@@ -143,7 +259,7 @@ public class RestaurantDAO {
 	public RestaurantVO getRestUpdate(RestaurantVO rvo, int no) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
 		String dml = "update restaurantTBL set "
-				+"restaurantName=?, address=?, telephone=?, kind=?, veganLevel=?, imageFileName=?, favCount=?, avgStars=?, takeout=?, parking=?, reservation=? where restaurantID=?";
+				+ "restaurantName=?, address=?, telephone=?, kind=?, veganLevel=?, imageFileName=?, favCount=?, avgStars=?, takeout=?, parking=?, reservation=? where restaurantID=?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -160,7 +276,7 @@ public class RestaurantDAO {
 			pstmt.setString(6, rvo.getImageFileName());
 			pstmt.setInt(7, rvo.getFavCount());
 			pstmt.setDouble(8, rvo.getAvgStars());
-			
+
 			pstmt.setString(9, rvo.getTakeout());
 			pstmt.setString(10, rvo.getParking());
 			pstmt.setString(11, rvo.getReservation());
@@ -208,8 +324,9 @@ public class RestaurantDAO {
 			pstmt.setString(1, nameToSearch);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				retval = new RestaurantVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), 
-						rs.getString(6), rs.getString(7), rs.getInt(8), rs.getDouble(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13));
+				retval = new RestaurantVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getDouble(9),
+						rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13));
 				list.add(retval);
 			}
 		} catch (SQLException se) {
