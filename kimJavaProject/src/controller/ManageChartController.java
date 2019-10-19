@@ -116,7 +116,6 @@ public class ManageChartController implements Initializable{
 			BarChart barChart = (BarChart) barChartRoot.lookup("#barChart");
 			Button btnClose = (Button) barChartRoot.lookup("#btnClose");
 
-			// 모든 학생들의 국어점수 가져와서 막대그래프에 넣기
 			XYChart.Series seriesNumber = new XYChart.Series(); // chart label
 			seriesNumber.setName("등록 식당 수");
 			ObservableList guList = FXCollections.observableArrayList();

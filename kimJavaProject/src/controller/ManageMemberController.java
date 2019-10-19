@@ -115,9 +115,7 @@ public class ManageMemberController implements Initializable {
 	} // end of memberTableViewSetting
 
 	public void handlerBtnMemEditAction() {
-		// 총점과 평균이 있는지 확인
 		try {
-
 			if (txtMemId.getText().equals("") || txtMemPw.getText().equals("") || txtMemName.getText().equals("")
 					|| txtMemGender.getText().equals("") || txtMemAddr.getText().equals("")) {
 				throw new Exception();

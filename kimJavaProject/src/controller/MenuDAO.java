@@ -126,7 +126,7 @@ public class MenuDAO {
 	// data 삭제 기능 - delete
 	public void getMenuDelete(int no) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
-		String dml = "delete from menuTBL where restaurantID = ?";
+		String dml = "delete from menuTBL where menuID = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -142,10 +142,10 @@ public class MenuDAO {
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(5, "delete restaurant", "delete completed", "SUCCESS!");
+				SharedMethod.alertDisplay(5, "delete menu", "delete completed", "SUCCESS!");
 
 			} else {
-				SharedMethod.alertDisplay(1, "delete restaurant", "delete not completed", "FAIL!");
+				SharedMethod.alertDisplay(1, "delete menu", "delete not completed", "FAIL!");
 			}
 
 		} catch (SQLException e) {
@@ -165,10 +165,11 @@ public class MenuDAO {
 
 	}
 
-	// 수정기능. UPDATE table SET //리턴 왜 함?
-	public MenuVO getRestUpdate(MenuVO mvo, int menuId) throws Exception {
+	// 수정기능. UPDATE table SET
+	public MenuVO getMenuUpdate(MenuVO mvo, int menuId) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
-		String dml = "update menuTBL set " + "menuName=?, menuPrice=? where menuID=?";
+		String dml = "update menuTBL set " 
+		+ "menuName=?, menuPrice=? where menuID=?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -179,7 +180,7 @@ public class MenuDAO {
 			// ④ 수정한 정보를 수정하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, mvo.getMenuName());
-			pstmt.setString(2, String.valueOf(mvo.getMenuPrice()));
+			pstmt.setInt(2, mvo.getMenuPrice());
 			pstmt.setInt(3, menuId);
 			
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴

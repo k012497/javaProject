@@ -8,18 +8,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="750.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="750.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
       <Button fx:id="btnMyPage" layoutX="332.0" layoutY="18.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="103.0" text="My Page" />
-      <Button fx:id="btnSingOut" layoutX="253.0" layoutY="18.0" mnemonicParsing="false" text="LogOut" />
+      <Button fx:id="btnSingOut" layoutX="259.0" layoutY="19.0" mnemonicParsing="false" text="LogOut" />
       <Label layoutX="21.0" layoutY="12.0" text="[맛있을지도]">
          <font>
             <Font size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="lblRecommend" layoutX="63.0" layoutY="69.0" text="&quot;           동은 어떠세요?    &quot;">
-         <font>
-            <Font size="28.0" />
          </font>
       </Label>
       <ComboBox fx:id="cbArrange" layoutX="15.0" layoutY="326.0" prefHeight="29.0" prefWidth="130.0" promptText="정렬" style="-fx-background-color: FFFFFF;" />
@@ -64,7 +59,7 @@
             <Font name="Yu Gothic UI Light" size="11.0" />
          </font>
       </Button>
-      <Button fx:id="btnAll1" layoutX="27.0" layoutY="178.0" mnemonicParsing="false" prefHeight="133.0" prefWidth="85.0" text="Full View">
+      <Button fx:id="btnAll" layoutX="27.0" layoutY="178.0" mnemonicParsing="false" prefHeight="133.0" prefWidth="85.0" text="Full View">
          <font>
             <Font name="Yu Gothic UI Light" size="11.0" />
          </font>
@@ -74,12 +69,22 @@
             <Image url="@../images/open.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="btnSearch" fitHeight="30.0" fitWidth="30.0" layoutX="389.0" layoutY="124.0">
+      <ImageView fx:id="imgSearch" fitHeight="30.0" fitWidth="30.0" layoutX="389.0" layoutY="124.0">
          <image>
             <Image url="@../images/loupe.png" />
          </image>
       </ImageView>
       <ComboBox fx:id="cbDong" layoutX="214.0" layoutY="124.0" prefHeight="29.0" prefWidth="163.0" promptText="e) OO동" style="-fx-background-color: FFFFFF;" />
       <ComboBox fx:id="cbGu" layoutX="31.0" layoutY="124.0" prefHeight="29.0" prefWidth="163.0" promptText="e) 00구" style="-fx-background-color: FFFFFF;" />
+      <Label fx:id="lblRecommend" alignment="CENTER_RIGHT" contentDisplay="TOP" layoutX="80.0" layoutY="73.0" prefHeight="42.0" prefWidth="130.0" textAlignment="CENTER">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Label layoutX="210.0" layoutY="82.0" text="는 어떠세요?">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -12,14 +12,14 @@ public class AppMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		Scene scene = new Scene(new StackPane());
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminPage.fxml"));
-		scene.setRoot(loader.load());
-		AdminController controller = loader.getController();
-		controller.init();
+//		Scene scene = new Scene(new StackPane());
+//		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminPage.fxml"));
+//		scene.setRoot(loader.load());
+//		AdminController controller = loader.getController();
+//		controller.init();
 
-//    	Parent loader = FXMLLoader.load(getClass().getResource("/view/signUp.fxml"));
-//        Scene scene = new Scene(loader);
+    	Parent loader = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+        Scene scene = new Scene(loader);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
