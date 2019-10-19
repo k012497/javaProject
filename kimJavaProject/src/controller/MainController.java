@@ -3,10 +3,12 @@ package controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import controller.CustomListCell;
+import controller.CustomThing;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -32,6 +34,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import model.RestaurantVO;
 
 public class MainController implements Initializable {
 	@FXML
@@ -64,6 +67,8 @@ public class MainController implements Initializable {
 
 	@FXML
 	private Label lblRecommend;
+	@FXML
+	private Label lblMember;
 
 	@FXML
 	private ComboBox<String> cbGu;
@@ -81,18 +86,20 @@ public class MainController implements Initializable {
 	private String localUrl = ""; // 이미지 파일 경로
 	private Image localImage;
 	
+	ObservableList<RestaurantVO> restData;
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		RecommendlabelSetting();
-		AddressComboBoxSetting();
+		recommendlabelSetting();
+		addressComboBoxSetting();
 		buttonInitSetting(true, true);
 		
 		btnSearch.setOnAction((e) -> handlerSearchAction(e));
 		btnMyPage.setOnAction((e) -> handlerMyPageAction(e));
 		
-		btnAll.setOnAction((e) -> handlerButtonAllAction());
+		//btnAll.setOnAction((e) -> handlerButtonAllAction());
+		btnAll.setOnAction((e) -> setListWithImage());
 	}
 
 	public void handlerButtonAllAction() {
@@ -111,6 +118,9 @@ public class MainController implements Initializable {
 				mainStage.initModality(Modality.WINDOW_MODAL);
 				mainStage.initOwner(btnMyPage.getScene().getWindow());
 				mainStage.setTitle("My Page");
+				
+				Label lblMemberId = (Label) mainView.lookup("#lblMemberId");
+				lblMemberId.setText(lblMember.getText());
 				
 				mainStage.setScene(scene);
 				mainStage.setResizable(true);
@@ -147,7 +157,7 @@ public class MainController implements Initializable {
 		btnSearch.setDisable(b);
 	}
 
-	public void AddressComboBoxSetting() {
+	public void addressComboBoxSetting() {
 		AddressDAO addressDAO = new AddressDAO();
 		addressGuList = addressDAO.getGu();
 		cbGu.setItems(addressGuList);
@@ -170,7 +180,7 @@ public class MainController implements Initializable {
 		});
 	}
 
-	public void RecommendlabelSetting() {
+	public void recommendlabelSetting() {
 		RestaurantDAO restaurantDAO = new RestaurantDAO();
 		int maxCount = 0;
 		String gu = "";
@@ -235,57 +245,40 @@ public class MainController implements Initializable {
 	}
 
 	public void setListWithImage() {
-		ObservableList<RestImageList> data = FXCollections.observableArrayList();
-		data.addAll(new RestImageList("Cheese", "address", 1.1), new RestImageList("Horse", "addr 2", 3.3),
-				new RestImageList("Jam", "111", 4.4));
+		try {
+			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/test.fxml"));
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(btnAll.getScene().getWindow());
+			stage.setTitle("식당 리스트");
+	
+			restData = null;
+			
 
-		listView = new ListView<RestImageList>(data);
-		listView.setCellFactory(new Callback<ListView<RestImageList>, ListCell<RestImageList>>() {
-			@Override
-			public ListCell<RestImageList> call(ListView<RestImageList> listView) {
-				return new CustomListCell();
-			}
-		});
+	        ObservableList<CustomThing> data = FXCollections.observableArrayList();
+	        data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 45.6), new CustomThing("Jam", "addr", 7.89));
+
+	        final ListView<CustomThing> listView = new ListView<CustomThing>(data);
+	        listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
+	            @Override
+	            public ListCell<CustomThing> call(ListView<CustomThing> listView) {
+	                return new CustomListCell();
+	            }
+	        });
+
+	        StackPane root = new StackPane();
+	        root.getChildren().add(listView);
+	        stage.setScene(new Scene(root, 500, 500));
+	        stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		StackPane root = new StackPane();
 		root.getChildren().add(listView);
 	}
+		
 
-	private class CustomListCell extends ListCell<RestImageList> {
-		private HBox content;
-		private Text name;
-		private Text price;
-
-		public CustomListCell() {
-			super();
-			name = new Text();
-			price = new Text();
-			VBox vBox = new VBox(name, price);
-
-			FileInputStream input;
-			try {
-				File dirSave = new File("/Users/kimsojin/Desktop/n");
-				input = new FileInputStream(new File(dirSave.getAbsolutePath() + "//" + "moodindigo.jpg"));
-				Image image = new Image(input);
-				ImageView imageView = new ImageView(image);
-				imageView.setFitWidth(200);
-				imageView.setFitHeight(200);
-				content = new HBox(imageView, vBox);
-				content.setSpacing(10);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		@Override
-		protected void updateItem(RestImageList item, boolean empty) {
-			super.updateItem(item, empty);
-			if (item != null && !empty) { // <== test for null item and empty parameter
-				name.setText(item.getName());
-				setGraphic(content);
-			} else {
-				setGraphic(null);
-			}
-		}
-	}
+	
 }

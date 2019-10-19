@@ -49,7 +49,7 @@ public class LoginController implements Initializable {
 
 	// 1. SingIn으로 로그인
 	public void handlerBtnSignInAction(ActionEvent e) {
-		if (txtId.getText().equals("") || txtPw.getText().equals("")) {
+		if (txtId.getText().trim().equals("") || txtPw.getText().trim().equals("")) {
 			SharedMethod.alertDisplay(1, "로그인 실패", "아이디, 패스워드 미입력", "다시 제대로 입력하시오");
 		} else {
 
@@ -63,6 +63,10 @@ public class LoginController implements Initializable {
 				mainStage.setTitle("[김시스터즈]");
 				mainStage.setScene(scene);
 				mainStage.setResizable(true);
+				
+				Label lblMember = (Label) mainView.lookup("#lblMember");
+				lblMember.setText(txtId.getText());
+				
 				// 현재의 스테이지를 닫고 새로운창을 연다.
 				((Stage) btnSignIn.getScene().getWindow()).close();
 				mainStage.show();

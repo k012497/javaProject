@@ -126,6 +126,44 @@ public class MemberDAO {
 		}
 		return list;
 	}
+	
+	// select - 아이디로 멤버 검색 
+		public ArrayList<MemberVO> getMemberInfoUsingId(String name) throws Exception {
+			ArrayList<MemberVO> list = new ArrayList<MemberVO>();
+			String dml = "select * from memberTBL where memberID like ?";
+
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			MemberVO retval = null;
+			try {
+				con = DBUtil.getConnection();
+				pstmt = con.prepareStatement(dml);
+				String nameToSearch = "%" + name + "%";
+				pstmt.setString(1, nameToSearch);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					retval = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),rs.getString(6),
+							rs.getString(7));
+					list.add(retval);
+				}
+			} catch (SQLException se) {
+				System.out.println(se);
+			} catch (Exception e) {
+				System.out.println(e);
+			} finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (pstmt != null)
+						pstmt.close();
+					if (con != null)
+						con.close();
+				} catch (SQLException se) {
+				}
+			}
+			return list;
+		}
 
 	// update
 	public MemberVO getMemberUpdate(MemberVO mvo, String id) throws Exception {

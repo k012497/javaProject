@@ -70,6 +70,8 @@
                   <ComboBox fx:id="cbAge" layoutX="358.0" layoutY="96.0" prefWidth="150.0" promptText="연령대 선택" />
                   <ComboBox fx:id="cbDong" layoutX="310.0" layoutY="259.0" prefHeight="29.0" prefWidth="130.0" promptText="동 선택" />
                   <ComboBox fx:id="cbGu" layoutX="165.0" layoutY="259.0" prefHeight="29.0" prefWidth="130.0" promptText="구 선택" />
+                  <Label id="lblMemberId" fx:id="lblMemberId" alignment="CENTER_RIGHT" layoutX="358.0" layoutY="29.0" prefHeight="17.0" prefWidth="103.0" />
+                  <Label layoutX="467.0" layoutY="29.0" text="님" />
                </children>
             </AnchorPane>
         </content>

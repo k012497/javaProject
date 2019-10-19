@@ -1,6 +1,5 @@
 package controller;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,88 +20,72 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class Test extends Application {
-	
-    private static class CustomThing {
-        private String name;
-        private int price;
-        public String getName() {
-            return name;
-        }
-        public int getPrice() {
-            return price;
-        }
-        public CustomThing(String name, int price) {
-            super();
-            this.name = name;
-            this.price = price;
-        }
-    }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+	public static void main(String[] args) {
+		launch(args);
+	}
 
-    @Override
-    public void start(Stage primaryStage) {
-        ObservableList<CustomThing> data = FXCollections.observableArrayList();
-        data.addAll(new CustomThing("Cheese", 123), new CustomThing("Horse", 456), new CustomThing("Jam", 789));
+	@Override
+	public void start(Stage primaryStage) {
+		ObservableList<CustomThing> data = FXCollections.observableArrayList();
+		data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 4.56),
+				new CustomThing("Jam", "addr", 7.89), new CustomThing("dm으m", "경남 창원시", 7.89));
 
-        final ListView<CustomThing> listView = new ListView<CustomThing>(data);
-        listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
-            @Override
-            public ListCell<CustomThing> call(ListView<CustomThing> listView) {
-                return new CustomListCell();
-            }
-        });
-
-        StackPane root = new StackPane();
-        root.getChildren().add(listView);
-        primaryStage.setScene(new Scene(root, 500, 500));
-        primaryStage.show();
-    }
-
-    private class CustomListCell extends ListCell<CustomThing> {
-        private HBox content;
-        private Text name;
-        private Text price;
-
-        public CustomListCell() {
-            super();
-            name = new Text();
-            price = new Text();
-            VBox vBox = new VBox(name, price);
-//            ImageView imageView = new ImageView();
-//            imageView.setImage(new Image("/images/moodindigo.jpg", false));
-//            content = new HBox(imageView, vBox);
-            
-            FileInputStream input;
-			try {
-				File dirSave = new File("/Users/kimsojin/Desktop/n"); 
-				input = new FileInputStream(new File(dirSave.getAbsolutePath()+"//"+"moodindigo.jpg"));
-				Image image = new Image(input);
-				ImageView imageView = new ImageView(image);
-				imageView.setFitWidth(200);
-				imageView.setFitHeight(200);
-				content = new HBox(imageView, vBox);
-				content.setSpacing(10);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		final ListView<CustomThing> listView = new ListView<CustomThing>(data);
+		listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
+			@Override
+			public ListCell<CustomThing> call(ListView<CustomThing> listView) {
+				return new CustomListCell();
 			}
-        }
+		});
 
-        @Override
-        protected void updateItem(CustomThing item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item != null && !empty) { // <== test for null item and empty parameter
-                name.setText(item.getName());
-                price.setText(String.format("%d $", item.getPrice()));
-                setGraphic(content);
-            } else {
-                setGraphic(null);
-            }
-        }
-    }
+		StackPane root = new StackPane();
+		root.getChildren().add(listView);
+		primaryStage.setScene(new Scene(root, 500, 500));
+		primaryStage.show();
+	}
 
+//    public class CustomListCell extends ListCell<CustomThing> {
+//        private HBox content;
+//        private Text name;
+//        private Text price;
+//
+//        public CustomListCell() {
+//            super();
+//            name = new Text();
+//            price = new Text();
+//            VBox vBox = new VBox(name, price);
+////            ImageView imageView = new ImageView();
+////            imageView.setImage(new Image("/images/moodindigo.jpg", false));
+////            content = new HBox(imageView, vBox);
+//            
+//            FileInputStream input;
+//			try {
+//				File dirSave = new File("/Users/kimsojin/Desktop/n"); 
+//				input = new FileInputStream(new File(dirSave.getAbsolutePath()+"//"+"moodindigo.jpg"));
+//				Image image = new Image(input);
+//				ImageView imageView = new ImageView(image);
+//				imageView.setFitWidth(200);
+//				imageView.setFitHeight(200);
+//				content = new HBox(imageView, vBox);
+//				content.setSpacing(10);
+//			} catch (FileNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//        }
+//
+//        @Override
+//        protected void updateItem(CustomThing item, boolean empty) {
+//            super.updateItem(item, empty);
+//            if (item != null && !empty) { // <== test for null item and empty parameter
+//                name.setText(item.getName());
+//                price.setText(String.format("%d $", item.getPrice()));
+//                setGraphic(content);
+//            } else {
+//                setGraphic(null);
+//            }
+//        }
+//    }
 
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -11,8 +12,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import model.MemberVO;
 
 public class MyPageController implements Initializable{
 	@FXML
@@ -25,6 +28,8 @@ public class MyPageController implements Initializable{
 	private ComboBox<String> cbDong;
 	ObservableList<String> addressDongList;
 	
+	@FXML private Label lblMemberId;
+	
 	@FXML private Button btnEdit;
 	@FXML private Button btnLeave;
 	@FXML private Button btnCancel;
@@ -36,16 +41,24 @@ public class MyPageController implements Initializable{
 	@FXML private TableView favTable;
 	@FXML private TableView reviewTable;
 	
+	ArrayList<MemberVO> memberList;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		comboBoxInitSetting();
+		getInfo();
 		
 	}
 	public void getInfo() {
-//		txtName.setText(value);
-//		txtNumber.setText(value);
-//		txtPw.setText(value);
-//		txtPwAgain.setText(value);
+		MemberDAO memberDAO = new MemberDAO();
+		try {
+			memberList = memberDAO.getMemberInfoUsingId(lblMemberId.getText());
+		} catch (Exception e) {
+			SharedMethod.alertDisplay(1, "LOAD INFORMATION FAILED", "사용자 정보 불러오기 실패", "사용자 정보를 불러오기를 실패했습니다.");
+		}
+		txtName.setText(memberList.get(0).getName());
+		txtNumber.setText(memberList.get(0).getPhoneNumer());
+		txtPw.setText(memberList.get(0).getPassword());
 		
 	}
 	
