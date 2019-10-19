@@ -6,16 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.MenuVO;
-import model.RestaurantVO;
 
 public class MenuDAO {
 	// ① 신규 학생 점수 등록 (data 입력 부분 - insert)
 	public int getMenuregiste(MenuVO mvo, int restId) throws Exception {
 
-		String dml = "insert into menuTBL "
-				+ "(menuID, restaurantID, menuName, menuPrice)"
-				+ " values " + "(null, ?, ?, ?)";
+		String dml = "insert into menuTBL " + "(menuID, restaurantID, menuName, menuPrice)" + " values "
+				+ "(null, ?, ?, ?)";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -86,25 +86,24 @@ public class MenuDAO {
 		return list;
 	}
 	
-	public ArrayList<MenuVO> getMenu(int restId) {
-		ArrayList<MenuVO> list = new ArrayList<MenuVO>();
-		String dml = "select * from menuTBL where restaurantID = ?";
+	//특정 식당의 메뉴 가져오기 
+	public ObservableList<MenuVO> getMenu(int restId) {
+		ObservableList<MenuVO> list = FXCollections.observableArrayList();
+//		MenuVO list = null;
+		String dml = "select menuName, menuPrice from menuTBL where restaurantID = ?";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
-		MenuVO emVo = null;
-
-//		pstmt = con.prepareStatement(dml);
-//		pstmt.setString(1, String.valueOf(restId));
 
 		try {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement(dml);
+			pstmt.setInt(1, restId);
 			rs = pstmt.executeQuery();
 			while (rs.next()) { // 다음 레코드가 있을 동안
-				emVo = new MenuVO(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4));
-				list.add(emVo);
+//				list = new MenuVO(rs.getString(1), rs.getInt(2));
+				list.add(new MenuVO(rs.getString(1), rs.getInt(2)));
 			}
 		} catch (SQLException se) {
 			System.out.println(se);
@@ -125,9 +124,9 @@ public class MenuDAO {
 	}
 
 	// data 삭제 기능 - delete
-	public void getRestDelete(int no) throws Exception {
+	public void getMenuDelete(int no) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
-		String dml = "delete from menuTBL where no = ?";
+		String dml = "delete from menuTBL where restaurantID = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -169,8 +168,7 @@ public class MenuDAO {
 	// 수정기능. UPDATE table SET //리턴 왜 함?
 	public MenuVO getRestUpdate(MenuVO mvo, int no) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
-		String dml = "update menuTBL set "
-				+ "menuName=?, menuPrice=? where menuID=?";
+		String dml = "update menuTBL set " + "menuName=?, menuPrice=? where menuID=?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -181,7 +179,6 @@ public class MenuDAO {
 			// ④ 수정한 정보를 수정하기 위하여 SQL문장을 생성
 			pstmt.setString(1, mvo.getMenuName());
 			pstmt.setString(2, String.valueOf(mvo.getMenuPrice()));
-
 
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();

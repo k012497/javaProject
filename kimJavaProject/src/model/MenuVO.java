@@ -16,6 +16,13 @@ public class MenuVO {
 	public MenuVO() {
 		
 	}
+	
+
+	public MenuVO(String menuName, int menuPrice) {
+		super();
+		this.menuName = menuName;
+		this.menuPrice = menuPrice;
+	}
 
 	public int getMenuID() {
 		return menuID;

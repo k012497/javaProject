@@ -100,7 +100,7 @@ public class RestaurantDAO {
 	// data 삭제 기능 - delete
 	public void getRestDelete(int no) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
-		String dml = "delete from restaurantTBL where no = ?";
+		String dml = "delete from restaurantTBL where restaurantID = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 

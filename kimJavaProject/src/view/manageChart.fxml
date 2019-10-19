@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controller.ManageChartController">
-	<!-- TODO Add Nodes -->
+<AnchorPane prefHeight="650.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageChartController">
+   <children>
+      <Label layoutX="14.0" layoutY="348.0" text="[음식종류 비율]" />
+      <PieChart fx:id="pieChart" layoutX="121.0" layoutY="348.0" prefHeight="291.0" prefWidth="307.0" />
+      <Label layoutX="14.0" layoutY="183.0" text="[지역별 등록 식당 수]" />
+      <BarChart fx:id="barNumber" layoutX="9.0" layoutY="200.0" prefHeight="143.0" prefWidth="533.0">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis side="LEFT" />
+         </yAxis>
+      </BarChart>
+      <Label layoutX="9.0" layoutY="14.0" text="[별점이 높은 식당 TOP 10]" />
+      <BarChart fx:id="barBest" layoutX="7.0" layoutY="31.0" prefHeight="150.0" prefWidth="533.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" upperBound="5.0" />
+        </yAxis>
+      </BarChart>
+   </children>
 </AnchorPane>

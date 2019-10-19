@@ -90,7 +90,7 @@ public class MemberDAO {
 	}
 
 	// select - 이름 검색 기능
-	public ArrayList<MemberVO> getStudentCheck(String name) throws Exception {
+	public ArrayList<MemberVO> getMemberCheck(String name) throws Exception {
 		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
 		String dml = "select * from memberTBL where name like ?";
 

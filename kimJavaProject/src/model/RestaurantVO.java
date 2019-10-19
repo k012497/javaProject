@@ -36,6 +36,25 @@ public class RestaurantVO {
 		this.reservation = reservation;
 	}
 
+	public RestaurantVO(String restaurantName, String address, String telephone, String kind, String veganLevel,
+			String imageFileName, int favCount, double avgStars, String registeDate, String takeout, String parking,
+			String reservation) {
+		super();
+		this.restaurantName = restaurantName;
+		this.address = address;
+		this.telephone = telephone;
+		this.kind = kind;
+		this.veganLevel = veganLevel;
+		this.imageFileName = imageFileName;
+		this.favCount = favCount;
+		this.avgStars = avgStars;
+		this.registeDate = registeDate;
+		this.takeout = takeout;
+		this.parking = parking;
+		this.reservation = reservation;
+	}
+
+
 	public RestaurantVO() {
 		
 	}
