@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="200.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Button id="btnClose" layoutX="209.0" layoutY="153.0" mnemonicParsing="false" text="취소" />
+      <Label layoutX="14.0" layoutY="14.0" text="신규 메뉴 등록">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Button id="btnClear" fx:id="btnClear" layoutX="145.0" layoutY="153.0" mnemonicParsing="false" text="초기화" />
+      <Button id="btnRestRegiste" layoutX="65.0" layoutY="153.0" mnemonicParsing="false" text=" 메뉴 등록" />
+      <TextField id="txtNewMenu" layoutX="93.0" layoutY="63.0" />
+      <TextField id="txtNewPrice" layoutX="93.0" layoutY="100.0" />
+      <Label layoutX="43.0" layoutY="68.0" text="메뉴명" />
+      <Label layoutX="46.0" layoutY="105.0" text="가 격 " />
+   </children>
+</AnchorPane>

@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -15,16 +17,24 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.MenuVO;
 import model.RestaurantVO;
 
@@ -93,7 +103,7 @@ public class ManageRestController implements Initializable {
 	private String localUrl = ""; // 이미지 파일 경로
 	private Image localImage;
 	private String fileName = null;
-	
+
 	private int no; // 삭제시 테이블에서 선택한 멤버의 번호 저장
 	private File selectedFile = null;
 
@@ -109,6 +119,7 @@ public class ManageRestController implements Initializable {
 		restTableColSetting();
 		menuTableColSetting();
 		imageViewInit();
+		menuFieldInitSetting(true, true);
 		imgView.maxWidth(143);
 		imgView.maxHeight(134);
 
@@ -123,13 +134,14 @@ public class ManageRestController implements Initializable {
 
 		// when select an object in tableView
 		restTable.setOnMousePressed((e) -> handlerTableViewPressedAction());
-		menuTable.setOnMousePressed((e)-> handlerMenuTableViewPressedAction());
+		menuTable.setOnMousePressed((e) -> handlerMenuTableViewPressedAction());
 
 		btnRestEdit.setOnAction((e) -> handlerBtnRestEditAction());
 		btnRestDelete.setOnAction((e) -> handlerBtnRestDeleteAction());
-		
+
 		btnMenuEdit.setOnAction((e) -> handlerBtnMenuEditAction());
 		btnMenuDelete.setOnAction((e) -> handlerBtnMenuDeleteAction());
+
 	}
 
 	private Object handlerBtnMenuDeleteAction() {
@@ -137,9 +149,8 @@ public class ManageRestController implements Initializable {
 		return null;
 	}
 
-	private Object handlerBtnMenuEditAction() {
-		// TODO Auto-generated method stub
-		return null;
+	public void handlerBtnMenuEditAction() {
+	
 	}
 
 	public void handlerBtnRestEditAction() {
@@ -160,10 +171,10 @@ public class ManageRestController implements Initializable {
 					|| txtRestTakeout.getText().equals("") || txtRestPark.getText().equals("")) {
 				throw new Exception();
 			} else {
-				RestaurantVO rvo = new RestaurantVO(txtRestName.getText().trim(), txtRestAddr.getText().trim(), 
-						txtRestPhone.getText().trim(), txtRestFoodtKind.getText().trim(), 
+				RestaurantVO rvo = new RestaurantVO(txtRestName.getText().trim(), txtRestAddr.getText().trim(),
+						txtRestPhone.getText().trim(), txtRestFoodtKind.getText().trim(),
 						txtRestVegeKind.getText().trim(), fileName, Integer.parseInt(txtRestFav.getText().trim()),
-						Double.parseDouble(txtRestStars.getText().trim()), txtRestDate.getText().trim(), 
+						Double.parseDouble(txtRestStars.getText().trim()), txtRestDate.getText().trim(),
 						txtRestTakeout.getText().trim(), txtRestPark.getText().trim(), txtRestReserve.getText().trim());
 
 				// 변경사항을 DB로 보냄.
@@ -229,6 +240,7 @@ public class ManageRestController implements Initializable {
 			restData.add(restVO);
 		}
 	}
+	
 
 	public void restTableColSetting() {
 		restData = FXCollections.observableArrayList();
@@ -305,12 +317,12 @@ public class ManageRestController implements Initializable {
 		restTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
 
 		TableColumn colName = new TableColumn("메뉴");
-		colName.setMaxWidth(200);
+		colName.setMaxWidth(300);
 		colName.setStyle("-fx-alignment:CENTER;");
 		colName.setCellValueFactory(new PropertyValueFactory("menuName"));
 
 		TableColumn colPrice = new TableColumn("가격");
-		colPrice.setMaxWidth(100);
+		colPrice.setMaxWidth(200);
 		colPrice.setStyle("-fx-alignment:CENTER;");
 		colPrice.setCellValueFactory(new PropertyValueFactory("menuPrice"));
 
@@ -355,11 +367,20 @@ public class ManageRestController implements Initializable {
 
 	public void handlerTableViewPressedAction() {
 		// 테이블 뷰 객체 없는 부분 클릭 시 방어
-		try {
-			// 누른 위치와 해당 객체를 가져온다
-			selectedIndex = restTable.getSelectionModel().getSelectedIndex();
-			selectedRest = restTable.getSelectionModel().getSelectedItems();
 
+		// 메뉴 등록 가능
+		menuFieldInitSetting(true, false);
+		
+		// 누른 위치와 해당 객체를 가져온다
+		selectedIndex = restTable.getSelectionModel().getSelectedIndex();
+		selectedRest = restTable.getSelectionModel().getSelectedItems();
+		int selectedRestId = selectedRest.get(0).getRestaurantID();
+
+		// when click new in restaurant field
+		btnNewRest.setOnAction((e) -> handlerNewRestAction(e));
+		btnNewMenu.setOnAction((e) -> handlerNewMenuAction(e, selectedRestId));
+		
+		try {
 			// 가져온 정보를 데이터 필드에 출력
 			txtRestName.setText(selectedRest.get(0).getRestaurantName());
 			txtRestAddr.setText(selectedRest.get(0).getAddress());
@@ -408,6 +429,9 @@ public class ManageRestController implements Initializable {
 	// when click an object in menu table
 	public void handlerMenuTableViewPressedAction() {
 		// 테이블 뷰 객체 없는 부분 클릭 시 방어
+		
+		menuFieldInitSetting(false, false);
+		
 		try {
 			// 누른 위치와 해당 객체를 가져온다
 			selectedIndex = menuTable.getSelectionModel().getSelectedIndex();
@@ -437,4 +461,157 @@ public class ManageRestController implements Initializable {
 
 		// 경고창 확인/취소 값 받아서 삭제할 지 말 지 이벤트 처리
 	}
+
+	public void handlerNewRestAction(ActionEvent e) {
+		ObservableList<String> kindList = FXCollections.observableArrayList("한식", "중식", "일식", "양식", "채식", "세계음식", "뷔페",
+				"카페");
+		ObservableList<String> vegeList = FXCollections.observableArrayList("plant only", "with animal products",
+				"vege option");
+		ObservableList<String> booleanList = FXCollections.observableArrayList("Y", "N");
+		try {
+			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/newRest.fxml"));
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(btnNewRest.getScene().getWindow());
+			stage.setTitle("식당 추가하기");
+
+			ImageView imgView = (ImageView) barChartRoot.lookup("#imgView");
+			Button btnClose = (Button) barChartRoot.lookup("#btnClose");
+			Button btnRestRegiste = (Button) barChartRoot.lookup("#btnRestRegiste");
+			Button btnClear = (Button) barChartRoot.lookup("#btnClear");
+			Button btnNewImage = (Button) barChartRoot.lookup("#btnNewImage");
+			TextField txtNewName = (TextField) barChartRoot.lookup("#txtNewName");
+			TextField txtNewAddr = (TextField) barChartRoot.lookup("#txtNewName");
+			TextField txtNewPhone = (TextField) barChartRoot.lookup("#txtNewPhone");
+			ComboBox<String> cbNewKind = (ComboBox<String>) barChartRoot.lookup("#cbNewKind");
+			ComboBox<String> cbNewVege = (ComboBox<String>) barChartRoot.lookup("#cbNewVege");
+			ComboBox<String> cbNewTakeout = (ComboBox<String>) barChartRoot.lookup("#cbNewTakeout");
+			ComboBox<String> cbNewReserve = (ComboBox<String>) barChartRoot.lookup("#cbNewReserve");
+			ComboBox<String> cbNewPark = (ComboBox<String>) barChartRoot.lookup("#cbNewPark");
+
+			cbNewKind.setItems(kindList);
+			cbNewVege.setItems(vegeList);
+			cbNewTakeout.setItems(booleanList);
+			cbNewReserve.setItems(booleanList);
+			cbNewPark.setItems(booleanList);
+
+			btnRestRegiste.setOnAction((e1) -> {
+				if(txtNewName.getText().equals("") || txtNewAddr.getText().equals("") || txtNewPhone.getText().equals("") ||
+						cbNewKind.getSelectionModel().getSelectedItem().equals("") || cbNewTakeout.getSelectionModel().getSelectedItem().equals("") || 
+						cbNewPark.getSelectionModel().getSelectedItem().equals("") || cbNewReserve.getSelectionModel().getSelectedItem().equals("")) {
+					SharedMethod.alertDisplay(1, "REGISTERATION FAILED", "식당 등록 실패 !", "모든 항목을 입력해주세요(채식 종류 제외)");
+				}
+				try {
+					RestaurantDAO restaurantDAO = new RestaurantDAO();
+					RestaurantVO rvo = new RestaurantVO(txtNewName.getText(), txtNewAddr.getText(),
+							txtNewPhone.getText(), cbNewKind.getSelectionModel().getSelectedItem(),
+							cbNewVege.getSelectionModel().getSelectedItem(), null, 0, 0.0, null,
+							cbNewTakeout.getSelectionModel().getSelectedItem(),
+							cbNewPark.getSelectionModel().getSelectedItem(),
+							cbNewReserve.getSelectionModel().getSelectedItem());
+					restaurantDAO.getRestregiste(rvo);
+				} catch (Exception e4) {
+					e4.printStackTrace();
+				}
+			});
+
+			btnClear.setOnAction((e2) -> {
+				txtNewName.clear();
+				txtNewAddr.clear();
+				cbNewKind.setValue("");
+				cbNewVege.setValue("");
+				cbNewTakeout.setValue("");
+				cbNewReserve.setValue("");
+				cbNewPark.setValue("");
+				imageViewInit();
+			});
+			btnClose.setOnAction((e3) -> {
+				// 메뉴 테이블을 다시 세팅하고 창 닫기 
+				restTable.setItems(null);
+				totalList();
+				stage.close();
+			});
+			
+			btnNewImage.setOnAction((e4) -> {
+				
+			});
+
+			Scene scene = new Scene(barChartRoot);
+			stage.setScene(scene);
+			stage.show();
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	public void handlerNewMenuAction(ActionEvent e, int restId) {
+		try {
+			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/newMenu.fxml"));
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(btnNewRest.getScene().getWindow());
+			stage.setTitle("메뉴 추가하기");
+
+			Button btnClose = (Button) barChartRoot.lookup("#btnClose");
+			Button btnRestRegiste = (Button) barChartRoot.lookup("#btnRestRegiste");
+			Button btnClear = (Button) barChartRoot.lookup("#btnClear");
+			TextField txtNewMenu = (TextField) barChartRoot.lookup("#txtNewMenu");
+			TextField txtNewPrice = (TextField) barChartRoot.lookup("#txtNewPrice");
+			
+			// 숫자 7자리만 입력받음(정수만 입력받음)
+			DecimalFormat format = new DecimalFormat("#######");
+			// 점수 입력시 길이 제한 이벤트 처리
+			txtNewPrice.setTextFormatter(new TextFormatter<>(event -> {  
+				if (event.getControlNewText().isEmpty()) { return event; }
+			        ParsePosition parsePosition = new ParsePosition(0);
+			        Object object = format.parse(event.getControlNewText(), parsePosition); 
+				if (object == null || parsePosition.getIndex()<event.getControlNewText().length()
+				      || event.getControlNewText().length() == 8) {
+				     return null;    
+				}else {
+				     return event;    
+				}   
+			}));
+
+			btnClear.setOnAction((e1) -> {
+				txtNewMenu.clear();
+				txtNewPrice.clear();
+			});
+
+			btnClose.setOnAction((e2) -> {
+				// 메뉴 테이블을 다시 세팅하고 창 닫기 
+				menuTable.setItems(null);
+				MenuDAO menuDAO = new MenuDAO();
+				menuTable.setItems(menuDAO.getMenu(restId));
+				stage.close();
+			});
+			
+			btnRestRegiste.setOnAction((e3) -> {
+				try {
+					MenuVO mvo = new MenuVO(txtNewMenu.getText(), Integer.parseInt(txtNewPrice.getText()));
+					MenuDAO menuDAO = new MenuDAO();
+					menuDAO.getMenuregiste(mvo, restId);
+					SharedMethod.alertDisplay(5, "REGISTERATION SUCCESS", "메뉴 등록 성공!", "신규 메뉴를 등록하였습니다.");
+				} catch (Exception e4) {
+					SharedMethod.alertDisplay(1, "REGISTERATION FAILED", "메뉴 등록 실패!", "메뉴 등록에 실패하였습니다ㅠㅠ");
+					e4.printStackTrace();
+				}
+			});
+
+			Scene scene = new Scene(barChartRoot);
+			stage.setScene(scene);
+			stage.show();
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public void menuFieldInitSetting(boolean textField, boolean newButton){
+		txtMenuName.setDisable(textField);
+		txtMenuPrice.setDisable(textField);
+		btnNewMenu.setDisable(newButton);
+	}
+
 }
