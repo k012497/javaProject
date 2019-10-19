@@ -261,9 +261,51 @@ public class MemberDAO {
 	      return 0;
 	   }
 
-	   // Search踰꾪듉-> 以묐났 �솗�씤�쓽 踰꾪듉�쓣 �닃�윭�빞留� 媛��엯�씠 �릺�뒗 �븿�닔
-	   public static void insertMemberDataSearch(MemberVO member) {
-	      
-	   }
+	public static String findIDByPhone(String phone, String name) throws Exception {      
+        StringBuffer checkTchID = new StringBuffer("select memberID from memberTBL where name = ? and phoneNumber= ?");
+         String resultString =null;
+        Connection con = null;
+        PreparedStatement psmt = null;
+        
+        ResultSet rs = null;
+        try {
+           con = DBUtil.getConnection();
+           psmt = con.prepareStatement(checkTchID.toString());
+           //첫번째 물음표 자리 -> studentID 매치 시켜주는 작업 
+           psmt.setString(1, name);
+           psmt.setString(2, phone);
+     
+           // 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
+           rs = psmt.executeQuery();
+           
+           while(rs.next()) {
+              System.out.println(rs.getString(1));
+              resultString= rs.getString(1);
+           }
+           if (resultString==null) {
+              //AdminController.callAlert("LOGIN 실패 : 존재하지 않는 아이디 입니다.");
+              return resultString;
+           }
+           
+        } catch (SQLException e) {
+           //AdminController.callAlert("login 실패 : StudentDAO");
+           e.printStackTrace();
+        } finally {
+           try {
+              // 1.6 CLOSE DataBase psmt object
+              // 제일 먼저 불렀던 것을 제일 나중에 닫는다.
+              // 반드시 있으면 닫아라.
+              if (psmt != null)
+                 psmt.close();
+              if (con != null)
+                 con.close();
+           } catch (SQLException e) {
+              SharedMethod.alertDisplay(1,"문제 발생","문제가 발생하였습니다.","자원 닫기 실패 : psmt & con (데이터 자원) 닫는 데에 문제가 발생했어요.");
+           }
+        }
+        
+        
+        return resultString;
+     }
 
 }

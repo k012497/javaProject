@@ -69,11 +69,6 @@
             <Image url="@../images/open.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="imgSearch" fitHeight="30.0" fitWidth="30.0" layoutX="389.0" layoutY="124.0">
-         <image>
-            <Image url="@../images/loupe.png" />
-         </image>
-      </ImageView>
       <ComboBox fx:id="cbDong" layoutX="214.0" layoutY="124.0" prefHeight="29.0" prefWidth="163.0" promptText="e) OO동" style="-fx-background-color: FFFFFF;" />
       <ComboBox fx:id="cbGu" layoutX="31.0" layoutY="124.0" prefHeight="29.0" prefWidth="163.0" promptText="e) 00구" style="-fx-background-color: FFFFFF;" />
       <Label fx:id="lblRecommend" alignment="CENTER_RIGHT" contentDisplay="TOP" layoutX="80.0" layoutY="73.0" prefHeight="42.0" prefWidth="130.0" textAlignment="CENTER">
@@ -86,5 +81,14 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <Button fx:id="btnSearch" layoutX="377.0" layoutY="119.0" mnemonicParsing="false" style="-fx-background-color: white;">
+         <graphic>
+            <ImageView fx:id="imgSearch" fitHeight="30.0" fitWidth="30.0">
+               <image>
+                  <Image url="@../images/loupe.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>
