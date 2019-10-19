@@ -18,7 +18,7 @@ public class AppMain extends Application {
 //		AdminController controller = loader.getController();
 //		controller.init();
 
-    	Parent loader = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+    	Parent loader = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
         Scene scene = new Scene(loader);
 		primaryStage.setScene(scene);
 		primaryStage.show();

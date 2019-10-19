@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -79,6 +80,8 @@ public class MainController implements Initializable {
 	private final ObservableList<RestImageList> imageData = FXCollections.observableArrayList();
 	private String localUrl = ""; // 이미지 파일 경로
 	private Image localImage;
+	
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -88,6 +91,13 @@ public class MainController implements Initializable {
 		
 		btnSearch.setOnAction((e) -> handlerSearchAction(e));
 		btnMyPage.setOnAction((e) -> handlerMyPageAction(e));
+		
+		btnAll.setOnAction((e) -> handlerButtonAllAction());
+	}
+
+	public void handlerButtonAllAction() {
+		RestaurantDAO restaurantDAO = new RestaurantDAO();
+		restaurantDAO.getRestTotal();
 	}
 
 	public void handlerMyPageAction(ActionEvent e) {
