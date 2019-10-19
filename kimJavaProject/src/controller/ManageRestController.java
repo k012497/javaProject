@@ -115,11 +115,13 @@ public class ManageRestController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		
 		// column & default image setting
 		restTableColSetting();
 		menuTableColSetting();
 		imageViewInit();
-		menuFieldInitSetting(true, true);
+		menuFieldInitSetting(true, true, true);
 		imgView.maxWidth(143);
 		imgView.maxHeight(134);
 
@@ -139,18 +141,26 @@ public class ManageRestController implements Initializable {
 		btnRestEdit.setOnAction((e) -> handlerBtnRestEditAction());
 		btnRestDelete.setOnAction((e) -> handlerBtnRestDeleteAction());
 
-		btnMenuEdit.setOnAction((e) -> handlerBtnMenuEditAction());
-		btnMenuDelete.setOnAction((e) -> handlerBtnMenuDeleteAction());
 
 	}
 
-	private Object handlerBtnMenuDeleteAction() {
+	public void handlerBtnMenuDeleteAction() {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public void handlerBtnMenuEditAction() {
-	
+		selectedMenu = menuTable.getSelectionModel().getSelectedItems();
+		int selectedMenuId = selectedMenu.get(0).getMenuID();
+		System.out.println(selectedMenuId);
+		
+		try {
+			MenuDAO menuDAO = new MenuDAO();
+			MenuVO mvo = new MenuVO(txtMenuName.getText(), Integer.parseInt(txtMenuPrice.getText()));
+			menuDAO.getRestUpdate(mvo, selectedMenuId);
+		} catch (Exception e) {
+			SharedMethod.alertDisplay(1, "CORRECTION FAILED", "메뉴 수정 실패", "메뉴 수정에 실패하였습니다");
+			e.printStackTrace();
+		}
 	}
 
 	public void handlerBtnRestEditAction() {
@@ -241,7 +251,6 @@ public class ManageRestController implements Initializable {
 		}
 	}
 	
-
 	public void restTableColSetting() {
 		restData = FXCollections.observableArrayList();
 		restTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
@@ -368,13 +377,16 @@ public class ManageRestController implements Initializable {
 	public void handlerTableViewPressedAction() {
 		// 테이블 뷰 객체 없는 부분 클릭 시 방어
 
-		// 메뉴 등록 가능
-		menuFieldInitSetting(true, false);
-		
 		// 누른 위치와 해당 객체를 가져온다
 		selectedIndex = restTable.getSelectionModel().getSelectedIndex();
 		selectedRest = restTable.getSelectionModel().getSelectedItems();
 		int selectedRestId = selectedRest.get(0).getRestaurantID();
+		
+		// 메뉴 등록/수정/삭제 가능
+		menuFieldInitSetting(false, false, false);
+		btnMenuEdit.setOnAction((e) -> handlerBtnMenuEditAction());
+		btnMenuDelete.setOnAction((e) -> handlerBtnMenuDeleteAction());
+		
 
 		// when click new in restaurant field
 		btnNewRest.setOnAction((e) -> handlerNewRestAction(e));
@@ -430,7 +442,7 @@ public class ManageRestController implements Initializable {
 	public void handlerMenuTableViewPressedAction() {
 		// 테이블 뷰 객체 없는 부분 클릭 시 방어
 		
-		menuFieldInitSetting(false, false);
+		menuFieldInitSetting(false, false, false);
 		
 		try {
 			// 누른 위치와 해당 객체를 가져온다
@@ -608,10 +620,12 @@ public class ManageRestController implements Initializable {
 		}
 	}
 	
-	public void menuFieldInitSetting(boolean textField, boolean newButton){
+	public void menuFieldInitSetting(boolean textField, boolean newButton, boolean EditDelete){
 		txtMenuName.setDisable(textField);
 		txtMenuPrice.setDisable(textField);
 		btnNewMenu.setDisable(newButton);
+		btnMenuEdit.setDisable(EditDelete);
+		btnMenuDelete.setDisable(EditDelete);
 	}
 
 }

@@ -7,13 +7,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="700.0" prefWidth="351.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="700.0" prefWidth="351.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SingUpController">
    <children>
       <TextField fx:id="txtId" layoutX="41.0" layoutY="198.0" prefHeight="45.0" prefWidth="161.0" promptText="아이디(ID)" />
       <TextField fx:id="txtPhoneNum" layoutX="40.0" layoutY="448.0" prefHeight="45.0" prefWidth="268.0" promptText="전화번호(PhoneNumber)" />
       <TextField fx:id="txtName" layoutX="42.0" layoutY="254.0" prefHeight="45.0" prefWidth="268.0" promptText="이름(Name)" />
-      <TextField fx:id="txtPw" layoutX="41.0" layoutY="503.0" prefHeight="45.0" prefWidth="268.0" promptText="비밀번호(Password)" />
-      <TextField fx:id="txtPwCheck" layoutX="41.0" layoutY="557.0" prefHeight="45.0" prefWidth="268.0" promptText="비밀번호 확인(Confirm Password)" />
       <Label layoutX="42.0" layoutY="409.0" text="연령대 Age Group">
          <font>
             <Font size="16.0" />
@@ -31,16 +29,6 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <RadioButton fx:id="rdoMale" layoutX="261.0" layoutY="374.0" mnemonicParsing="false" text="남">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </RadioButton>
-      <RadioButton fx:id="rdoFemale" layoutX="196.0" layoutY="374.0" mnemonicParsing="false" text="여">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </RadioButton>
       <ComboBox fx:id="cbAge" layoutX="190.0" layoutY="404.0" prefHeight="29.0" prefWidth="119.0" promptText="연령대 선택" />
       <Label fx:id="lblPwCheck" alignment="CENTER" layoutX="45.0" layoutY="608.0" text="* password check message" textFill="#868686" />
       <ComboBox fx:id="cbGu" layoutX="41.0" layoutY="334.0" prefHeight="29.0" prefWidth="130.0" promptText="구 선택" />
@@ -55,5 +43,8 @@
             <Image url="@../images/person.png" />
          </image>
       </ImageView>
+      <PasswordField fx:id="txtPw" layoutX="40.0" layoutY="501.0" prefHeight="45.0" prefWidth="268.0" promptText="비밀번호(Password)" />
+      <PasswordField fx:id="txtPwCheck" layoutX="40.0" layoutY="556.0" prefHeight="45.0" prefWidth="268.0" promptText="비밀번호 확인(Confirm Password)" />
+      <ComboBox fx:id="cbGender" layoutX="189.0" layoutY="369.0" prefHeight="27.0" prefWidth="119.0" promptText="성별 선택" />
    </children>
 </AnchorPane>

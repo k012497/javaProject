@@ -166,7 +166,7 @@ public class MenuDAO {
 	}
 
 	// 수정기능. UPDATE table SET //리턴 왜 함?
-	public MenuVO getRestUpdate(MenuVO mvo, int no) throws Exception {
+	public MenuVO getRestUpdate(MenuVO mvo, int menuId) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
 		String dml = "update menuTBL set " + "menuName=?, menuPrice=? where menuID=?";
 		Connection con = null;
@@ -177,9 +177,11 @@ public class MenuDAO {
 			con = DBUtil.getConnection();
 
 			// ④ 수정한 정보를 수정하기 위하여 SQL문장을 생성
+			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, mvo.getMenuName());
 			pstmt.setString(2, String.valueOf(mvo.getMenuPrice()));
-
+			pstmt.setInt(3, menuId);
+			
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
 

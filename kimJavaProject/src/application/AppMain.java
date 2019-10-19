@@ -3,25 +3,28 @@ package application;
 import controller.AdminController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class AppMain extends Application {
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(new StackPane());
+	@Override
+	public void start(Stage primaryStage) throws Exception {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminPage.fxml"));
-        scene.setRoot(loader.load());
-        AdminController controller = loader.getController();
-        controller.init();
+		Scene scene = new Scene(new StackPane());
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminPage.fxml"));
+		scene.setRoot(loader.load());
+		AdminController controller = loader.getController();
+		controller.init();
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
+//    	Parent loader = FXMLLoader.load(getClass().getResource("/view/signUp.fxml"));
+//        Scene scene = new Scene(loader);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+	public static void main(String[] args) {
+		launch(args);
+	}
 }

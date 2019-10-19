@@ -218,5 +218,52 @@ public class MemberDAO {
 		}
 
 	}
+	
+	public int getUserIdSearch(String id) {
+
+	      String saveId = null;
+	      ArrayList<String> list = new ArrayList<String>();
+	      String dml = "select memberID from memberTBL where memberID = ?";
+	      Connection con = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         con = DBUtil.getConnection();
+	         pstmt = con.prepareStatement(dml);
+	         pstmt.setString(1, id);
+	         rs = pstmt.executeQuery();
+	         if (id.equals("")) {
+	            SharedMethod.alertDisplay(1, "id 사용 가능", ".", ".");
+	            return 0;
+	         }
+	         while (rs.next()) {
+	            saveId = rs.getString(1);
+	            list.add(saveId);
+	         }
+	         for (int i = 0; i < list.size(); i++) {
+	            if (list.get(i).equals(id)) {
+	               return 1;
+	            }
+	         }
+	         return -1;
+	      } catch (Exception e2) {
+	         e2.printStackTrace();
+	      } finally {
+	         try {
+	            if (pstmt != null)
+	               pstmt.close();
+	            if (con != null)
+	               con.close();
+	         } catch (SQLException e3) {
+	            e3.printStackTrace();
+	         }
+	      }
+	      return 0;
+	   }
+
+	   // Search踰꾪듉-> 以묐났 �솗�씤�쓽 踰꾪듉�쓣 �닃�윭�빞留� 媛��엯�씠 �릺�뒗 �븿�닔
+	   public static void insertMemberDataSearch(MemberVO member) {
+	      
+	   }
 
 }
