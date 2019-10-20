@@ -20,13 +20,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -375,10 +379,11 @@ public class MainController implements Initializable {
 			Label lblPark = (Label) root.lookup("#lblPark");
 			Label lblTakeout = (Label) root.lookup("#lblTakeout");
 			Label lblReserve = (Label) root.lookup("#lblReserve");
+			Label lblStars = (Label) root.lookup("#lblStars");
 			ImageView imageView = (ImageView) root.lookup("#imageView");
 			ImageView imgLocation = (ImageView) root.lookup("#imgLocation");
 			ImageView imgFav = (ImageView) root.lookup("#imgFav");
-			ImageView imgStars = (ImageView) root.lookup("#imgStars");
+			ImageView imgAddStars = (ImageView) root.lookup("#imgAddStars");
 			TableView<MenuVO> menuTable = (TableView<MenuVO>) root.lookup("#menuTable");
 
 			menuTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
@@ -389,13 +394,16 @@ public class MainController implements Initializable {
 			lblPark.setText(rvo.get(0).getParking());
 			lblTakeout.setText(rvo.get(0).getTakeout());
 			lblReserve.setText(rvo.get(0).getReservation());
+			lblStars.setText(String.valueOf(rvo.get(0).getAvgStars()));
 			
 			btnCancel.setOnAction((e1) -> {
 				stage.close();
 			});
 			
-			imgLocation.setOnMousePressed((e2)->handlerLocationAction());
-
+			imgLocation.setOnMousePressed((e2)->handlerLocationAction(imgLocation, lblName.getText()));
+			imgFav.setOnMousePressed((e3) -> handlerAddFavorite());
+			imgAddStars.setOnMousePressed((e4) -> handlerAddStars(imgAddStars));
+			
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.show();
@@ -405,8 +413,58 @@ public class MainController implements Initializable {
 		}
 	}
 	
-	public void handlerLocationAction() {
-		//webview
+	private Object handlerAddFavorite() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void handlerAddStars(ImageView imgAddStars) {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("/view/stars.fxml"));
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(imgAddStars.getScene().getWindow());
+			stage.setTitle("아이디 찾기");
+
+			Button btnOk = (Button) root.lookup("#btnOk");
+			Button btnCancel = (Button) root.lookup("#btnCancel");
+			Label lblNum = (Label) root.lookup("#lblNum");
+			Slider sldSize = (Slider) root.lookup("#sldSize");
+
+			btnCancel.setOnAction((e3) -> {
+				stage.close();
+			});
+
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e) {
+			SharedMethod.alertDisplay(1, "별점 추가 오류", "별점 추가 오류", "별점 추가 창을 부르는 데 실패했습니다.");
+		}
+	}
+
+	public void handlerLocationAction(ImageView imgLocation, String name) {
+		//new stage with web view
+		try {
+			
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(imgLocation.getScene().getWindow());
+			stage.setTitle("아이디 찾기");
+			
+	        WebView webView = new WebView();
+
+	        webView.getEngine().load("https://www.google.com/maps/search/?api=1&parameters&query=" + name);
+			
+	        VBox vBox = new VBox(webView);
+	        Scene scene = new Scene(vBox, 960, 600);
+
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void menuTableColSetting(TableView<MenuVO> menuTable) {
