@@ -147,7 +147,7 @@ public class ManageRestController implements Initializable {
 		try {
 			MenuDAO menuDAO = new MenuDAO();
 			menuDAO.getMenuDelete(selectedMenu.get(0).getMenuID());
-			
+
 			menuData.removeAll(menuData);
 			menuTable.setItems(menuDAO.getMenu(selectedMenu.get(0).getRestaurantID()));
 		} catch (Exception e) {
@@ -332,7 +332,7 @@ public class ManageRestController implements Initializable {
 
 	public void menuTableColSetting() {
 		menuData = FXCollections.observableArrayList();
-		restTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
+		menuTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
 
 		TableColumn colName = new TableColumn("메뉴");
 		colName.setMaxWidth(300);
@@ -428,7 +428,7 @@ public class ManageRestController implements Initializable {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			SharedMethod.alertDisplay(1, "필드 출력 실패 ", "필드 출력 실패", "식당 정보를 출력할 수 없습니다.");
 		}
 
 		// 해당 식당의 메뉴를 불러온다.

@@ -4,6 +4,7 @@ public class CustomThing {
     private String name;
     private String address;
     private double avgStars;
+    private int restaurantID;
     
     public String getName() {
         return name;
@@ -14,10 +15,15 @@ public class CustomThing {
     public String getAddress() {
     	return address;
     }
-    public CustomThing(String name, String address, double avgStars) {
+    
+    public CustomThing(int restaurantID, String name, String address, double avgStars) {
         super();
+        this.restaurantID = restaurantID;
         this.name = name;
         this.address = address;
         this.avgStars = avgStars;
     }
+	public int getRestaurantID() {
+		return restaurantID;
+	}
 }

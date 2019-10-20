@@ -28,8 +28,8 @@ public class Test extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		ObservableList<CustomThing> data = FXCollections.observableArrayList();
-		data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 4.56),
-				new CustomThing("Jam", "addr", 7.89), new CustomThing("dm으m", "경남 창원시", 7.89));
+		data.addAll(new CustomThing(1, "Cheese", "add", 1.23), new CustomThing(2, "Horse", "add", 4.56),
+				new CustomThing(3, "Jam", "addr", 7.89), new CustomThing(4, "dm으m", "경남 창원시", 7.89));
 
 		final ListView<CustomThing> listView = new ListView<CustomThing>(data);
 		listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {

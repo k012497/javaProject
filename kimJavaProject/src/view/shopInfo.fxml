@@ -8,16 +8,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="800.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="550.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="9.0" layoutY="6.0" prefHeight="192.0" prefWidth="231.0" style="-fx-background-color: #dcdcdc;">
+      <AnchorPane layoutX="9.0" layoutY="12.0" prefHeight="230.0" prefWidth="231.0" style="-fx-background-color: #dcdcdc;">
          <children>
-            <ImageView fx:id="imgView" fitHeight="201.0" fitWidth="231.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView id="imgView" fx:id="imgView" fitHeight="201.0" fitWidth="231.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
-      <HBox layoutX="8.0" layoutY="214.0" prefHeight="26.0" prefWidth="99.0" spacing="3.0">
+      <HBox layoutX="8.0" layoutY="252.0" prefHeight="26.0" prefWidth="87.0" spacing="3.0">
          <children>
-            <ImageView fx:id="imgFav" fitHeight="20.0" fitWidth="20.0">
+            <ImageView id="imgFav" fx:id="imgFav" fitHeight="20.0" fitWidth="20.0">
                <image>
                   <Image url="@../images/heart.png" />
                </image>
@@ -35,9 +35,9 @@
             </Label>
          </children>
       </HBox>
-      <HBox layoutX="93.0" layoutY="215.0" prefHeight="26.0" prefWidth="70.0" spacing="3.0">
+      <HBox layoutX="93.0" layoutY="252.0" prefHeight="26.0" prefWidth="70.0" spacing="3.0">
          <children>
-            <ImageView fitHeight="20.0" fitWidth="20.0">
+            <ImageView id="imgStars" fitHeight="20.0" fitWidth="20.0">
                <image>
                   <Image url="@../images/star.png" />
                </image>
@@ -63,21 +63,10 @@
             </Label>
          </children>
       </HBox>
-      <TableView fx:id="menuTable" layoutX="14.0" layoutY="271.0" prefHeight="236.0" prefWidth="480.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
-      <TableView fx:id="reviewTable" layoutX="11.0" layoutY="553.0" prefHeight="236.0" prefWidth="480.0">
-         <columns>
-            <TableColumn prefWidth="75.0" text="C1" />
-            <TableColumn prefWidth="75.0" text="C2" />
-         </columns>
-      </TableView>
-      <HBox fx:id="imgLocation" layoutX="166.0" layoutY="214.0" prefHeight="26.0" prefWidth="99.0" spacing="3.0">
+      <TableView id="menuTable" fx:id="menuTable" layoutX="10.0" layoutY="303.0" prefHeight="236.0" prefWidth="480.0" />
+      <HBox layoutX="166.0" layoutY="253.0" prefHeight="26.0" prefWidth="87.0" spacing="3.0">
          <children>
-            <ImageView fitHeight="20.0" fitWidth="20.0">
+            <ImageView id="imgLocation" fitHeight="20.0" fitWidth="20.0">
                <image>
                   <Image url="@../images/maps.png" />
                </image>
@@ -92,53 +81,51 @@
             </Label>
          </children>
       </HBox>
-      <Button fx:id="btnCancle" layoutX="464.0" layoutY="5.0" mnemonicParsing="false" text="X" />
-      <Label layoutX="9.0" layoutY="243.0" text="[Menu]" />
-      <Label layoutX="10.0" layoutY="527.0" text="[Review]" />
-      <ImageView fx:id="imgAddReview" fitHeight="30.0" fitWidth="30.0" layoutX="460.0" layoutY="517.0">
+      <Button id="btnCancel" layoutX="464.0" layoutY="5.0" mnemonicParsing="false" text="X" />
+      <Label layoutX="11.0" layoutY="280.0" text="[Menu]" />
+      <ImageView id="imgAddStars" fitHeight="30.0" fitWidth="30.0" layoutX="456.0" layoutY="264.0">
          <image>
             <Image url="@../images/plus.png" />
          </image>
       </ImageView>
-      <Label layoutX="254.0" layoutY="8.0" text="Name">
+      <Label id="lblName" layoutX="254.0" layoutY="23.0" text="Name">
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label id="lblAddress" layoutX="254.0" layoutY="48.0" text="Address">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Label layoutX="254.0" layoutY="33.0" text="Address">
+      <Label id="lblPhoneNum" layoutX="254.0" layoutY="73.0" text="Number">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Label layoutX="254.0" layoutY="58.0" text="Number">
+      <Label id="lblPark" layoutX="255.0" layoutY="100.0" text="Paking">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Label layoutX="255.0" layoutY="85.0" text="Paking">
+      <Label id="lblTakeout" layoutX="253.0" layoutY="126.0" text="TakeOut">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Label layoutX="253.0" layoutY="111.0" text="TakeOut">
+      <Label id="lblReserve" layoutX="254.0" layoutY="151.0" text="Reservation">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Label layoutX="254.0" layoutY="136.0" text="Reservation">
+      <Label id="lblOpenHours" layoutX="254.0" layoutY="177.0" prefHeight="23.0" prefWidth="150.0" text="Business hours">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Label layoutX="254.0" layoutY="162.0" prefHeight="23.0" prefWidth="150.0" text="Business hours">
-         <padding>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-         </padding>
-      </Label>
-      <Label layoutX="254.0" layoutY="188.0" text="Closed day">
-         <padding>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-         </padding>
-      </Label>
+      <Label layoutX="399.0" layoutY="275.0" text="별점 등록" />
    </children>
 </AnchorPane>

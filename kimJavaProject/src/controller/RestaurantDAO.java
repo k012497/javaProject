@@ -344,10 +344,49 @@ public class RestaurantDAO {
 		return rvo;
 	}
 
+	// 이름으로 식당 검색 기능
+	public ArrayList<RestaurantVO> getRestByName(String name) throws Exception {
+		ArrayList<RestaurantVO> list = new ArrayList<RestaurantVO>();
+		String dml = "select * from restaurantTBL where restaurantName like ?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		RestaurantVO retval = null;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			String addrToSearch = "%" + name + "%";
+			pstmt.setString(1, addrToSearch);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				retval = new RestaurantVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getNString(4),
+						rs.getString(5), rs.getString(6), rs.getInt(7), rs.getDouble(8), rs.getString(9),
+						rs.getString(10), rs.getString(11), rs.getString(12));
+				list.add(retval);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return list;
+	}
+
 	// 지역별 식당 검색 기능
 	public ArrayList<CustomThing> getRestByAddr(String gu, String dong) throws Exception {
 		ArrayList<CustomThing> list = new ArrayList<CustomThing>();
-		String dml = "select restaurantName, address, avgStars from restaurantTBL where address like ?";
+		String dml = "select restaurantID, restaurantName, address, avgStars from restaurantTBL where address like ?";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -360,7 +399,45 @@ public class RestaurantDAO {
 			pstmt.setString(1, addrToSearch);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				retval = new CustomThing(rs.getString(1), rs.getString(2), rs.getDouble(3));
+				retval = new CustomThing(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4));
+				list.add(retval);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return list;
+	}
+
+	// 지역 & 종류별 식당 검색 기능
+	public ArrayList<CustomThing> getRestByAddrAndKind(String gu, String dong, String kind) throws Exception {
+		ArrayList<CustomThing> list = new ArrayList<CustomThing>();
+		String dml = "select restaurantID, restaurantName, address, avgStars from restaurantTBL where address like ? and kind = ?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		CustomThing retval = null;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			String addrToSearch = "%" + gu + "%" + dong + "%";
+			pstmt.setString(1, addrToSearch);
+			pstmt.setString(2, kind);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				retval = new CustomThing(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4));
 				list.add(retval);
 			}
 		} catch (SQLException se) {
