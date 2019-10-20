@@ -494,7 +494,7 @@ public class ManageRestController implements Initializable {
 	public void handlerNewRestAction(ActionEvent e) {
 		ObservableList<String> kindList = FXCollections.observableArrayList("한식", "중식", "일식", "양식", "채식", "세계음식", "뷔페",
 				"카페");
-		ObservableList<String> vegeList = FXCollections.observableArrayList("plant only", "with animal products",
+		ObservableList<String> vegeList = FXCollections.observableArrayList("plant only", "ani-products",
 				"vege option");
 		ObservableList<String> booleanList = FXCollections.observableArrayList("Y", "N");
 
@@ -511,7 +511,7 @@ public class ManageRestController implements Initializable {
 			Button btnClear = (Button) barChartRoot.lookup("#btnClear");
 			Button btnNewImage = (Button) barChartRoot.lookup("#btnNewImage");
 			TextField txtNewName = (TextField) barChartRoot.lookup("#txtNewName");
-			TextField txtNewAddr = (TextField) barChartRoot.lookup("#txtNewName");
+			TextField txtNewAddr = (TextField) barChartRoot.lookup("#txtNewAddr");
 			TextField txtNewPhone = (TextField) barChartRoot.lookup("#txtNewPhone");
 			ComboBox<String> cbNewKind = (ComboBox<String>) barChartRoot.lookup("#cbNewKind");
 			ComboBox<String> cbNewVege = (ComboBox<String>) barChartRoot.lookup("#cbNewVege");
@@ -527,6 +527,7 @@ public class ManageRestController implements Initializable {
 			cbNewReserve.setItems(booleanList);
 			cbNewPark.setItems(booleanList);
 			
+			txtNewAddr.setText("123");
 			AddressDAO addressDAO = new AddressDAO();
 			addressGuList = addressDAO.getGu();
 			cbGu.setItems(addressGuList);
@@ -551,7 +552,7 @@ public class ManageRestController implements Initializable {
 				}else {
 					try {
 						RestaurantDAO restaurantDAO = new RestaurantDAO();
-						RestaurantVO rvo = new RestaurantVO(txtNewName.getText(), txtNewAddr.getText(), txtNewPhone.getText(), 
+						RestaurantVO rvo = new RestaurantVO(txtNewName.getText(),cbGu.getSelectionModel().getSelectedItem() +" "+ cbDong.getSelectionModel().getSelectedItem() +" "+ txtNewAddr.getText(), txtNewPhone.getText(), 
 								cbNewKind.getSelectionModel().getSelectedItem(), cbNewVege.getSelectionModel().getSelectedItem(), 
 								fileName, 0, 0.0, null, cbNewTakeout.getSelectionModel().getSelectedItem(),
 								cbNewPark.getSelectionModel().getSelectedItem(), cbNewReserve.getSelectionModel().getSelectedItem());
@@ -561,11 +562,16 @@ public class ManageRestController implements Initializable {
 //								cbNewTakeout.getSelectionModel().getSelectedItem(),
 //								cbNewPark.getSelectionModel().getSelectedItem(),
 //								cbNewReserve.getSelectionModel().getSelectedItem());
-						restaurantDAO.getRestregiste(rvo);
-						SharedMethod.alertDisplay(5, "REGISTERATION SUCCESS", "식당 등록 성공 !", "식당 등록을 성공하였습니다.");
-						restData.removeAll(restData);
-						totalList();
-						stage.close();
+						
+						
+						int count = restaurantDAO.getRestregiste(rvo); // 이 순간 db에 레코드값 insert됨.
+						if (count != 0) {
+							restData.removeAll(restData);
+							totalList();
+							imageViewInit();
+							SharedMethod.alertDisplay(5, "REGISTERATION SUCCESS", "식당 등록 성공 !", "식당 등록을 성공하였습니다.");
+							stage.close();
+						}
 					} catch (Exception e4) {
 						SharedMethod.alertDisplay(1, "REGISTERATION FAILED", "식당 등록 실패 !", "식당 등록을 실패하였습니다.");
 					}

@@ -316,6 +316,7 @@ public class RestaurantDAO {
 			pstmt.setString(9, rvo.getTakeout());
 			pstmt.setString(10, rvo.getParking());
 			pstmt.setString(11, rvo.getReservation());
+			pstmt.setInt(12, no);
 
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
