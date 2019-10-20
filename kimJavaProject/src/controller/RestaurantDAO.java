@@ -344,25 +344,23 @@ public class RestaurantDAO {
 		return rvo;
 	}
 
-	// 이름 검색 기능
-	public ArrayList<RestaurantVO> getRestCheck(String name) throws Exception {
-		ArrayList<RestaurantVO> list = new ArrayList<RestaurantVO>();
-		String dml = "select * from restaurantTBL where name like ?";
+	// 지역별 식당 검색 기능
+	public ArrayList<CustomThing> getRestByAddr(String gu, String dong) throws Exception {
+		ArrayList<CustomThing> list = new ArrayList<CustomThing>();
+		String dml = "select restaurantName, address, avgStars from restaurantTBL where address like ?";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		RestaurantVO retval = null;
+		CustomThing retval = null;
 		try {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement(dml);
-			String nameToSearch = "%" + name + "%";
-			pstmt.setString(1, nameToSearch);
+			String addrToSearch = "%" + gu + "%" + dong + "%";
+			pstmt.setString(1, addrToSearch);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				retval = new RestaurantVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-						rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getDouble(9),
-						rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13));
+				retval = new CustomThing(rs.getString(1), rs.getString(2), rs.getDouble(3));
 				list.add(retval);
 			}
 		} catch (SQLException se) {

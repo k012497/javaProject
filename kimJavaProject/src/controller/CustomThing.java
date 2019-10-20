@@ -4,6 +4,7 @@ public class CustomThing {
     private String name;
     private String address;
     private double avgStars;
+    
     public String getName() {
         return name;
     }

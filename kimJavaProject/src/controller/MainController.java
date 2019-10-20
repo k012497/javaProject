@@ -273,7 +273,14 @@ public class MainController implements Initializable {
 			restData = null;
 
 	        ObservableList<CustomThing> data = FXCollections.observableArrayList();
-	        data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 45.6), new CustomThing("Jam", "addr", 7.89));
+//	        data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 45.6), new CustomThing("Jam", "addr", 7.89));
+	        RestaurantDAO restDAO = new RestaurantDAO();
+	        try {
+				data.addAll(restDAO.getRestByAddr(cbGu.getValue(), cbDong.getValue()).get(0));
+			} catch (Exception e) {
+				SharedMethod.alertDisplay(1, "식당 리스트를 가져오기 실패", "지역에 맞는 식당 리스트 가져오기 실패", "지역에 맞는 식당 리스트를 가져오지 못했습니다.");
+				e.printStackTrace();
+			}
 
 	        final ListView<CustomThing> listView = new ListView<CustomThing>(data);
 	        listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
