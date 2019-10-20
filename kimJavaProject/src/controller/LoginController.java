@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -41,10 +42,36 @@ public class LoginController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		//setting for test
+		txtId.setText("aaa");
+		txtPw.setText("123");
+		
 		lblFindId.setOnMousePressed((e) -> handlerLabelFindId());
 		lblFindPw.setOnMousePressed((e) -> handlerLabelFindPw());
 		btnSignIn.setOnAction((e) -> handlerBtnSignInAction(e));
 		lblSignUp.setOnMousePressed((e) -> handlerLabelSignUpAction(e));
+		
+		imgAdmin.setOnMousePressed((e) -> handlerAdminAction(e));
+	}
+
+	public void handlerAdminAction(MouseEvent e) {
+
+		Stage mainStage = null;
+		try {
+			Scene scene = new Scene(new StackPane());
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminPage.fxml"));
+			scene.setRoot(loader.load());
+			AdminController controller = loader.getController();
+			controller.init();
+			mainStage = new Stage();
+			mainStage.setScene(scene);
+			mainStage.show();
+			mainStage.setResizable(true);
+			((Stage) btnSignIn.getScene().getWindow()).close();
+			mainStage.show();
+		} catch (Exception e1) {
+			SharedMethod.alertDisplay(1, "ADMIN PAGE LOAD FAILED", "관리자 모드 전환 실패", e1.toString() + e1.getMessage());
+		}
 	}
 
 	// 1. SingIn으로 로그인

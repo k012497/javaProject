@@ -40,7 +40,7 @@ public class MainController implements Initializable {
 	@FXML
 	private Button btnMyPage;
 	@FXML
-	private Button btnSingOut;
+	private Button btnSignOut;
 	@FXML
 	private Button btnAll;
 	@FXML
@@ -100,6 +100,24 @@ public class MainController implements Initializable {
 		
 		//btnAll.setOnAction((e) -> handlerButtonAllAction());
 		btnAll.setOnAction((e) -> setListWithImage());
+		
+		btnSignOut.setOnAction((e) -> handlerSignOutAction());
+	}
+
+	private void handlerSignOutAction() {
+		Stage primaryStage = new Stage();
+    	Parent loader;
+		try {
+			loader = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+			Scene scene = new Scene(loader);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (IOException e) {
+			SharedMethod.alertDisplay(1, "로그인창 콜실패", "로그인창 부르기 실패", e.toString() + e.getMessage());
+		}
+		
+		Stage stage = (Stage) btnSignOut.getScene().getWindow();
+		stage.close();
 	}
 
 	public void handlerButtonAllAction() {
@@ -253,7 +271,6 @@ public class MainController implements Initializable {
 			stage.setTitle("식당 리스트");
 	
 			restData = null;
-			
 
 	        ObservableList<CustomThing> data = FXCollections.observableArrayList();
 	        data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 45.6), new CustomThing("Jam", "addr", 7.89));

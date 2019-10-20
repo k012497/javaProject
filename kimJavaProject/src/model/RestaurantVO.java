@@ -54,10 +54,16 @@ public class RestaurantVO {
 		this.reservation = reservation;
 	}
 
+	public RestaurantVO(String restaurantName, String address, String kind) {
+		this.restaurantName = restaurantName;
+		this.address = address;
+		this.kind = kind;
+	}
 
 	public RestaurantVO() {
 		
 	}
+
 
 	public int getRestaurantID() {
 		return restaurantID;

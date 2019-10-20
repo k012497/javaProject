@@ -13,11 +13,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.MemberVO;
+import model.RestaurantVO;
 
-public class MyPageController implements Initializable{
+public class MyPageController implements Initializable {
 	@FXML
 	private ComboBox<String> cbAge;
 	ObservableList<String> cbAgeList;
@@ -27,29 +31,50 @@ public class MyPageController implements Initializable{
 	@FXML
 	private ComboBox<String> cbDong;
 	ObservableList<String> addressDongList;
-	
-	@FXML private Label lblMemberId;
-	
-	@FXML private Button btnEdit;
-	@FXML private Button btnLeave;
-	@FXML private Button btnCancel;
-	@FXML private TextField txtName;
-	@FXML private TextField txtNumber;
-	@FXML private TextField txtPw;
-	@FXML private TextField txtPwAgain;
 
-	@FXML private TableView favTable;
-	@FXML private TableView reviewTable;
-	
+	@FXML
+	private Label lblMemberId;
+
+	@FXML
+	private Button btnEdit;
+	@FXML
+	private Button btnLeave;
+	@FXML
+	private Button btnCancel;
+	@FXML
+	private TextField txtName;
+	@FXML
+	private TextField txtNumber;
+	@FXML
+	private TextField txtPw;
+	@FXML
+	private TextField txtPwAgain;
+
+	@FXML
+	private TableView<RestaurantVO> favTable;
+	@FXML
+	private TableView reviewTable;
+
 	ArrayList<MemberVO> memberList;
-	
+	private ObservableList<RestaurantVO> favData;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		comboBoxInitSetting();
-		getInfo();
+		getMemberInfo();
+		favTableColSetting();
+		totalFavList();
+
 		
+		btnCancel.setOnAction((e)->handlerButtonCancel());
 	}
-	public void getInfo() {
+
+	public void handlerButtonCancel() {
+		Stage stage = (Stage) (btnCancel.getScene().getWindow());
+		stage.close();
+	}
+
+	public void getMemberInfo() {
 		MemberDAO memberDAO = new MemberDAO();
 		try {
 			memberList = memberDAO.getMemberInfoUsingId(lblMemberId.getText());
@@ -59,9 +84,19 @@ public class MyPageController implements Initializable{
 		txtName.setText(memberList.get(0).getName());
 		txtNumber.setText(memberList.get(0).getPhoneNumer());
 		txtPw.setText(memberList.get(0).getPassword());
-		
+		cbAge.setValue(memberList.get(0).getAgeGroup());
+
+		String addr = memberList.get(0).getAddress();
+
+		// 공백 의 인덱스를 찾는다
+		int idx = addr.indexOf(" ");
+		String gu = addr.substring(0, idx); //공백 앞부분 
+		String dong = addr.substring(idx + 1); //공백 뒷부분
+		cbGu.setValue(gu);
+		cbDong.setValue(dong);
+
 	}
-	
+
 	public void comboBoxInitSetting() {
 		AddressDAO addressDAO = new AddressDAO();
 		addressGuList = addressDAO.getGu();
@@ -79,5 +114,46 @@ public class MyPageController implements Initializable{
 		cbAge.setItems(cbAgeList);
 
 	}
-	
+
+	public void totalFavList() {
+		ArrayList<RestaurantVO> list = null;
+		RestaurantDAO restDAO = new RestaurantDAO();
+		RestaurantVO restVO = null;
+		list = restDAO.getListForFav(lblMemberId.getText());
+
+		if (list == null) {
+			SharedMethod.alertDisplay(1, "warning", "ERROR in CALLING DB", "please check again");
+		}
+
+		for (int i = 0; i < list.size(); i++) {
+			restVO = list.get(i);
+			favData.add(restVO);
+		}
+	}// end of totalList
+
+	public void favTableColSetting() {
+		favData = FXCollections.observableArrayList();
+		favTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
+
+		TableColumn colName = new TableColumn("상호명");
+		colName.setMaxWidth(150);
+		colName.setStyle("-fx-alignment:CENTER;");
+		colName.setCellValueFactory(new PropertyValueFactory("restaurantName"));
+
+		TableColumn colAddr = new TableColumn("주소");
+		colAddr.setMaxWidth(200);
+		colAddr.setStyle("-fx-alignment:CENTER;");
+		colAddr.setCellValueFactory(new PropertyValueFactory("address"));
+
+		TableColumn colKind = new TableColumn("음식 종류");
+		colKind.setMaxWidth(100);
+		colKind.setStyle("-fx-alignment:CENTER;");
+		colKind.setCellValueFactory(new PropertyValueFactory("kind"));
+
+		// 컬럼 객체들을 테이블 뷰에 추가 & 항목 추가
+		favTable.setItems(favData);
+		favTable.getColumns().addAll(colName, colAddr, colKind);
+
+	} // end of favTableColSetting
+
 }

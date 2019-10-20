@@ -6,9 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import model.MenuVO;
 import model.RestaurantVO;
 
 public class RestaurantDAO {
@@ -213,6 +210,45 @@ public class RestaurantDAO {
 		return list;
 	}
 
+	// 특정 사용자가 즐겨찾기에 등록한 식당의 리스트 가져오기
+	public ArrayList<RestaurantVO> getListForFav(String memberId) {
+		ArrayList<RestaurantVO> list = new ArrayList<RestaurantVO>();
+		String dml = "select r.restaurantName, r.address, r.kind\n"
+				+ "from restaurantTBL r inner join favoriteTBL f on r.restaurantID = f.restaurantID\n"
+				+ "inner join memberTBL m on m.memberID = f.memberID\n" + "where m.memberID = ?;";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
+		RestaurantVO emVo = null;
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			pstmt.setString(1, memberId);
+			rs = pstmt.executeQuery();
+			while (rs.next()) { // 다음 레코드가 있을 동안
+				emVo = new RestaurantVO(rs.getString(1), rs.getString(2), rs.getString(3));
+				list.add(emVo);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return list;
+	}
+
 	// data 삭제 기능 - delete
 	public void getRestDelete(int no) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
@@ -255,7 +291,7 @@ public class RestaurantDAO {
 
 	}
 
-	// 수정기능. UPDATE table SET //리턴 왜 함?
+	// 수정 기능
 	public RestaurantVO getRestUpdate(RestaurantVO rvo, int no) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
 		String dml = "update restaurantTBL set "
