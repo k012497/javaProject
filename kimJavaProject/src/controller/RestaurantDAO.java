@@ -213,9 +213,9 @@ public class RestaurantDAO {
 	// 특정 사용자가 즐겨찾기에 등록한 식당의 리스트 가져오기
 	public ArrayList<RestaurantVO> getListForFav(String memberId) {
 		ArrayList<RestaurantVO> list = new ArrayList<RestaurantVO>();
-		String dml = "select r.restaurantName, r.address, r.kind\n"
-				+ "from restaurantTBL r inner join favoriteTBL f on r.restaurantID = f.restaurantID\n"
-				+ "inner join memberTBL m on m.memberID = f.memberID\n" + "where m.memberID = ?;";
+		String dml = "select restaurantTBL.restaurantName, restaurantTBL.address, restaurantTBL.kind " + 
+				"from restaurantTBL inner join favoriteTBL on restaurantTBL.restaurantID = favoriteTBL.restaurantID " + 
+				"inner join memberTBL on memberTBL.memberID = favoriteTBL.memberID where memberTBL.memberID = ? group by favoriteTBL.restaurantID";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -321,9 +321,9 @@ public class RestaurantDAO {
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(1, "score correction", "correction completed", "SUCCESS!");
+				SharedMethod.alertDisplay(1, " correction", "correction completed", "SUCCESS!");
 			} else {
-				SharedMethod.alertDisplay(1, "score correction error", "correction failed", "TRY AGAIN!");
+				SharedMethod.alertDisplay(1, " correction error", "correction failed", "TRY AGAIN!");
 				return null;
 			}
 
@@ -342,6 +342,46 @@ public class RestaurantDAO {
 			}
 		}
 		return rvo;
+	}
+	
+	// 즐찾 카운트 수정
+	public void getFavCountUpdate(int count, int restId) throws Exception {
+		// ② 데이터 처리를 위한 SQL 문
+		String dml = "update restaurantTBL set favCount = ? where restaurantID = ?";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
+			con = DBUtil.getConnection();
+
+			// ④ 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
+			pstmt.setInt(1, count);
+			pstmt.setInt(2, restId);
+
+			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			int i = pstmt.executeUpdate();
+
+			if (i == 1) {
+				SharedMethod.alertDisplay(1, " correction", "correction completed", "SUCCESS!");
+			} else {
+				SharedMethod.alertDisplay(1, " correction error", "correction failed", "TRY AGAIN!");
+			}
+
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+		} finally {
+			try {
+				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+			}
+		}
 	}
 
 	// 이름으로 식당 검색 기능

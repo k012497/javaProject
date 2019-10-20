@@ -195,8 +195,22 @@ public class SingUpController implements Initializable {
 
 	// cancel버튼
 	public void handelBtnCancelAction() {
-		Stage stage = (Stage) btnCancel.getScene().getWindow();
-		stage.close();
+		  
+           Parent mainView = null;
+           Stage mainStage = null;
+
+           try {
+              mainView = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+              Scene scene = new Scene(mainView);
+              mainStage = new Stage();
+              mainStage.setTitle("[김시스터즈]");
+              mainStage.setScene(scene);
+              mainStage.setResizable(true);
+              ((Stage) btnCancel.getScene().getWindow()).close();
+              mainStage.show();
+           } catch (Exception e1) {
+              SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+           }
 	}
 
 }

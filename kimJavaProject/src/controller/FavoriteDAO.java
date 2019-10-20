@@ -6,15 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.FavoriteVO;
-import model.MenuVO;
 
 public class FavoriteDAO {
 
 	// ① 신규 등록 (data 입력 부분 - insert)
-	public int getMenuregiste(MenuVO mvo, int memberId) throws Exception {
+	public int getFavregiste(FavoriteVO fvo, String memberId) throws Exception {
 
-		String dml = "insert into favoriteTBL " + "(favoriteID, memberID, restaurantID)" + " values " + "(null, ?, ?)";
+		String dml = "insert into favoriteTBL " + " values " + "(null, ?, ?)";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -25,8 +26,8 @@ public class FavoriteDAO {
 
 			// ④ 입력받은 학생 정보를 처리하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
-			pstmt.setString(1, String.valueOf(memberId));
-			pstmt.setInt(2, mvo.getRestaurantID());
+			pstmt.setString(1, memberId);
+			pstmt.setInt(2, fvo.getRestaurantID());
 
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			count = pstmt.executeUpdate(); // workbench에서 번개 누르는 것. 몇 문장을 실행했는지를 리턴
@@ -49,7 +50,7 @@ public class FavoriteDAO {
 	}
 
 	// 모든 즐겨찾기 가져오기
-	public ArrayList<FavoriteVO> getMenuTotal(int restId) {
+	public ArrayList<FavoriteVO> getFavTotal(int restId) {
 		ArrayList<FavoriteVO> list = new ArrayList<FavoriteVO>();
 		String dml = "select * from favoriteTBL";
 
@@ -84,10 +85,48 @@ public class FavoriteDAO {
 		return list;
 	}
 
+	public int getFavCount(int restID) {
+		ObservableList<String> list = FXCollections.observableArrayList();
+	      String dml = "select count(f.restaurantID)" + 
+	      		"	from favoriteTBL f, restaurantTBL r" + 
+	      		"	where f.restaurantID = r.restaurantID and f.restaurantID = ?" + 
+	      		"	group by f.restaurantID";
+
+	      Connection con = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
+
+	      int count = 0;
+	      try {
+	         con = DBUtil.getConnection();
+	         pstmt = con.prepareStatement(dml);
+	         pstmt.setInt(1, restID);
+	         rs = pstmt.executeQuery();
+	         while (rs.next()) { // 다음 레코드가 있을 동안
+	            count = rs.getInt(1);
+	         }
+	      } catch (SQLException se) {
+	         System.out.println(se);
+	      } catch (Exception e) {
+	         System.out.println(e);
+	      } finally {
+	         try {
+	            if (rs != null)
+	               rs.close();
+	            if (pstmt != null)
+	               pstmt.close();
+	            if (con != null)
+	               con.close();
+	         } catch (SQLException se) {
+	         }
+	      }
+	      return count;
+	}
+	
 	// data 삭제 기능 - delete
-	public void getMenuDelete(int no) throws Exception {
+	public void getFavDelete(int no) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
-		String dml = "delete from menuTBL where menuID = ?";
+		String dml = "delete from favoriteTBL where favoriteID = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -126,7 +165,7 @@ public class FavoriteDAO {
 
 	}
 
-	// 수정기능. UPDATE table SET
+	// 수정기능
 	public FavoriteVO getFavUpdate(FavoriteVO fvo, int favId) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
 		String dml = "update favoriteTBL set " + "memberID=?, restaurantID=? where favID=?";

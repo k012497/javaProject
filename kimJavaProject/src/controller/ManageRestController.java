@@ -13,6 +13,8 @@ import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -75,7 +77,7 @@ public class ManageRestController implements Initializable {
 	private ImageView imgView;
 	@FXML
 	private ImageView imgOpenHours;
-
+	
 	@FXML
 	private TableView<MenuVO> menuTable;
 	@FXML
@@ -113,7 +115,10 @@ public class ManageRestController implements Initializable {
 	private File dirSave = new File("/Users/kimsojin/Desktop/code/images");
 	// 이미지 불러올 파일을 저장할 파일 객체 선언
 	private File file = null;
-
+	
+	ObservableList<String> addressGuList;
+	ObservableList<String> addressDongList;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -140,6 +145,8 @@ public class ManageRestController implements Initializable {
 
 		btnRestEdit.setOnAction((e) -> handlerBtnRestEditAction());
 		btnRestDelete.setOnAction((e) -> handlerBtnRestDeleteAction());
+		
+		btnNewRest.setOnAction((e) -> handlerNewRestAction(e));
 
 	}
 
@@ -397,7 +404,6 @@ public class ManageRestController implements Initializable {
 		btnMenuDelete.setOnAction((e) -> handlerBtnMenuDeleteAction());
 
 		// when click new in restaurant field
-		btnNewRest.setOnAction((e) -> handlerNewRestAction(e));
 		btnNewMenu.setOnAction((e) -> handlerNewMenuAction(e, selectedRestId));
 
 		try {
@@ -487,6 +493,7 @@ public class ManageRestController implements Initializable {
 		ObservableList<String> vegeList = FXCollections.observableArrayList("plant only", "with animal products",
 				"vege option");
 		ObservableList<String> booleanList = FXCollections.observableArrayList("Y", "N");
+
 		try {
 			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/newRest.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
@@ -507,13 +514,28 @@ public class ManageRestController implements Initializable {
 			ComboBox<String> cbNewTakeout = (ComboBox<String>) barChartRoot.lookup("#cbNewTakeout");
 			ComboBox<String> cbNewReserve = (ComboBox<String>) barChartRoot.lookup("#cbNewReserve");
 			ComboBox<String> cbNewPark = (ComboBox<String>) barChartRoot.lookup("#cbNewPark");
+			ComboBox<String> cbGu = (ComboBox<String>) barChartRoot.lookup("#cbGu");
+			ComboBox<String> cbDong = (ComboBox<String>) barChartRoot.lookup("#cbDong");
 
 			cbNewKind.setItems(kindList);
 			cbNewVege.setItems(vegeList);
 			cbNewTakeout.setItems(booleanList);
 			cbNewReserve.setItems(booleanList);
 			cbNewPark.setItems(booleanList);
+			
+			AddressDAO addressDAO = new AddressDAO();
+			addressGuList = addressDAO.getGu();
+			cbGu.setItems(addressGuList);
+			cbGu.valueProperty().addListener(new ChangeListener<String>() {
+				
+				@Override
+				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+					addressDongList = addressDAO.getDong(cbGu.getValue());
+					cbDong.setItems(addressDongList);
 
+				}
+			});
+			
 			btnRestRegiste.setOnAction((e1) -> {
 				if (txtNewName.getText().equals("") || txtNewAddr.getText().equals("")
 						|| txtNewPhone.getText().equals("")
@@ -522,20 +544,20 @@ public class ManageRestController implements Initializable {
 						|| cbNewPark.getSelectionModel().getSelectedItem().equals("")
 						|| cbNewReserve.getSelectionModel().getSelectedItem().equals("")) {
 					SharedMethod.alertDisplay(1, "REGISTERATION FAILED", "식당 등록 실패 !", "모든 항목을 입력해주세요(채식 종류 제외)");
-				}
-				try {
-					RestaurantDAO restaurantDAO = new RestaurantDAO();
-					RestaurantVO rvo = new RestaurantVO(txtNewName.getText(), txtNewAddr.getText(),
-							txtNewPhone.getText(), cbNewKind.getSelectionModel().getSelectedItem(),
-							cbNewVege.getSelectionModel().getSelectedItem(), null, 0, 0.0, null,
-							cbNewTakeout.getSelectionModel().getSelectedItem(),
-							cbNewPark.getSelectionModel().getSelectedItem(),
-							cbNewReserve.getSelectionModel().getSelectedItem());
-					restaurantDAO.getRestregiste(rvo);
-				} catch (Exception e4) {
-					e4.printStackTrace();
-				}
-			});
+				}else {
+					try {
+						RestaurantDAO restaurantDAO = new RestaurantDAO();
+						RestaurantVO rvo = new RestaurantVO(txtNewName.getText(), txtNewAddr.getText(),
+								txtNewPhone.getText(), cbNewKind.getSelectionModel().getSelectedItem(),
+								cbNewVege.getSelectionModel().getSelectedItem(), null, 0, 0.0, null,
+								cbNewTakeout.getSelectionModel().getSelectedItem(),
+								cbNewPark.getSelectionModel().getSelectedItem(),
+								cbNewReserve.getSelectionModel().getSelectedItem());
+						restaurantDAO.getRestregiste(rvo);
+					} catch (Exception e4) {
+						e4.printStackTrace();
+					}
+				}});
 
 			btnClear.setOnAction((e2) -> {
 				txtNewName.clear();

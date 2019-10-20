@@ -136,9 +136,54 @@ public class LoginController implements Initializable {
 			TextField txtPhoneNum = (TextField) barChartRoot.lookup("#txtPhoneNum");
 			TextField txtId = (TextField) barChartRoot.lookup("#txtId");
 
-			btnCancel.setOnAction((e3) -> {
-				stage.close();
-			});
+			   // 취소 버튼 누르면 다시 로그인 페이지로 돌아가기
+	         btnCancel.setOnAction((e3) -> {
+	            Parent mainView = null;
+	            Stage mainStage = null;
+
+	            try {
+	               mainView = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+	               Scene scene = new Scene(mainView);
+	               mainStage = new Stage();
+	               mainStage.setTitle("[김시스터즈]");
+	               mainStage.setScene(scene);
+	               mainStage.setResizable(true);
+	               ((Stage) btnSignIn.getScene().getWindow()).close();
+	               mainStage.show();
+	            } catch (Exception e1) {
+	               SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+	            }
+	         });
+	         
+	         btnOk.setOnAction(e -> {
+	             if (txtId.getText().equals("")) {
+	                SharedMethod.alertDisplay(1, "오류발생", "오류가 발생하였습니다.", "[ID양식 오류] : 아이디를 다시 입력 하세요. ");
+	             } else {
+	                int count;
+	                try {
+	                   count = MemberDAO.checkStudentId(txtId.getText());
+	                   if (count == 0) {
+	                      SharedMethod.alertDisplay(1, "오류", "오류발생", "[ID 오류] :존재하지 않는 이메일아이디입니다.");
+	                   } else {
+	                      SharedMethod.alertDisplay(1, "오류발생", "오류가 발생하였습니다", "[ID 오류] :존재하지 않는 이메일아이디입니다.");
+	                      String existPW = MemberDAO.findPWByPhone(txtName.getText(), txtPhoneNum.getText(),txtId.getText());
+	                   
+	                      if (existPW == null) {
+	                         SharedMethod.alertDisplay(1, "경고", "pw찾기 실패", "[PW 찾기 실패]: 존재하지 않는 회원정보 입니다.");
+	                         return;
+	                      } else {
+	                         SharedMethod.alertDisplay(1, "성공", "ID찾기 성공",
+	                               "[ID 찾기 성공]: 회원님의 패스워드는 " + existPW + " 입니다.");
+	                         stage.close();
+	                      }
+	                   }
+
+	                } catch (Exception e1) {
+	                   e1.printStackTrace();
+	                }
+	             }
+	          });
+
 
 			Scene scene = new Scene(barChartRoot);
 			stage.setScene(scene);
@@ -181,9 +226,24 @@ public class LoginController implements Initializable {
 				}
 			});
 
-			btnCancel.setOnAction((e3) -> {
-				stage.close();
-			});
+			   // 취소 버튼 누르면 다시 로그인 페이지로 돌아가기
+	         btnCancel.setOnAction((e3) -> {
+	            Parent mainView = null;
+	            Stage mainStage = null;
+
+	            try {
+	               mainView = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+	               Scene scene = new Scene(mainView);
+	               mainStage = new Stage();
+	               mainStage.setTitle("[김시스터즈]");
+	               mainStage.setScene(scene);
+	               mainStage.setResizable(true);
+	               ((Stage) btnSignIn.getScene().getWindow()).close();
+	               mainStage.show();
+	            } catch (Exception e1) {
+	               SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+	            }
+	         });
 
 			Scene scene = new Scene(barChartRoot);
 			stage.setScene(scene);

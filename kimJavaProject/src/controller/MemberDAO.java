@@ -11,8 +11,8 @@ import model.MemberVO;
 public class MemberDAO {
 	// insert
 	public int getMemberRegiste(MemberVO mvo) throws Exception {
-		String dml = "insert into memberTBL " + "(memberID, password, name, phoneNumber, address, gender, ageGroup)" + " values "
-				+ "(?, ?, ?, ?, ?, ?, ?)";
+		String dml = "insert into memberTBL " + "(memberID, password, name, phoneNumber, address, gender, ageGroup)"
+				+ " values " + "(?, ?, ?, ?, ?, ?, ?)";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -68,7 +68,7 @@ public class MemberDAO {
 			rs = pstmt.executeQuery();
 			while (rs.next()) { // 다음 레코드가 있을 동안
 				mVO = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-						rs.getString(6),rs.getString(7));
+						rs.getString(6), rs.getString(7));
 				list.add(mVO);
 			}
 		} catch (SQLException se) {
@@ -105,8 +105,8 @@ public class MemberDAO {
 			pstmt.setString(1, nameToSearch);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				retval = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),rs.getString(6),
-						rs.getString(7));
+				retval = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7));
 				list.add(retval);
 			}
 		} catch (SQLException se) {
@@ -126,44 +126,44 @@ public class MemberDAO {
 		}
 		return list;
 	}
-	
-	// select - 아이디로 멤버 검색 
-		public ArrayList<MemberVO> getMemberInfoUsingId(String name) throws Exception {
-			ArrayList<MemberVO> list = new ArrayList<MemberVO>();
-			String dml = "select * from memberTBL where memberID like ?";
 
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			MemberVO retval = null;
-			try {
-				con = DBUtil.getConnection();
-				pstmt = con.prepareStatement(dml);
-				String nameToSearch = "%" + name + "%";
-				pstmt.setString(1, nameToSearch);
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					retval = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),rs.getString(6),
-							rs.getString(7));
-					list.add(retval);
-				}
-			} catch (SQLException se) {
-				System.out.println(se);
-			} catch (Exception e) {
-				System.out.println(e);
-			} finally {
-				try {
-					if (rs != null)
-						rs.close();
-					if (pstmt != null)
-						pstmt.close();
-					if (con != null)
-						con.close();
-				} catch (SQLException se) {
-				}
+	// select - 아이디로 멤버 검색
+	public ArrayList<MemberVO> getMemberInfoUsingId(String name) throws Exception {
+		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
+		String dml = "select * from memberTBL where memberID like ?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		MemberVO retval = null;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			String nameToSearch = "%" + name + "%";
+			pstmt.setString(1, nameToSearch);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				retval = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7));
+				list.add(retval);
 			}
-			return list;
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
 		}
+		return list;
+	}
 
 	// update
 	public MemberVO getMemberUpdate(MemberVO mvo, String id) throws Exception {
@@ -256,94 +256,192 @@ public class MemberDAO {
 		}
 
 	}
-	
+
 	public int getUserIdSearch(String id) {
 
-	      String saveId = null;
-	      ArrayList<String> list = new ArrayList<String>();
-	      String dml = "select memberID from memberTBL where memberID = ?";
-	      Connection con = null;
-	      PreparedStatement pstmt = null;
-	      ResultSet rs = null;
-	      try {
-	         con = DBUtil.getConnection();
-	         pstmt = con.prepareStatement(dml);
-	         pstmt.setString(1, id);
-	         rs = pstmt.executeQuery();
-	         if (id.equals("")) {
-	            SharedMethod.alertDisplay(1, "id 사용 가능", ".", ".");
-	            return 0;
-	         }
-	         while (rs.next()) {
-	            saveId = rs.getString(1);
-	            list.add(saveId);
-	         }
-	         for (int i = 0; i < list.size(); i++) {
-	            if (list.get(i).equals(id)) {
-	               return 1;
-	            }
-	         }
-	         return -1;
-	      } catch (Exception e2) {
-	         e2.printStackTrace();
-	      } finally {
-	         try {
-	            if (pstmt != null)
-	               pstmt.close();
-	            if (con != null)
-	               con.close();
-	         } catch (SQLException e3) {
-	            e3.printStackTrace();
-	         }
-	      }
-	      return 0;
-	   }
+		String saveId = null;
+		ArrayList<String> list = new ArrayList<String>();
+		String dml = "select memberID from memberTBL where memberID = ?";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if (id.equals("")) {
+				SharedMethod.alertDisplay(1, "id 사용 가능", ".", ".");
+				return 0;
+			}
+			while (rs.next()) {
+				saveId = rs.getString(1);
+				list.add(saveId);
+			}
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).equals(id)) {
+					return 1;
+				}
+			}
+			return -1;
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e3) {
+				e3.printStackTrace();
+			}
+		}
+		return 0;
+	}
 
-	public static String findIDByPhone(String phone, String name) throws Exception {      
-        StringBuffer checkTchID = new StringBuffer("select memberID from memberTBL where name = ? and phoneNumber= ?");
-         String resultString =null;
-        Connection con = null;
-        PreparedStatement psmt = null;
-        
-        ResultSet rs = null;
-        try {
-           con = DBUtil.getConnection();
-           psmt = con.prepareStatement(checkTchID.toString());
-           //첫번째 물음표 자리 -> studentID 매치 시켜주는 작업 
-           psmt.setString(1, name);
-           psmt.setString(2, phone);
-     
-           // 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
-           rs = psmt.executeQuery();
-           
-           while(rs.next()) {
-              System.out.println(rs.getString(1));
-              resultString= rs.getString(1);
-           }
-           if (resultString==null) {
-              //AdminController.callAlert("LOGIN 실패 : 존재하지 않는 아이디 입니다.");
-              return resultString;
-           }
-           
-        } catch (SQLException e) {
-           //AdminController.callAlert("login 실패 : StudentDAO");
-           e.printStackTrace();
-        } finally {
-           try {
-              // 1.6 CLOSE DataBase psmt object
-              // 제일 먼저 불렀던 것을 제일 나중에 닫는다.
-              // 반드시 있으면 닫아라.
-              if (psmt != null)
-                 psmt.close();
-              if (con != null)
-                 con.close();
-           } catch (SQLException e) {
-              SharedMethod.alertDisplay(1,"문제 발생","문제가 발생하였습니다.","자원 닫기 실패 : psmt & con (데이터 자원) 닫는 데에 문제가 발생했어요.");
-           }
-        }
-        
-        
-        return resultString;
-     }
+	public static String findIDByPhone(String phone, String name) throws Exception {
+		StringBuffer checkTchID = new StringBuffer("select memberID from memberTBL where name = ? and phoneNumber= ?");
+		String resultString = null;
+		Connection con = null;
+		PreparedStatement psmt = null;
+
+		ResultSet rs = null;
+		try {
+			con = DBUtil.getConnection();
+			psmt = con.prepareStatement(checkTchID.toString());
+			// 첫번째 물음표 자리 -> studentID 매치 시켜주는 작업
+			psmt.setString(1, name);
+			psmt.setString(2, phone);
+
+			// 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
+			rs = psmt.executeQuery();
+
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+				resultString = rs.getString(1);
+			}
+			if (resultString == null) {
+				// AdminController.callAlert("LOGIN 실패 : 존재하지 않는 아이디 입니다.");
+				return resultString;
+			}
+
+		} catch (SQLException e) {
+			// AdminController.callAlert("login 실패 : StudentDAO");
+			e.printStackTrace();
+		} finally {
+			try {
+				// 1.6 CLOSE DataBase psmt object
+				// 제일 먼저 불렀던 것을 제일 나중에 닫는다.
+				// 반드시 있으면 닫아라.
+				if (psmt != null)
+					psmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				SharedMethod.alertDisplay(1, "문제 발생", "문제가 발생하였습니다.",
+						"자원 닫기 실패 : psmt & con (데이터 자원) 닫는 데에 문제가 발생했어요.");
+			}
+		}
+
+		return resultString;
+	}
+
+	// 1.1 [WHERE ID=?] studentTbl에 존재하는 id인지 확인
+	public static int checkStudentId(String studentID) throws Exception {
+		StringBuffer checkTchID = new StringBuffer("select member   ID from memberTbl where memberID = ? ");
+		int resultCount = 0;
+		Connection con = null;
+		PreparedStatement psmt = null;
+
+		ResultSet rs = null;
+		try {
+			System.out.println(studentID);
+			con = DBUtil.getConnection();
+			psmt = con.prepareStatement(checkTchID.toString());
+			// 첫번째 물음표 자리 -> studentID 매치 시켜주는 작업
+			psmt.setString(1, studentID);
+
+			// 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
+			// executeQuery -> 쿼리문 실행해서 결과를 *!가져올때!* 사용하는 번개문
+			// executeUpdate-> 쿼리문 실행해서 결과를 *!가지고 갈때!* 사용하는 번개문
+			rs = psmt.executeQuery();
+
+			while (rs.next()) {
+				System.out.println(rs.getInt(1));
+				resultCount = rs.getInt(1);
+			}
+			if (resultCount == 0) {
+				// AdminController.callAlert("LOGIN 실패 : 존재하지 않는 아이디 입니다.");
+				return resultCount;
+			}
+
+		} catch (SQLException e) {
+			// AdminController.callAlert("login 실패 : StudentDAO");
+			e.printStackTrace();
+		} finally {
+			try {
+				// 1.6 CLOSE DataBase psmt object
+				// 제일 먼저 불렀던 것을 제일 나중에 닫는다.
+				// 반드시 있으면 닫아라.
+				if (psmt != null)
+					psmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				SharedMethod.alertDisplay(1, "경고", "pw찾기 실패", "자원 닫기 실패 : psmt & con (데이터 자원) 닫는 데에 문제가 발생했어요.");
+			}
+		}
+
+		return resultCount;
+	}
+
+	public static String findPWByPhone(String txtName, String txtPhone, String iD) throws Exception {
+		StringBuffer checkTchPW = new StringBuffer(
+				"select memberID from memberTBL where name = ? and phoneNumber= ? and memberID=?");
+		String resultString = null;
+		Connection con = null;
+		PreparedStatement psmt = null;
+
+		ResultSet rs = null;
+		try {
+			con = DBUtil.getConnection();
+			psmt = con.prepareStatement(checkTchPW.toString());
+			// 첫번째 물음표 자리 -> studentID 매치 시켜주는 작업
+			psmt.setString(1, txtName);
+			psmt.setString(2, txtPhone);
+			psmt.setString(2, iD);
+
+			// 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
+			rs = psmt.executeQuery();
+
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+				resultString = rs.getString(1);
+			}
+			if (resultString == null) {
+				// AdminController.callAlert("LOGIN 실패 : 존재하지 않는 아이디 입니다.");
+				return resultString;
+			}
+
+		} catch (SQLException e) {
+			// AdminController.callAlert("login 실패 : StudentDAO");
+			e.printStackTrace();
+		} finally {
+			try {
+				// 1.6 CLOSE DataBase psmt object
+				// 제일 먼저 불렀던 것을 제일 나중에 닫는다.
+				// 반드시 있으면 닫아라.
+				if (psmt != null)
+					psmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				SharedMethod.alertDisplay(1, "문제 발생", "문제가 발생하였습니다.",
+						"자원 닫기 실패 : psmt & con (데이터 자원) 닫는 데에 문제가 발생했어요.");
+			}
+		}
+
+		return resultString;
+	}
 
 }

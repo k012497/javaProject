@@ -23,7 +23,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -35,6 +34,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import model.FavoriteVO;
 import model.MenuVO;
 import model.RestaurantVO;
 
@@ -97,18 +97,25 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		//라벨, 버튼, 콤보박스 설정 
 		recommendlabelSetting();
 		addressComboBoxSetting();
 		buttonInitSetting(true, true);
 		
+		// 검색 버튼 눌렀을 때
 		btnSearch.setOnAction((e) -> handlerSearchAction(e));
+		
+		// 마이페이지 버튼 눌렀을 때 
 		btnMyPage.setOnAction((e) -> handlerMyPageAction(e));
 		
+		// 전체보기 눌렀을 때
 		btnAll.setOnAction((e) -> setListWithImage());
 		
+		// 각 음식 종류 버튼 눌렀을 때
 		String kind = "중식";
 		btnKorean.setOnAction((e) -> setListWithImagebyKind());
 		
+		// 로그아웃 버튼 눌렀을 때
 		btnSignOut.setOnAction((e) -> handlerSignOutAction());
 	}
 
@@ -383,7 +390,7 @@ public class MainController implements Initializable {
 			ImageView imageView = (ImageView) root.lookup("#imageView");
 			ImageView imgLocation = (ImageView) root.lookup("#imgLocation");
 			ImageView imgFav = (ImageView) root.lookup("#imgFav");
-			ImageView imgAddStars = (ImageView) root.lookup("#imgAddStars");
+			ImageView imgStars = (ImageView) root.lookup("#imgStars");
 			TableView<MenuVO> menuTable = (TableView<MenuVO>) root.lookup("#menuTable");
 
 			menuTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
@@ -401,8 +408,8 @@ public class MainController implements Initializable {
 			});
 			
 			imgLocation.setOnMousePressed((e2)->handlerLocationAction(imgLocation, lblName.getText()));
+			imgStars.setOnMousePressed((e4) -> handlerAddStars(imgStars));
 			imgFav.setOnMousePressed((e3) -> handlerAddFavorite());
-			imgAddStars.setOnMousePressed((e4) -> handlerAddStars(imgAddStars));
 			
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
@@ -413,17 +420,34 @@ public class MainController implements Initializable {
 		}
 	}
 	
-	private Object handlerAddFavorite() {
-		// TODO Auto-generated method stub
-		return null;
+	private void handlerAddFavorite() {
+		//즐겨찾기 테이블에 insert
+		FavoriteDAO favDAO = new FavoriteDAO();
+		FavoriteVO fvo = new FavoriteVO(lblMember.getText(), 4);
+		
+		try {
+			//즐겨찾기 테이블에 등록
+			favDAO.getFavregiste(fvo, lblMember.getText());
+			
+			// 즐겨찾기 테이블에 있는 식당아이디를 카운트해서 
+			System.out.println(favDAO.getFavCount(4));
+			
+			//즐겨찾기 속성에 추가
+			RestaurantDAO restDAO = new RestaurantDAO();
+			restDAO.getFavCountUpdate(favDAO.getFavCount(4), 4);
+			
+		} catch (Exception e) {
+			SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "즐겨찾기 추가 실패", "즐겨찾기 추가 실패");
+		}
+
 	}
 
-	public void handlerAddStars(ImageView imgAddStars) {
+	public void handlerAddStars(ImageView imgStars) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/view/stars.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
-			stage.initOwner(imgAddStars.getScene().getWindow());
+			stage.initOwner(imgStars.getScene().getWindow());
 			stage.setTitle("아이디 찾기");
 
 			Button btnOk = (Button) root.lookup("#btnOk");
@@ -487,6 +511,7 @@ public class MainController implements Initializable {
 		try {
 			// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
 			int restID = selectedRest.get(0).getRestaurantID();
+			System.out.println(restID);
 			MenuDAO menuDAO = new MenuDAO();
 			menuData = FXCollections.observableArrayList();
 			menuData = menuDAO.getMenu(restID);

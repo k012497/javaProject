@@ -14,6 +14,12 @@ public class FavoriteVO {
 		this.memberID = memberID;
 		this.restaurantID = restaurantID;
 	}
+	
+	public FavoriteVO(String memberID, int restaurantID) {
+		super();
+		this.memberID = memberID;
+		this.restaurantID = restaurantID;
+	}
 
 	public int getFavID() {
 		return favID;
