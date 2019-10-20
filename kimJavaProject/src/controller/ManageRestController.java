@@ -79,6 +79,11 @@ public class ManageRestController implements Initializable {
 	private ImageView imgOpenHours;
 	
 	@FXML
+	private ComboBox<String> cbGu;
+	@FXML
+	private ComboBox<String> cbDong;
+	
+	@FXML
 	private TableView<MenuVO> menuTable;
 	@FXML
 	private TextField txtMenuName;
@@ -109,6 +114,7 @@ public class ManageRestController implements Initializable {
 
 	private int no; // 삭제시 테이블에서 선택한 멤버의 번호 저장
 	private File selectedFile = null;
+	
 
 	// 이미지 처리
 	// 이미지 저장할 폴더를 매개변수로 파일 객체 생성
@@ -197,11 +203,9 @@ public class ManageRestController implements Initializable {
 					|| txtRestTakeout.getText().equals("") || txtRestPark.getText().equals("")) {
 				throw new Exception();
 			} else {
-				RestaurantVO rvo = new RestaurantVO(txtRestName.getText().trim(), txtRestAddr.getText().trim(),
-						txtRestPhone.getText().trim(), txtRestFoodtKind.getText().trim(),
-						txtRestVegeKind.getText().trim(), fileName, Integer.parseInt(txtRestFav.getText().trim()),
-						Double.parseDouble(txtRestStars.getText().trim()), txtRestDate.getText().trim(),
-						txtRestTakeout.getText().trim(), txtRestPark.getText().trim(), txtRestReserve.getText().trim());
+				RestaurantVO rvo = new RestaurantVO(txtRestName.getText(), txtRestAddr.getText(), txtRestPhone.getText(), txtRestFoodtKind.getText(), 
+						txtRestVegeKind.getText(), fileName, Integer.parseInt(txtRestFav.getText()), Double.parseDouble(txtRestStars.getText()),
+						txtRestDate.getText(), txtRestTakeout.getText(), txtRestPark.getText(), txtRestReserve.getText());
 
 				// 변경사항을 DB로 보냄.
 				RestaurantDAO restaurantDAO = new RestaurantDAO();
@@ -547,15 +551,23 @@ public class ManageRestController implements Initializable {
 				}else {
 					try {
 						RestaurantDAO restaurantDAO = new RestaurantDAO();
-						RestaurantVO rvo = new RestaurantVO(txtNewName.getText(), txtNewAddr.getText(),
-								txtNewPhone.getText(), cbNewKind.getSelectionModel().getSelectedItem(),
-								cbNewVege.getSelectionModel().getSelectedItem(), null, 0, 0.0, null,
-								cbNewTakeout.getSelectionModel().getSelectedItem(),
-								cbNewPark.getSelectionModel().getSelectedItem(),
-								cbNewReserve.getSelectionModel().getSelectedItem());
+						RestaurantVO rvo = new RestaurantVO(txtNewName.getText(), txtNewAddr.getText(), txtNewPhone.getText(), 
+								cbNewKind.getSelectionModel().getSelectedItem(), cbNewVege.getSelectionModel().getSelectedItem(), 
+								fileName, 0, 0.0, null, cbNewTakeout.getSelectionModel().getSelectedItem(),
+								cbNewPark.getSelectionModel().getSelectedItem(), cbNewReserve.getSelectionModel().getSelectedItem());
+//						RestaurantVO rvo = new RestaurantVO(txtNewName.getText(), txtNewAddr.getText(),
+//								txtNewPhone.getText(), cbNewKind.getSelectionModel().getSelectedItem(),
+//								cbNewVege.getSelectionModel().getSelectedItem(), null, 0, 0.0, null,
+//								cbNewTakeout.getSelectionModel().getSelectedItem(),
+//								cbNewPark.getSelectionModel().getSelectedItem(),
+//								cbNewReserve.getSelectionModel().getSelectedItem());
 						restaurantDAO.getRestregiste(rvo);
+						SharedMethod.alertDisplay(5, "REGISTERATION SUCCESS", "식당 등록 성공 !", "식당 등록을 성공하였습니다.");
+						restData.removeAll(restData);
+						totalList();
+						stage.close();
 					} catch (Exception e4) {
-						e4.printStackTrace();
+						SharedMethod.alertDisplay(1, "REGISTERATION FAILED", "식당 등록 실패 !", "식당 등록을 실패하였습니다.");
 					}
 				}});
 
@@ -571,7 +583,7 @@ public class ManageRestController implements Initializable {
 			});
 			btnClose.setOnAction((e3) -> {
 				// 메뉴 테이블을 다시 세팅하고 창 닫기
-				restTable.setItems(null);
+				restData.removeAll(restData);
 				totalList();
 				stage.close();
 			});

@@ -163,9 +163,9 @@ public class LoginController implements Initializable {
 	                try {
 	                   count = MemberDAO.checkStudentId(txtId.getText());
 	                   if (count == 0) {
-	                      SharedMethod.alertDisplay(1, "오류", "오류발생", "[ID 오류] :존재하지 않는 이메일아이디입니다.");
+	                      SharedMethod.alertDisplay(1, "오류", "오류발생", "[ID 오류] :존재하지 않는 아이디입니다.");
 	                   } else {
-	                      SharedMethod.alertDisplay(1, "오류발생", "오류가 발생하였습니다", "[ID 오류] :존재하지 않는 이메일아이디입니다.");
+	                      SharedMethod.alertDisplay(1, "오류발생", "오류가 발생하였습니다", "[ID 오류] :존재하지 않는 아이디입니다.");
 	                      String existPW = MemberDAO.findPWByPhone(txtName.getText(), txtPhoneNum.getText(),txtId.getText());
 	                   
 	                      if (existPW == null) {

@@ -348,7 +348,7 @@ public class MemberDAO {
 
 	// 1.1 [WHERE ID=?] studentTbl에 존재하는 id인지 확인
 	public static int checkStudentId(String studentID) throws Exception {
-		StringBuffer checkTchID = new StringBuffer("select member   ID from memberTbl where memberID = ? ");
+		StringBuffer checkTchID = new StringBuffer("select memberID from memberTBL where memberID = ? ");
 		int resultCount = 0;
 		Connection con = null;
 		PreparedStatement psmt = null;
@@ -395,9 +395,9 @@ public class MemberDAO {
 		return resultCount;
 	}
 
-	public static String findPWByPhone(String txtName, String txtPhone, String iD) throws Exception {
+	public static String findPWByPhone(String txtName, String txtPhone, String id) throws Exception {
 		StringBuffer checkTchPW = new StringBuffer(
-				"select memberID from memberTBL where name = ? and phoneNumber= ? and memberID=?");
+				"select password from memberTBL where name = ? and phoneNumber= ? and memberID=?");
 		String resultString = null;
 		Connection con = null;
 		PreparedStatement psmt = null;
@@ -409,7 +409,7 @@ public class MemberDAO {
 			// 첫번째 물음표 자리 -> studentID 매치 시켜주는 작업
 			psmt.setString(1, txtName);
 			psmt.setString(2, txtPhone);
-			psmt.setString(2, iD);
+			psmt.setString(3, id);
 
 			// 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
 			rs = psmt.executeQuery();
