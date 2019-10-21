@@ -35,7 +35,7 @@ public class Test extends Application {
 		listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
 			@Override
 			public ListCell<CustomThing> call(ListView<CustomThing> listView) {
-				return new CustomListCell();
+				return new CustomListCell("");
 			}
 		});
 

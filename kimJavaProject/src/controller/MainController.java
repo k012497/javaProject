@@ -159,7 +159,7 @@ public class MainController implements Initializable {
 			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
 				@Override
 				public ListCell<CustomThing> call(ListView<CustomThing> listView) {
-					return new CustomListCell();
+					return new CustomListCell("r1571630130340_배러댄.jpg");
 				}
 			});
 
@@ -386,12 +386,14 @@ public class MainController implements Initializable {
 				SharedMethod.alertDisplay(1, "등록된 식당 없음", "등록된 식당이 없습니다.", "다른 지역/종류를 검색해주세요 ");
 				return;
 			}
+			
 
 			final ListView<CustomThing> listView = new ListView<CustomThing>(data);
+			listView.getSelectionModel().getSelectedItems().get(0);
 			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
 				@Override
 				public ListCell<CustomThing> call(ListView<CustomThing> listView) {
-					return new CustomListCell();
+					return new CustomListCell("r1571630130340_배러댄.jpg");
 				}
 			});
 
@@ -410,7 +412,6 @@ public class MainController implements Initializable {
 	}
 
 	public void handlerListViewPressed(MouseEvent e, ListView<CustomThing> listView) {
-		System.out.println("123");
 		selectedRest = listView.getSelectionModel().getSelectedItems();
 		try {
 			int restId = selectedRest.get(0).getRestaurantID();
@@ -448,7 +449,41 @@ public class MainController implements Initializable {
 			TableView<MenuVO> menuTable = (TableView<MenuVO>) root.lookup("#menuTable");
 
 			menuTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
-			menuTableColSetting(menuTable);
+			Platform.runLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					menuData = FXCollections.observableArrayList();
+
+					TableColumn colName = new TableColumn("메뉴");
+					colName.setMaxWidth(300);
+					colName.setStyle("-fx-alignment:CENTER;");
+					colName.setCellValueFactory(new PropertyValueFactory("menuName"));
+
+					TableColumn colPrice = new TableColumn("가격");
+					colPrice.setMaxWidth(200);
+					colPrice.setStyle("-fx-alignment:CENTER;");
+					colPrice.setCellValueFactory(new PropertyValueFactory("menuPrice"));
+
+					// 컬럼 객체들을 테이블 뷰에 추가 & 항목 추가
+					menuTable.setItems(menuData);
+					menuTable.getColumns().addAll(colName, colPrice);
+
+					try {
+						// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
+						int restID = selectedRest.get(0).getRestaurantID();
+						System.out.println(restID);
+						MenuDAO menuDAO = new MenuDAO();
+						menuData = FXCollections.observableArrayList();
+						menuData = menuDAO.getMenu(restID);
+						
+						menuTable.setItems(menuData);
+					} catch (Exception e) {
+						SharedMethod.alertDisplay(1, "메뉴 세팅 실패", "메뉴 세팅 실패", "메뉴 세팅 실패");
+					}
+					
+				}
+			});
 			lblName.setText(rvo.get(0).getRestaurantName());
 			lblAddress.setText(rvo.get(0).getAddress());
 			lblPhoneNum.setText(rvo.get(0).getTelephone());
@@ -476,18 +511,20 @@ public class MainController implements Initializable {
 	private void handlerAddFavorite() {
 		// 즐겨찾기 테이블에 insert
 		FavoriteDAO favDAO = new FavoriteDAO();
-		FavoriteVO fvo = new FavoriteVO(lblMember.getText(), 4);
+		int restId = selectedRest.get(0).getRestaurantID();
+		FavoriteVO fvo = new FavoriteVO(lblMember.getText(), restId);
 
 		try {
 			// 즐겨찾기 테이블에 등록
 			favDAO.getFavregiste(fvo, lblMember.getText());
 
 			// 즐겨찾기 테이블에 있는 식당아이디를 카운트해서
-			System.out.println(favDAO.getFavCount(4));
+			System.out.println(favDAO.getFavCount(restId));
+			System.out.println("testest");
 
 			// 즐겨찾기 속성에 추가
 			RestaurantDAO restDAO = new RestaurantDAO();
-			restDAO.getFavCountUpdate(favDAO.getFavCount(4), 4);
+			restDAO.getFavCountUpdate(favDAO.getFavCount(restId), restId);
 
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "즐겨찾기 추가 실패", "즐겨찾기 추가 실패");

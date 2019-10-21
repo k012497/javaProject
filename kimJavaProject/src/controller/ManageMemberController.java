@@ -94,9 +94,9 @@ public class ManageMemberController implements Initializable {
 		colPhoneNum.setCellValueFactory(new PropertyValueFactory("phoneNumer"));
 
 		TableColumn colAddr = new TableColumn("주소");
-		colPw.setMaxWidth(160);
-		colPw.setStyle("-fx-alignment:CENTER;");
-		colPw.setCellValueFactory(new PropertyValueFactory("address"));
+		colAddr.setMaxWidth(160);
+		colAddr.setStyle("-fx-alignment:CENTER;");
+		colAddr.setCellValueFactory(new PropertyValueFactory("address"));
 
 		TableColumn colGender = new TableColumn("성별");
 		colGender.setMaxWidth(40);

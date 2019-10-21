@@ -196,7 +196,9 @@ public class ManageRestController implements Initializable {
 
 			// 이미지 파일 저장
 			String fileName = imageSave(selectedFile);
-			System.out.println(fileName);
+			if(fileName == null) {
+				fileName = "default_restaurant.png";
+			}
 
 			if (txtRestAddr.getText().equals("") || txtRestFoodtKind.getText().equals("")
 					|| txtRestName.getText().equals("") || txtRestReserve.getText().equals("")
@@ -284,9 +286,9 @@ public class ManageRestController implements Initializable {
 		colName.setCellValueFactory(new PropertyValueFactory("restaurantName"));
 
 		TableColumn colAddr = new TableColumn("주소");
-		colName.setMaxWidth(200);
-		colName.setStyle("-fx-alignment:CENTER;");
-		colName.setCellValueFactory(new PropertyValueFactory("address"));
+		colAddr.setMaxWidth(200);
+		colAddr.setStyle("-fx-alignment:CENTER;");
+		colAddr.setCellValueFactory(new PropertyValueFactory("address"));
 
 		TableColumn colPhone = new TableColumn("전화번호");
 		colPhone.setMaxWidth(140);
@@ -366,6 +368,33 @@ public class ManageRestController implements Initializable {
 	}
 
 	public Object handlerBtnImageFileAction(ActionEvent e) {
+		// 이미지 파일 선택 창
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters()
+				.addAll(new ExtensionFilter("Image File", "*.png", "*.jpg", "*.gif", "*.jpeg"));
+
+		try {
+			selectedFile = fileChooser.showOpenDialog(btnImage.getScene().getWindow());
+			if (selectedFile != null) {
+				// 이미지 파일 경로
+				localUrl = selectedFile.toURI().toURL().toString();
+			}
+		} catch (MalformedURLException e2) {
+			e2.printStackTrace();
+		}
+
+		localImage = new Image(localUrl, false);
+		imgView.setImage(localImage);
+		imgView.setFitHeight(250);
+		imgView.setFitWidth(230);
+
+		if (selectedFile != null) {
+			selectFileName = selectedFile.getName();
+		}
+		return fileChooser;
+	}
+	
+	public Object handlerBtnNewImageFileAction(ActionEvent e) {
 		// 이미지 파일 선택 창
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters()
@@ -492,8 +521,8 @@ public class ManageRestController implements Initializable {
 	public void handlerNewRestAction(ActionEvent e) {
 		ObservableList<String> kindList = FXCollections.observableArrayList("한식", "중식", "일식", "양식", "채식", "세계음식", "뷔페",
 				"카페");
-		ObservableList<String> vegeList = FXCollections.observableArrayList("plant only", "ani-products",
-				"vege option");
+		ObservableList<String> vegeList = FXCollections.observableArrayList("야채만", "동물 생산품",
+				"채식 옵션");
 		ObservableList<String> booleanList = FXCollections.observableArrayList("Y", "N");
 
 		try {
@@ -503,7 +532,7 @@ public class ManageRestController implements Initializable {
 			stage.initOwner(btnNewRest.getScene().getWindow());
 			stage.setTitle("식당 추가하기");
 
-			ImageView imgView = (ImageView) barChartRoot.lookup("#imgView");
+			ImageView imageView = (ImageView) barChartRoot.lookup("#imgView");
 			Button btnClose = (Button) barChartRoot.lookup("#btnClose");
 			Button btnRestRegiste = (Button) barChartRoot.lookup("#btnRestRegiste");
 			Button btnClear = (Button) barChartRoot.lookup("#btnClear");
@@ -549,18 +578,15 @@ public class ManageRestController implements Initializable {
 					SharedMethod.alertDisplay(1, "REGISTERATION FAILED", "식당 등록 실패 !", "모든 항목을 입력해주세요(채식 종류 제외)");
 				}else {
 					try {
+						String fileName = imageSave(selectedFile);
+						if(fileName == null) {
+							fileName = "default_restaurant.png";
+						}
 						RestaurantDAO restaurantDAO = new RestaurantDAO();
 						RestaurantVO rvo = new RestaurantVO(txtNewName.getText(),cbGu.getSelectionModel().getSelectedItem() +" "+ cbDong.getSelectionModel().getSelectedItem() +" "+ txtNewAddr.getText(), txtNewPhone.getText(), 
 								cbNewKind.getSelectionModel().getSelectedItem(), cbNewVege.getSelectionModel().getSelectedItem(), 
 								fileName, 0, 0.0, null, cbNewTakeout.getSelectionModel().getSelectedItem(),
 								cbNewPark.getSelectionModel().getSelectedItem(), cbNewReserve.getSelectionModel().getSelectedItem());
-//						RestaurantVO rvo = new RestaurantVO(txtNewName.getText(), txtNewAddr.getText(),
-//								txtNewPhone.getText(), cbNewKind.getSelectionModel().getSelectedItem(),
-//								cbNewVege.getSelectionModel().getSelectedItem(), null, 0, 0.0, null,
-//								cbNewTakeout.getSelectionModel().getSelectedItem(),
-//								cbNewPark.getSelectionModel().getSelectedItem(),
-//								cbNewReserve.getSelectionModel().getSelectedItem());
-						
 						
 						int count = restaurantDAO.getRestregiste(rvo); // 이 순간 db에 레코드값 insert됨.
 						if (count != 0) {
@@ -593,7 +619,7 @@ public class ManageRestController implements Initializable {
 			});
 
 			btnNewImage.setOnAction((e4) -> {
-
+				handlerBtnNewImageFileAction(e4);
 			});
 
 			Scene scene = new Scene(barChartRoot);

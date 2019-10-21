@@ -399,9 +399,7 @@ public class RestaurantDAO {
 			pstmt.setString(1, addrToSearch);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				retval = new RestaurantVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getNString(4),
-						rs.getString(5), rs.getString(6), rs.getInt(7), rs.getDouble(8), rs.getString(9),
-						rs.getString(10), rs.getString(11), rs.getString(12));
+				retval = new RestaurantVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getDouble(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13));
 				list.add(retval);
 			}
 		} catch (SQLException se) {

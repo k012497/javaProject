@@ -445,4 +445,55 @@ public class MemberDAO {
 		return resultString;
 	}
 
+	public static String getuserIDPW(String id, String pw) { 
+        StringBuffer checkTchPW = new StringBuffer("select * from memberTBL where memberID = ? and password  = ?");
+         String resultString =null;
+            Connection con = null;
+            PreparedStatement psmt = null;
+            
+            ResultSet rs = null;
+            try {
+               try {
+             con = DBUtil.getConnection();
+          } catch (ClassNotFoundException e) {
+             SharedMethod.alertDisplay(1, "DB 연결 오류", "다시 시도해주세요", "다시 시도해주세요");
+          }
+               psmt = con.prepareStatement(checkTchPW.toString());
+               //첫번째 물음표 자리 -> studentID 매치 시켜주는 작업 
+               
+               psmt.setString(1, id);
+               psmt.setString(2, pw);
+         
+               // 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
+               rs = psmt.executeQuery();
+               
+               while(rs.next()) {
+                  MemberVO member = new MemberVO(rs.getString(1), 
+                        rs.getString(2), rs.getString(3), 
+                        rs.getString(4), rs.getString(5), 
+                        rs.getString(6), rs.getString(7));
+                  resultString = member.getPassword();
+               }
+               if (resultString==null) {
+                  return resultString;
+               }
+            } catch (SQLException e) {
+               //AdminController.callAlert("login 실패 : StudentDAO");
+               e.printStackTrace();
+            } finally {
+               try {
+                  // 1.6 CLOSE DataBase psmt object
+                  // 제일 먼저 불렀던 것을 제일 나중에 닫는다.
+                  // 반드시 있으면 닫아라.
+                  if (psmt != null)
+                     psmt.close();
+                  if (con != null)
+                     con.close();
+               } catch (SQLException e) {
+                  SharedMethod.alertDisplay(1,"문제 발생","문제가 발생하였습니다.","자원 닫기 실패 : psmt & con (데이터 자원) 닫는 데에 문제가 발생했어요.");
+               }
+            }
+           return resultString;
+     
+    }
 }

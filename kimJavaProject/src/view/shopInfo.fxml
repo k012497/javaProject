@@ -106,17 +106,17 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Label id="lblPark" layoutX="255.0" layoutY="100.0" text="Paking">
+      <Label id="lblPark" layoutX="289.0" layoutY="99.0" text="Paking">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Label id="lblTakeout" layoutX="253.0" layoutY="126.0" text="TakeOut">
+      <Label id="lblTakeout" layoutX="289.0" layoutY="125.0" text="TakeOut">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Label id="lblReserve" layoutX="254.0" layoutY="151.0" text="Reservation">
+      <Label id="lblReserve" layoutX="289.0" layoutY="150.0" text="Reservation">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
@@ -127,5 +127,8 @@
          </padding>
       </Label>
       <Label layoutX="399.0" layoutY="275.0" text="별점 등록" />
+      <Label layoutX="257.0" layoutY="101.0" text="주차" />
+      <Label layoutX="257.0" layoutY="128.0" text="포장" />
+      <Label layoutX="257.0" layoutY="153.0" text="예약" />
    </children>
 </AnchorPane>

@@ -19,7 +19,7 @@ public class CustomListCell extends ListCell<CustomThing> {
     private Text price;
     private Text address;
 
-    public CustomListCell() {
+    public CustomListCell(String fileName) {
         super();
         name = new Text();
         price = new Text();
@@ -32,8 +32,8 @@ public class CustomListCell extends ListCell<CustomThing> {
         
         FileInputStream input;
 		try {
-			File dirSave = new File("/Users/kimsojin/Desktop/n"); 
-			input = new FileInputStream(new File(dirSave.getAbsolutePath()+"//"+"moodindigo.jpg"));
+			File dirSave = new File("/Users/kimsojin/Desktop/code/images"); 
+			input = new FileInputStream(new File(dirSave.getAbsolutePath() + "//" + fileName));
 			Image image = new Image(input);
 			ImageView imageView = new ImageView(image);
 			imageView.setFitWidth(150);

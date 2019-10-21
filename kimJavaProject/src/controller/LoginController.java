@@ -75,33 +75,39 @@ public class LoginController implements Initializable {
 	}
 
 	// 1. SingIn으로 로그인
-	public void handlerBtnSignInAction(ActionEvent e) {
-		if (txtId.getText().trim().equals("") || txtPw.getText().trim().equals("")) {
-			SharedMethod.alertDisplay(1, "로그인 실패", "아이디, 패스워드 미입력", "다시 제대로 입력하시오");
-		} else {
+	   public void handlerBtnSignInAction(ActionEvent e) {
 
-			Parent mainView = null;
-			Stage mainStage = null;
+	      MemberDAO memberDAO = new MemberDAO();
+	      String signIn =MemberDAO.getuserIDPW(txtId.getText(), txtPw.getText());
+	       
+	      if (txtId.getText().trim().equals("") || txtPw.getText().trim().equals("")) {
+	         SharedMethod.alertDisplay(1, "로그인 실패", "아이디, 패스워드 미입력", "다시 제대로 입력하시오");
+	      } else if (signIn == null){
+	         SharedMethod.alertDisplay(1, "ID/PASSWORD 오류", "아이디 또는 비밀번호가 맞지않습니다.", "아이디 또는 비밀번호를 확인해주세요.");
+	      } else{
+	         Parent mainView = null;
+	         Stage mainStage = null;
+	         SharedMethod.alertDisplay(5, "로그인 성공", "환영합니다", "ㅎㅇㅎㅇ");
+	         try {
+	            mainView = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+	            Scene scene = new Scene(mainView);
+	            mainStage = new Stage();
+	            mainStage.setTitle("[김시스터즈]");
+	            mainStage.setScene(scene);
+	            mainStage.setResizable(true);
 
-			try {
-				mainView = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
-				Scene scene = new Scene(mainView);
-				mainStage = new Stage();
-				mainStage.setTitle("[김시스터즈]");
-				mainStage.setScene(scene);
-				mainStage.setResizable(true);
+	            Label lblMember = (Label) mainView.lookup("#lblMember");
+	            lblMember.setText(txtId.getText());
 
-				Label lblMember = (Label) mainView.lookup("#lblMember");
-				lblMember.setText(txtId.getText());
+	            // 현재의 스테이지를 닫고 새로운창을 연다.
+	            ((Stage) btnSignIn.getScene().getWindow()).close();
+	            mainStage.show();
+	         } catch (Exception e1) {
+	            SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+	         }
+	      }
 
-				// 현재의 스테이지를 닫고 새로운창을 연다.
-				((Stage) btnSignIn.getScene().getWindow()).close();
-				mainStage.show();
-			} catch (Exception e1) {
-				SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
-			}
-		}
-	}
+	   }
 
 	// 2. 회원가입 이벤트 처리
 	public void handlerLabelSignUpAction(MouseEvent e) {
