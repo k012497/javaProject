@@ -85,8 +85,9 @@ public class MainController implements Initializable {
 	ObservableList<String> arrangeList = FXCollections.observableArrayList("기본 정렬", "별점순");
 
 	// Inject controller
-	@FXML private MyPageController myPageController;
-	
+	@FXML
+	private MyPageController myPageController;
+
 	@FXML
 	private ListView<CustomThing> listView;
 	private final ObservableList<RestaurantVO> imageData = FXCollections.observableArrayList();
@@ -102,13 +103,7 @@ public class MainController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		// 라벨, 버튼, 콤보박스 설정
 		recommendlabelSetting();
-		Platform.runLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				addressComboBoxSetting();
-			}
-		});
+		Platform.runLater(() -> { addressComboBoxSetting(); });
 		buttonInitSetting(true, true);
 
 		// 검색 버튼 눌렀을 때
@@ -168,8 +163,8 @@ public class MainController implements Initializable {
 				}
 			});
 
-			listView.setOnMousePressed((e) -> handlerListViewPressed(e));
-			
+			listView.setOnMousePressed((e) -> handlerListViewPressed(e, listView));
+
 			StackPane root = new StackPane();
 			root.getChildren().add(listView);
 			stage.setScene(new Scene(root, 500, 500));
@@ -206,7 +201,7 @@ public class MainController implements Initializable {
 	public void handlerMyPageAction(ActionEvent e) {
 		Parent mainView = null;
 		Stage mainStage = null;
-		
+
 		try {
 			mainView = FXMLLoader.load(getClass().getResource("/view/myPage.fxml"));
 			Scene scene = new Scene(mainView);
@@ -226,12 +221,12 @@ public class MainController implements Initializable {
 			SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
 		}
 	}
-	
 
 	public void handlerSearchAction(ActionEvent e) {
 		try {
-			if (cbDong.getValue().equals("")) {
+			if (cbDong.getValue().equals("") || cbDong.getValue().equals("e) OO동")) {
 				buttonInitSetting(true, true);
+				throw new Exception();
 			} else {
 				buttonInitSetting(false, true);
 			}
@@ -254,33 +249,33 @@ public class MainController implements Initializable {
 		btnSearch.setDisable(b);
 	}
 
+	
 	public void addressComboBoxSetting() {
 		AddressDAO addressDAO = new AddressDAO();
 		addressGuList = addressDAO.getGu();
 		cbGu.setItems(addressGuList);
 
-		//lblMember의 주소를 불러오기
+		// lblMember의 주소를 불러오기
 		MemberDAO memberDAO = new MemberDAO();
 		ArrayList<MemberVO> memberList;
 		try {
 			memberList = memberDAO.getMemberInfoUsingId(lblMember.getText());
 			String addr = memberList.get(0).getAddress();
-			int idx = addr.indexOf(" "); 
-	        String gu = addr.substring(0, idx);
-	        String dong = addr.substring(idx+1);
+			int idx = addr.indexOf(" ");
+			String gu = addr.substring(0, idx);
+			String dong = addr.substring(idx + 1);
 			cbGu.setValue(gu);
 			cbDong.setValue(dong);
 			buttonInitSetting(true, false);
-			
+
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "사용자 정보 불러오기 실패", "사용자 정보 불러오기 실패", "사용자 정보 불러오기에 실패했습니다.");
 		}
-		
-		
+
 		cbGu.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				cbDong.setValue("");
+				cbDong.setValue("e) OO동");
 				addressDongList = addressDAO.getDong(cbGu.getValue());
 				cbDong.setItems(addressDongList);
 				cbDong.valueProperty().addListener(new ChangeListener<String>() {
@@ -379,7 +374,7 @@ public class MainController implements Initializable {
 				SharedMethod.alertDisplay(1, "식당 리스트를 가져오기 실패", "지역에 맞는 식당 리스트 가져오기 실패", "지역에 맞는 식당 리스트를 가져오지 못했습니다.");
 				e.printStackTrace();
 			}
-			
+
 			try {
 				if (restDAO.getRestByAddr(cbGu.getValue(), cbDong.getValue()).get(0) == null) {
 					SharedMethod.alertDisplay(5, "!", "등록된 식당 없음", "등록된 식당이 없습니다.");
@@ -391,7 +386,7 @@ public class MainController implements Initializable {
 				SharedMethod.alertDisplay(1, "등록된 식당 없음", "등록된 식당이 없습니다.", "다른 지역/종류를 검색해주세요 ");
 				return;
 			}
-			
+
 			final ListView<CustomThing> listView = new ListView<CustomThing>(data);
 			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
 				@Override
@@ -400,7 +395,7 @@ public class MainController implements Initializable {
 				}
 			});
 
-			listView.setOnMousePressed((e) -> handlerListViewPressed(e));
+			listView.setOnMousePressed((e) -> handlerListViewPressed(e, listView));
 
 			StackPane root = new StackPane();
 			root.getChildren().add(listView);
@@ -413,9 +408,8 @@ public class MainController implements Initializable {
 		StackPane root = new StackPane();
 		root.getChildren().add(listView);
 	}
-	
 
-	public void handlerListViewPressed(MouseEvent e) {
+	public void handlerListViewPressed(MouseEvent e, ListView<CustomThing> listView) {
 		System.out.println("123");
 		selectedRest = listView.getSelectionModel().getSelectedItems();
 		try {
@@ -423,7 +417,7 @@ public class MainController implements Initializable {
 		} catch (Exception e2) {
 			SharedMethod.alertDisplay(1, "식당 정보 읽기 실패 ", "식당 정보 읽기 실패 ", "식당 정보 읽기 실패 ");
 		}
-		
+
 		RestaurantDAO restDAO = new RestaurantDAO();
 		ArrayList<RestaurantVO> rvo = null;
 		try {
@@ -434,7 +428,7 @@ public class MainController implements Initializable {
 			stage.setTitle("상세 정보");
 
 			try {
-				rvo = restDAO.getRestByName("배러댄");
+				rvo = restDAO.getRestByName(selectedRest.get(0).getName());
 			} catch (Exception e1) {
 				SharedMethod.alertDisplay(1, "식당 정보오류", "식당 정보오류", "식당 정보를 불러올 수 없습니다. ");
 			}
