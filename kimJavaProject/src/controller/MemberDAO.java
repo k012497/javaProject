@@ -128,7 +128,7 @@ public class MemberDAO {
 	}
 
 	// select - 아이디로 멤버 검색
-	public ArrayList<MemberVO> getMemberInfoUsingId(String name) throws Exception {
+	public ArrayList<MemberVO> getMemberInfoUsingId(String id) throws Exception {
 		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
 		String dml = "select * from memberTBL where memberID like ?";
 
@@ -139,7 +139,7 @@ public class MemberDAO {
 		try {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement(dml);
-			String nameToSearch = "%" + name + "%";
+			String nameToSearch = "%" + id + "%";
 			pstmt.setString(1, nameToSearch);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {

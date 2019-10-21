@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -61,7 +62,12 @@ public class MyPageController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		comboBoxInitSetting();
-		getMemberInfo();
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				getMemberInfo();
+			}
+		});
 		favTableColSetting();
 		totalFavList();
 
@@ -77,23 +83,25 @@ public class MyPageController implements Initializable {
 	public void getMemberInfo() {
 		MemberDAO memberDAO = new MemberDAO();
 		try {
+			System.out.println(lblMemberId.getText()+"님");
 			memberList = memberDAO.getMemberInfoUsingId(lblMemberId.getText());
+			System.out.println(memberList.get(0).getName());
+			txtName.setText(memberList.get(0).getName());
+			txtNumber.setText(memberList.get(0).getPhoneNumer());
+			txtPw.setText(memberList.get(0).getPassword());
+			cbAge.setValue(memberList.get(0).getAgeGroup());
+			
+			String addr = memberList.get(0).getAddress();
+			
+			// 공백 의 인덱스를 찾는다
+			int idx = addr.indexOf(" ");
+			String gu = addr.substring(0, idx); //공백 앞부분 
+			String dong = addr.substring(idx + 1); //공백 뒷부분
+			cbGu.setValue(gu);
+			cbDong.setValue(dong);
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "LOAD INFORMATION FAILED", "사용자 정보 불러오기 실패", "사용자 정보를 불러오기를 실패했습니다.");
 		}
-		txtName.setText(memberList.get(0).getName());
-		txtNumber.setText(memberList.get(0).getPhoneNumer());
-		txtPw.setText(memberList.get(0).getPassword());
-		cbAge.setValue(memberList.get(0).getAgeGroup());
-
-		String addr = memberList.get(0).getAddress();
-
-		// 공백 의 인덱스를 찾는다
-		int idx = addr.indexOf(" ");
-		String gu = addr.substring(0, idx); //공백 앞부분 
-		String dong = addr.substring(idx + 1); //공백 뒷부분
-		cbGu.setValue(gu);
-		cbDong.setValue(dong);
 
 	}
 

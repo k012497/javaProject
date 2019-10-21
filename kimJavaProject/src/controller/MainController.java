@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,6 +36,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import model.FavoriteVO;
+import model.MemberVO;
 import model.MenuVO;
 import model.RestaurantVO;
 
@@ -82,6 +84,9 @@ public class MainController implements Initializable {
 	private ComboBox<String> cbArrange;
 	ObservableList<String> arrangeList = FXCollections.observableArrayList("기본 정렬", "별점순");
 
+	// Inject controller
+	@FXML private MyPageController myPageController;
+	
 	@FXML
 	private ListView<CustomThing> listView;
 	private final ObservableList<RestaurantVO> imageData = FXCollections.observableArrayList();
@@ -97,7 +102,13 @@ public class MainController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		// 라벨, 버튼, 콤보박스 설정
 		recommendlabelSetting();
-		addressComboBoxSetting();
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				addressComboBoxSetting();
+			}
+		});
 		buttonInitSetting(true, true);
 
 		// 검색 버튼 눌렀을 때
@@ -164,8 +175,7 @@ public class MainController implements Initializable {
 			stage.setScene(new Scene(root, 500, 500));
 			stage.show();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SharedMethod.alertDisplay(1, "리스트 창 호출 실패 ", "리스트 창 호출 실패", "리스트 창 호출 실패하였습니다. ");
 		}
 
 		StackPane root = new StackPane();
@@ -196,7 +206,7 @@ public class MainController implements Initializable {
 	public void handlerMyPageAction(ActionEvent e) {
 		Parent mainView = null;
 		Stage mainStage = null;
-
+		
 		try {
 			mainView = FXMLLoader.load(getClass().getResource("/view/myPage.fxml"));
 			Scene scene = new Scene(mainView);
@@ -216,6 +226,7 @@ public class MainController implements Initializable {
 			SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
 		}
 	}
+	
 
 	public void handlerSearchAction(ActionEvent e) {
 		try {
@@ -248,6 +259,24 @@ public class MainController implements Initializable {
 		addressGuList = addressDAO.getGu();
 		cbGu.setItems(addressGuList);
 
+		//lblMember의 주소를 불러오기
+		MemberDAO memberDAO = new MemberDAO();
+		ArrayList<MemberVO> memberList;
+		try {
+			memberList = memberDAO.getMemberInfoUsingId(lblMember.getText());
+			String addr = memberList.get(0).getAddress();
+			int idx = addr.indexOf(" "); 
+	        String gu = addr.substring(0, idx);
+	        String dong = addr.substring(idx+1);
+			cbGu.setValue(gu);
+			cbDong.setValue(dong);
+			buttonInitSetting(true, false);
+			
+		} catch (Exception e) {
+			SharedMethod.alertDisplay(1, "사용자 정보 불러오기 실패", "사용자 정보 불러오기 실패", "사용자 정보 불러오기에 실패했습니다.");
+		}
+		
+		
 		cbGu.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {

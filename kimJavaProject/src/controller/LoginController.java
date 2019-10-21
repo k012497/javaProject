@@ -43,8 +43,8 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		//setting for test
-		txtId.setText("aaa");
-		txtPw.setText("123");
+		txtId.setText("a123");
+		txtPw.setText("123123");
 		
 		lblFindId.setOnMousePressed((e) -> handlerLabelFindId());
 		lblFindPw.setOnMousePressed((e) -> handlerLabelFindPw());
