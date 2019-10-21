@@ -552,25 +552,27 @@ public class MainController implements Initializable {
 	public void handlerAddStars(ImageView imgStars) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/view/stars.fxml"));
-			Stage stage = new Stage(StageStyle.UTILITY);
-			stage.initModality(Modality.WINDOW_MODAL);
-			stage.initOwner(imgStars.getScene().getWindow());
-			stage.setTitle("아이디 찾기");
-
-			Button btnOk = (Button) root.lookup("#btnOk");
-			Button btnCancel = (Button) root.lookup("#btnCancel");
-			Label lblNum = (Label) root.lookup("#lblNum");
-			Slider sldSize = (Slider) root.lookup("#sldSize");
-
-			btnCancel.setOnAction((e3) -> {
-				stage.close();
-			});
+			Stage stage = new Stage();
+//			Stage stage = new Stage(StageStyle.UTILITY);
+//			stage.initModality(Modality.WINDOW_MODAL);
+//			stage.initOwner(imgStars.getScene().getWindow());
+//			stage.setTitle("아이디 찾기");
+//
+//			Button btnOk = (Button) root.lookup("#btnOk");
+//			Button btnCancel = (Button) root.lookup("#btnCancel");
+//			Label lblNum = (Label) root.lookup("#lblNum");
+//			Slider sldSize = (Slider) root.lookup("#sldSize");
+//
+//			btnCancel.setOnAction((e3) -> {
+//				stage.close();
+//			});
 
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.show();
 		} catch (IOException e) {
 			SharedMethod.alertDisplay(1, "별점 추가 오류", "별점 추가 오류", "별점 추가 창을 부르는 데 실패했습니다.");
+			e.printStackTrace();
 		}
 	}
 
