@@ -71,7 +71,6 @@ public class MainController implements Initializable {
 	private Label lblRecommend;
 	@FXML
 	private Label lblMember;
-	
 
 	@FXML
 	private ComboBox<String> cbGu;
@@ -88,69 +87,82 @@ public class MainController implements Initializable {
 	private final ObservableList<RestaurantVO> imageData = FXCollections.observableArrayList();
 	private String localUrl = ""; // 이미지 파일 경로
 	private Image localImage;
-	
+
 	private int selectedIndex;
 	private ObservableList<CustomThing> selectedRest;
 	ObservableList<RestaurantVO> restData;
 	ObservableList<MenuVO> menuData;
 
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//라벨, 버튼, 콤보박스 설정 
+		// 라벨, 버튼, 콤보박스 설정
 		recommendlabelSetting();
 		addressComboBoxSetting();
 		buttonInitSetting(true, true);
-		
+
 		// 검색 버튼 눌렀을 때
 		btnSearch.setOnAction((e) -> handlerSearchAction(e));
-		
-		// 마이페이지 버튼 눌렀을 때 
+
+		// 마이페이지 버튼 눌렀을 때
 		btnMyPage.setOnAction((e) -> handlerMyPageAction(e));
-		
+
 		// 전체보기 눌렀을 때
-		btnAll.setOnAction((e) -> setListWithImage());
-		
+		btnAll.setOnAction((e) -> setListWithImageAll());
+
 		// 각 음식 종류 버튼 눌렀을 때
-		String kind = "중식";
-		btnKorean.setOnAction((e) -> setListWithImagebyKind());
-		
+		btnKorean.setOnAction((e) -> setListWithImagebyKind("한식"));
+		btnChinese.setOnAction((e) -> setListWithImagebyKind("중식"));
+		btnJapanese.setOnAction((e) -> setListWithImagebyKind("일식"));
+		btnWestern.setOnAction((e) -> setListWithImagebyKind("양식"));
+		btnVege.setOnAction((e) -> setListWithImagebyKind("채식"));
+		btnGlobal.setOnAction((e) -> setListWithImagebyKind("세계음식"));
+		btnCafe.setOnAction((e) -> setListWithImagebyKind("카페"));
+		btnBuffet.setOnAction((e) -> setListWithImagebyKind("뷔페"));
+
 		// 로그아웃 버튼 눌렀을 때
 		btnSignOut.setOnAction((e) -> handlerSignOutAction());
 	}
 
-	public void setListWithImagebyKind() {
+	public void setListWithImagebyKind(String kind) {
 		try {
 			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/test.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(btnAll.getScene().getWindow());
 			stage.setTitle("식당 리스트");
-	
+
 			restData = null;
 
-	        ObservableList<CustomThing> data = FXCollections.observableArrayList();
+			ObservableList<CustomThing> data = FXCollections.observableArrayList();
 //	        data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 45.6), new CustomThing("Jam", "addr", 7.89));
-	        RestaurantDAO restDAO = new RestaurantDAO();
-	        try {
-				data.addAll(restDAO.getRestByAddrAndKind(cbGu.getValue(), cbDong.getValue(), "중"));
+			RestaurantDAO restDAO = new RestaurantDAO();
+
+			try {
+				if (restDAO.getRestByAddrAndKind(cbGu.getValue(), cbDong.getValue(), kind).get(0) == null) {
+					SharedMethod.alertDisplay(5, "!", "등록된 식당 없음", "등록된 식당이 없습니다.");
+				} else {
+					data.addAll(restDAO.getRestByAddrAndKind(cbGu.getValue(), cbDong.getValue(), kind));
+				}
+
 			} catch (Exception e) {
-				SharedMethod.alertDisplay(1, "식당 리스트를 가져오기 실패", "지역에 맞는 식당 리스트 가져오기 실패", "지역에 맞는 식당 리스트를 가져오지 못했습니다.");
-				e.printStackTrace();
+				SharedMethod.alertDisplay(1, "등록된 식당 없음", "등록된 식당이 없습니다.", "다른 지역/종류를 검색해주세요 ");
+				return;
 			}
 
-	        final ListView<CustomThing> listView = new ListView<CustomThing>(data);
-	        listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
-	            @Override
-	            public ListCell<CustomThing> call(ListView<CustomThing> listView) {
-	                return new CustomListCell();
-	            }
-	        });
+			final ListView<CustomThing> listView = new ListView<CustomThing>(data);
+			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
+				@Override
+				public ListCell<CustomThing> call(ListView<CustomThing> listView) {
+					return new CustomListCell();
+				}
+			});
 
-	        StackPane root = new StackPane();
-	        root.getChildren().add(listView);
-	        stage.setScene(new Scene(root, 500, 500));
-	        stage.show();
+			listView.setOnMousePressed((e) -> handlerListViewPressed(e));
+			
+			StackPane root = new StackPane();
+			root.getChildren().add(listView);
+			stage.setScene(new Scene(root, 500, 500));
+			stage.show();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -162,7 +174,7 @@ public class MainController implements Initializable {
 
 	private void handlerSignOutAction() {
 		Stage primaryStage = new Stage();
-    	Parent loader;
+		Parent loader;
 		try {
 			loader = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
 			Scene scene = new Scene(loader);
@@ -171,7 +183,7 @@ public class MainController implements Initializable {
 		} catch (IOException e) {
 			SharedMethod.alertDisplay(1, "로그인창 콜실패", "로그인창 부르기 실패", e.toString() + e.getMessage());
 		}
-		
+
 		Stage stage = (Stage) btnSignOut.getScene().getWindow();
 		stage.close();
 	}
@@ -182,27 +194,27 @@ public class MainController implements Initializable {
 	}
 
 	public void handlerMyPageAction(ActionEvent e) {
-			Parent mainView = null;
-			Stage mainStage = null;
+		Parent mainView = null;
+		Stage mainStage = null;
 
-			try {
-				mainView = FXMLLoader.load(getClass().getResource("/view/myPage.fxml"));
-				Scene scene = new Scene(mainView);
-				mainStage = new Stage(StageStyle.UTILITY);
-				mainStage.initModality(Modality.WINDOW_MODAL);
-				mainStage.initOwner(btnMyPage.getScene().getWindow());
-				mainStage.setTitle("My Page");
-				
-				Label lblMemberId = (Label) mainView.lookup("#lblMemberId");
-				lblMemberId.setText(lblMember.getText());
-				
-				mainStage.setScene(scene);
-				mainStage.setResizable(true);
+		try {
+			mainView = FXMLLoader.load(getClass().getResource("/view/myPage.fxml"));
+			Scene scene = new Scene(mainView);
+			mainStage = new Stage(StageStyle.UTILITY);
+			mainStage.initModality(Modality.WINDOW_MODAL);
+			mainStage.initOwner(btnMyPage.getScene().getWindow());
+			mainStage.setTitle("My Page");
 
-				mainStage.show();
-			} catch (Exception e1) {
-				SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
-			}
+			Label lblMemberId = (Label) mainView.lookup("#lblMemberId");
+			lblMemberId.setText(lblMember.getText());
+
+			mainStage.setScene(scene);
+			mainStage.setResizable(true);
+
+			mainStage.show();
+		} catch (Exception e1) {
+			SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+		}
 	}
 
 	public void handlerSearchAction(ActionEvent e) {
@@ -271,7 +283,7 @@ public class MainController implements Initializable {
 		int count11 = restaurantDAO.getCountbyGu("종로구");
 		int count12 = restaurantDAO.getCountbyGu("중구");
 		int count13 = restaurantDAO.getCountbyGu("중랑구");
-		
+
 		for (int i = 0; i < 13; i++) {
 			if (maxCount < count1) {
 				maxCount = count1;
@@ -318,50 +330,51 @@ public class MainController implements Initializable {
 
 	}
 
-	public void setListWithImage() {
+	public void setListWithImageAll() {
 		try {
 			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/test.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(btnAll.getScene().getWindow());
 			stage.setTitle("식당 리스트");
-	
+
 			restData = null;
 
-	        ObservableList<CustomThing> data = FXCollections.observableArrayList();
+			ObservableList<CustomThing> data = FXCollections.observableArrayList();
 //	        data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 45.6), new CustomThing("Jam", "addr", 7.89));
-	        RestaurantDAO restDAO = new RestaurantDAO();
-	        try {
+			RestaurantDAO restDAO = new RestaurantDAO();
+			try {
 				data.addAll(restDAO.getRestByAddr(cbGu.getValue(), cbDong.getValue()));
 			} catch (Exception e) {
 				SharedMethod.alertDisplay(1, "식당 리스트를 가져오기 실패", "지역에 맞는 식당 리스트 가져오기 실패", "지역에 맞는 식당 리스트를 가져오지 못했습니다.");
 				e.printStackTrace();
 			}
 
-	        final ListView<CustomThing> listView = new ListView<CustomThing>(data);
-	        listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
-	            @Override
-	            public ListCell<CustomThing> call(ListView<CustomThing> listView) {
-	                return new CustomListCell();
-	            }
-	        });
-	        
-	        listView.setOnMousePressed((e) -> handlerListViewPressed(e));
+			final ListView<CustomThing> listView = new ListView<CustomThing>(data);
+			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
+				@Override
+				public ListCell<CustomThing> call(ListView<CustomThing> listView) {
+					return new CustomListCell();
+				}
+			});
 
-	        StackPane root = new StackPane();
-	        root.getChildren().add(listView);
-	        stage.setScene(new Scene(root, 500, 500));
-	        stage.show();
+			listView.setOnMousePressed((e) -> handlerListViewPressed(e));
+
+			StackPane root = new StackPane();
+			root.getChildren().add(listView);
+			stage.setScene(new Scene(root, 500, 500));
+			stage.show();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SharedMethod.alertDisplay(1, "리스트 창 오류 ", "리스트 창 호출 실패 ..", "리스트 창을 불러오지 못했습니다");
 		}
 
 		StackPane root = new StackPane();
 		root.getChildren().add(listView);
 	}
+	
 
 	public void handlerListViewPressed(MouseEvent e) {
+		System.out.println("123");
 		selectedRest = listView.getSelectionModel().getSelectedItems();
 //		int restId = selectedRest.get(0).getRestaurantID();
 		RestaurantDAO restDAO = new RestaurantDAO();
@@ -372,13 +385,13 @@ public class MainController implements Initializable {
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(btnAll.getScene().getWindow());
 			stage.setTitle("상세 정보");
-			
+
 			try {
 				rvo = restDAO.getRestByName("배러댄");
 			} catch (Exception e1) {
 				SharedMethod.alertDisplay(1, "식당 정보오류", "식당 정보오류", "식당 정보를 불러올 수 없습니다. ");
 			}
-			
+
 			Button btnCancel = (Button) root.lookup("#btnCancel");
 			Label lblName = (Label) root.lookup("#lblName");
 			Label lblAddress = (Label) root.lookup("#lblAddress");
@@ -402,40 +415,39 @@ public class MainController implements Initializable {
 			lblTakeout.setText(rvo.get(0).getTakeout());
 			lblReserve.setText(rvo.get(0).getReservation());
 			lblStars.setText(String.valueOf(rvo.get(0).getAvgStars()));
-			
+
 			btnCancel.setOnAction((e1) -> {
 				stage.close();
 			});
-			
-			imgLocation.setOnMousePressed((e2)->handlerLocationAction(imgLocation, lblName.getText()));
+
+			imgLocation.setOnMousePressed((e2) -> handlerLocationAction(imgLocation, lblName.getText()));
 			imgStars.setOnMousePressed((e4) -> handlerAddStars(imgStars));
 			imgFav.setOnMousePressed((e3) -> handlerAddFavorite());
-			
+
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.show();
 		} catch (IOException e3) {
 			SharedMethod.alertDisplay(1, "상세정보 창 오류", "오류", "오류");
-			e3.printStackTrace();
 		}
 	}
-	
+
 	private void handlerAddFavorite() {
-		//즐겨찾기 테이블에 insert
+		// 즐겨찾기 테이블에 insert
 		FavoriteDAO favDAO = new FavoriteDAO();
 		FavoriteVO fvo = new FavoriteVO(lblMember.getText(), 4);
-		
+
 		try {
-			//즐겨찾기 테이블에 등록
+			// 즐겨찾기 테이블에 등록
 			favDAO.getFavregiste(fvo, lblMember.getText());
-			
-			// 즐겨찾기 테이블에 있는 식당아이디를 카운트해서 
+
+			// 즐겨찾기 테이블에 있는 식당아이디를 카운트해서
 			System.out.println(favDAO.getFavCount(4));
-			
-			//즐겨찾기 속성에 추가
+
+			// 즐겨찾기 속성에 추가
 			RestaurantDAO restDAO = new RestaurantDAO();
 			restDAO.getFavCountUpdate(favDAO.getFavCount(4), 4);
-			
+
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "즐겨찾기 추가 실패", "즐겨찾기 추가 실패");
 		}
@@ -468,20 +480,20 @@ public class MainController implements Initializable {
 	}
 
 	public void handlerLocationAction(ImageView imgLocation, String name) {
-		//new stage with web view
+		// new stage with web view
 		try {
-			
+
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(imgLocation.getScene().getWindow());
 			stage.setTitle("아이디 찾기");
-			
-	        WebView webView = new WebView();
 
-	        webView.getEngine().load("https://www.google.com/maps/search/?api=1&parameters&query=" + name);
-			
-	        VBox vBox = new VBox(webView);
-	        Scene scene = new Scene(vBox, 960, 600);
+			WebView webView = new WebView();
+
+			webView.getEngine().load("https://www.google.com/maps/search/?api=1&parameters&query=" + name);
+
+			VBox vBox = new VBox(webView);
+			Scene scene = new Scene(vBox, 960, 600);
 
 			stage.setScene(scene);
 			stage.show();
@@ -507,7 +519,7 @@ public class MainController implements Initializable {
 		// 컬럼 객체들을 테이블 뷰에 추가 & 항목 추가
 		menuTable.setItems(menuData);
 		menuTable.getColumns().addAll(colName, colPrice);
-		
+
 		try {
 			// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
 			int restID = selectedRest.get(0).getRestaurantID();
@@ -523,5 +535,4 @@ public class MainController implements Initializable {
 
 	} // end of menuTableViewSetting
 
-	
 }

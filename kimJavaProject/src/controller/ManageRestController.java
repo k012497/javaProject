@@ -213,8 +213,6 @@ public class ManageRestController implements Initializable {
 
 				restData.remove(selectedIndex);
 				restData.add(selectedIndex, rvo); // 테이블에 들어가버림. setItems(data);해놨으니까.
-
-				SharedMethod.alertDisplay(5, "SUCCESS", "congratulations!", "Registration successfully completed");
 			}
 		} catch (Exception e1) {
 			SharedMethod.alertDisplay(1, "CORRECTION FAILED", "error!", "enter ALL value" + e1.getMessage());

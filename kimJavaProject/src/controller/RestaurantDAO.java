@@ -302,8 +302,9 @@ public class RestaurantDAO {
 		try {
 			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
-
+			
 			// ④ 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
+			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, rvo.getRestaurantName());
 			pstmt.setString(2, rvo.getAddress());
 			pstmt.setString(3, rvo.getTelephone());
@@ -312,15 +313,12 @@ public class RestaurantDAO {
 			pstmt.setString(6, rvo.getImageFileName());
 			pstmt.setInt(7, rvo.getFavCount());
 			pstmt.setDouble(8, rvo.getAvgStars());
-
 			pstmt.setString(9, rvo.getTakeout());
 			pstmt.setString(10, rvo.getParking());
 			pstmt.setString(11, rvo.getReservation());
 			pstmt.setInt(12, no);
-
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
-
 			if (i == 1) {
 				SharedMethod.alertDisplay(1, " correction", "correction completed", "SUCCESS!");
 			} else {
