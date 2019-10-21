@@ -280,6 +280,7 @@ public class MainController implements Initializable {
 		cbGu.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				cbDong.setValue("");
 				addressDongList = addressDAO.getDong(cbGu.getValue());
 				cbDong.setItems(addressDongList);
 				cbDong.valueProperty().addListener(new ChangeListener<String>() {
@@ -378,7 +379,19 @@ public class MainController implements Initializable {
 				SharedMethod.alertDisplay(1, "식당 리스트를 가져오기 실패", "지역에 맞는 식당 리스트 가져오기 실패", "지역에 맞는 식당 리스트를 가져오지 못했습니다.");
 				e.printStackTrace();
 			}
+			
+			try {
+				if (restDAO.getRestByAddr(cbGu.getValue(), cbDong.getValue()).get(0) == null) {
+					SharedMethod.alertDisplay(5, "!", "등록된 식당 없음", "등록된 식당이 없습니다.");
+				} else {
+					data.addAll(restDAO.getRestByAddr(cbGu.getValue(), cbDong.getValue()));
+				}
 
+			} catch (Exception e) {
+				SharedMethod.alertDisplay(1, "등록된 식당 없음", "등록된 식당이 없습니다.", "다른 지역/종류를 검색해주세요 ");
+				return;
+			}
+			
 			final ListView<CustomThing> listView = new ListView<CustomThing>(data);
 			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
 				@Override
@@ -405,7 +418,12 @@ public class MainController implements Initializable {
 	public void handlerListViewPressed(MouseEvent e) {
 		System.out.println("123");
 		selectedRest = listView.getSelectionModel().getSelectedItems();
-//		int restId = selectedRest.get(0).getRestaurantID();
+		try {
+			int restId = selectedRest.get(0).getRestaurantID();
+		} catch (Exception e2) {
+			SharedMethod.alertDisplay(1, "식당 정보 읽기 실패 ", "식당 정보 읽기 실패 ", "식당 정보 읽기 실패 ");
+		}
+		
 		RestaurantDAO restDAO = new RestaurantDAO();
 		ArrayList<RestaurantVO> rvo = null;
 		try {

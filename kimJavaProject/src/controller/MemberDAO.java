@@ -395,9 +395,9 @@ public class MemberDAO {
 		return resultCount;
 	}
 
-	public static String findPWByPhone(String txtName, String txtPhone, String id) throws Exception {
+	public static String findPWByPhone(String txtName, String txtPhone, String iD) throws Exception {
 		StringBuffer checkTchPW = new StringBuffer(
-				"select password from memberTBL where name = ? and phoneNumber= ? and memberID=?");
+				"select * from memberTBL where memberID = ? and name = ? and phoneNumber = ?");
 		String resultString = null;
 		Connection con = null;
 		PreparedStatement psmt = null;
@@ -407,22 +407,24 @@ public class MemberDAO {
 			con = DBUtil.getConnection();
 			psmt = con.prepareStatement(checkTchPW.toString());
 			// 첫번째 물음표 자리 -> studentID 매치 시켜주는 작업
-			psmt.setString(1, txtName);
-			psmt.setString(2, txtPhone);
-			psmt.setString(3, id);
+
+			// 여기에 2 만 두개였음......
+			psmt.setString(2, txtName);
+			psmt.setString(3, txtPhone);
+			psmt.setString(1, iD);
 
 			// 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
 			rs = psmt.executeQuery();
 
 			while (rs.next()) {
-				System.out.println(rs.getString(1));
-				resultString = rs.getString(1);
+				MemberVO member = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7));
+				resultString = member.getPassword();
 			}
 			if (resultString == null) {
 				// AdminController.callAlert("LOGIN 실패 : 존재하지 않는 아이디 입니다.");
 				return resultString;
 			}
-
 		} catch (SQLException e) {
 			// AdminController.callAlert("login 실패 : StudentDAO");
 			e.printStackTrace();
@@ -440,7 +442,6 @@ public class MemberDAO {
 						"자원 닫기 실패 : psmt & con (데이터 자원) 닫는 데에 문제가 발생했어요.");
 			}
 		}
-
 		return resultString;
 	}
 
