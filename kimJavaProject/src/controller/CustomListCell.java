@@ -14,48 +14,45 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class CustomListCell extends ListCell<CustomThing> {
-    private HBox content;
-    private Text name;
-    private Text price;
-    private Text address;
+	private HBox content;
+	private Text name;
+	private Text address;
+	private Text avgStars;
+	private ImageView imgView = new ImageView();
 
-    public CustomListCell(String fileName) {
-        super();
-        name = new Text();
-        price = new Text();
-        address = new Text();
-        name.setFont(new Font(25.0));
-        VBox vBox = new VBox(name, price, address);
-//        ImageView imageView = new ImageView();
-//        imageView.setImage(new Image("/images/moodindigo.jpg", false));
-//        content = new HBox(imageView, vBox);
-        
-        FileInputStream input;
-		try {
-			File dirSave = new File("/Users/kimsojin/Desktop/code/images"); 
-			input = new FileInputStream(new File(dirSave.getAbsolutePath() + "//" + fileName));
-			Image image = new Image(input);
-			ImageView imageView = new ImageView(image);
-			imageView.setFitWidth(150);
-			imageView.setFitHeight(150);
-			content = new HBox(imageView, vBox);
-			content.setSpacing(10);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public CustomListCell() {
+		super();
+		name = new Text();
+		address = new Text();
+		avgStars = new Text();
+		VBox vBox = new VBox(name, address, avgStars);
+
+		content = new HBox(imgView, vBox);
+		content.setSpacing(10);
+	}
+
+	@Override
+	protected void updateItem(CustomThing item, boolean empty) {
+		super.updateItem(item, empty);
+		if (item != null && !empty) { // <== test for null item and empty parameter
+			name.setText(item.getName());
+			address.setText(String.valueOf(item.getAddress()));
+			avgStars.setText(String.valueOf(item.getAvgStars()));
+			FileInputStream input;
+			try {
+				File dirSave = new File("/Users/kimsojin/Desktop/code/images");
+				input = new FileInputStream(new File(dirSave.getAbsolutePath() + "//" + item.getFileName()));
+				Image image = new Image(input);
+				imgView.setImage(image);
+				imgView.setFitWidth(100);
+				imgView.setFitHeight(100);
+
+			} catch (FileNotFoundException e) {
+				
+			}
+			setGraphic(content);
+		} else {
+			setGraphic(null);
 		}
-    }
-
-    @Override
-    protected void updateItem(CustomThing item, boolean empty) {
-        super.updateItem(item, empty);
-        if (item != null && !empty) { // <== test for null item and empty parameter
-            name.setText(item.getName());
-            price.setText(String.valueOf(item.getPrice()));
-            address.setText(item.getAddress());
-            setGraphic(content);
-        } else {
-            setGraphic(null);
-        }
-    }
+	}
 }

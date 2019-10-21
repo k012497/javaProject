@@ -102,12 +102,14 @@ public class MainController implements Initializable {
 	RestaurantDAO restaurantDAO = new RestaurantDAO();
 	ArrayList<RestaurantVO> rvo = null;
 	String fileName = null;
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// 라벨, 버튼, 콤보박스 설정
 		recommendlabelSetting();
-		Platform.runLater(() -> { addressComboBoxSetting(); });
+		Platform.runLater(() -> {
+			addressComboBoxSetting();
+		});
 		buttonInitSetting(true, true);
 
 		// 검색 버튼 눌렀을 때
@@ -158,24 +160,12 @@ public class MainController implements Initializable {
 				SharedMethod.alertDisplay(1, "등록된 식당 없음", "등록된 식당이 없습니다.", "다른 지역/종류를 검색해주세요 ");
 				return;
 			}
-			String nameString = listView.getSelectionModel().getSelectedItems().get(0).getName();
-			System.out.println(nameString);
-			ArrayList<RestaurantVO> rvoList = null;
-			try {
-				rvoList = restaurantDAO.getRestByName(nameString);
-				
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			String file = rvoList.get(0).getImageFileName();
-			System.out.println(file);
 
 			final ListView<CustomThing> listView = new ListView<CustomThing>(data);
 			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
 				@Override
 				public ListCell<CustomThing> call(ListView<CustomThing> listView) {
-					return new CustomListCell(file);
+					return new CustomListCell();
 				}
 			});
 
@@ -265,7 +255,6 @@ public class MainController implements Initializable {
 		btnSearch.setDisable(b);
 	}
 
-	
 	public void addressComboBoxSetting() {
 		AddressDAO addressDAO = new AddressDAO();
 		addressGuList = addressDAO.getGu();
@@ -384,44 +373,35 @@ public class MainController implements Initializable {
 			ObservableList<CustomThing> data = FXCollections.observableArrayList();
 //	        data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 45.6), new CustomThing("Jam", "addr", 7.89));
 			RestaurantDAO restDAO = new RestaurantDAO();
-			try {
-				data.addAll(restDAO.getRestByAddr(cbGu.getValue(), cbDong.getValue()));
-			} catch (Exception e) {
-				SharedMethod.alertDisplay(1, "식당 리스트를 가져오기 실패", "지역에 맞는 식당 리스트 가져오기 실패", "지역에 맞는 식당 리스트를 가져오지 못했습니다.");
-				e.printStackTrace();
-			}
 
+			// 해당 지역에 원하는 조건의 식당이 없을 때
 			try {
 				if (restDAO.getRestByAddr(cbGu.getValue(), cbDong.getValue()).get(0) == null) {
 					SharedMethod.alertDisplay(5, "!", "등록된 식당 없음", "등록된 식당이 없습니다.");
 				} else {
-					data.addAll(restDAO.getRestByAddr(cbGu.getValue(), cbDong.getValue()));
+					try {
+						data.addAll(restDAO.getRestByAddr(cbGu.getValue(), cbDong.getValue()));
+					} catch (Exception e) {
+						SharedMethod.alertDisplay(1, "식당 리스트를 가져오기 실패", "지역에 맞는 식당 리스트 가져오기 실패",
+								"지역에 맞는 식당 리스트를 가져오지 못했습니다.");
+					}
 				}
 
 			} catch (Exception e) {
 				SharedMethod.alertDisplay(1, "등록된 식당 없음", "등록된 식당이 없습니다.", "다른 지역/종류를 검색해주세요 ");
 				return;
 			}
-			
-			
-			try {
-				rvo = restaurantDAO.getRestByName(selectedRest.get(0).getName());
-				
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			fileName = rvo.get(0).getImageFileName();
-			
+
+			////////////////////////////////////////////////////////////////////////
 
 			final ListView<CustomThing> listView = new ListView<CustomThing>(data);
-			listView.getSelectionModel().getSelectedItems().get(0);
 			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
 				@Override
 				public ListCell<CustomThing> call(ListView<CustomThing> listView) {
-					return new CustomListCell(fileName);
+					return new CustomListCell();
 				}
 			});
+			////////////////////////////////////////////////////////////////////////
 
 			listView.setOnMousePressed((e) -> handlerListViewPressed(e, listView));
 
@@ -476,7 +456,7 @@ public class MainController implements Initializable {
 
 			menuTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
 			Platform.runLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					menuData = FXCollections.observableArrayList();
@@ -502,12 +482,12 @@ public class MainController implements Initializable {
 						MenuDAO menuDAO = new MenuDAO();
 						menuData = FXCollections.observableArrayList();
 						menuData = menuDAO.getMenu(restID);
-						
+
 						menuTable.setItems(menuData);
 					} catch (Exception e) {
 						SharedMethod.alertDisplay(1, "메뉴 세팅 실패", "메뉴 세팅 실패", "메뉴 세팅 실패");
 					}
-					
+
 				}
 			});
 			lblName.setText(rvo.get(0).getRestaurantName());
@@ -538,26 +518,34 @@ public class MainController implements Initializable {
 		// 즐겨찾기 테이블에 insert
 		FavoriteDAO favDAO = new FavoriteDAO();
 		int restId = selectedRest.get(0).getRestaurantID();
-		FavoriteVO fvo = new FavoriteVO(lblMember.getText(), restId);
 
-		try {
-			// 즐겨찾기 테이블에 등록
-			favDAO.getFavregiste(fvo, lblMember.getText());
+		int isEmpty = favDAO.getFavFlag(restId, lblMember.getText());
+		
+		if(isEmpty == 0) {
+			FavoriteVO fvo = new FavoriteVO(lblMember.getText(), restId);
+			
+			try {
+				// 즐겨찾기 테이블에 등록
+				favDAO.getFavregiste(fvo, lblMember.getText());
 
-			// 즐겨찾기 테이블에 있는 식당아이디를 카운트해서
-			System.out.println(favDAO.getFavCount(restId));
-			System.out.println("testest");
+				// 즐겨찾기 테이블에 있는 식당아이디를 카운트해서
+				System.out.println(favDAO.getFavCount(restId));
+				System.out.println("testest");
 
-			// 즐겨찾기 속성에 추가
-			RestaurantDAO restDAO = new RestaurantDAO();
-			int favoriteCount = favDAO.getFavCount(restId);
-			System.out.println("식 아이디="+restId);
-			System.out.println("즐찾 수 = "+favoriteCount);
-			restDAO.getFavCountUpdate(favoriteCount, restId);
-			System.out.println("테스트");
-		} catch (Exception e) {
-			SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "즐겨찾기 추가 실패", "즐겨찾기 추가 실패");
+				// 즐겨찾기 속성에 추가
+				RestaurantDAO restDAO = new RestaurantDAO();
+				int favoriteCount = favDAO.getFavCount(restId);
+				System.out.println("식 아이디=" + restId);
+				System.out.println("즐찾 수 = " + favoriteCount);
+				restDAO.getFavCountUpdate(favoriteCount, restId);
+				System.out.println("테스트");
+			} catch (Exception e) {
+				SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "즐겨찾기 추가 실패", "즐겨찾기 추가 실패");
+			}
+		}else {
+			SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "이미 즐겨찾기에 등록되었습니다", "이미 즐겨찾기에 등록되었습니다");
 		}
+		
 
 	}
 
@@ -627,18 +615,18 @@ public class MainController implements Initializable {
 		menuTable.setItems(menuData);
 		menuTable.getColumns().addAll(colName, colPrice);
 
-		try {
-			// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
-			int restID = selectedRest.get(0).getRestaurantID();
-			System.out.println(restID);
-			MenuDAO menuDAO = new MenuDAO();
-			menuData = FXCollections.observableArrayList();
-			menuData = menuDAO.getMenu(restID);
-
-			menuTable.setItems(menuData);
-		} catch (Exception e) {
-			SharedMethod.alertDisplay(1, "메뉴 세팅 실패", "메뉴 세팅 실패", "메뉴 세팅 실패");
-		}
+//		try {
+//			// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
+//			int restID = selectedRest.get(0).getRestaurantID();
+//			System.out.println(restID);
+//			MenuDAO menuDAO = new MenuDAO();
+//			menuData = FXCollections.observableArrayList();
+//			menuData = menuDAO.getMenu(restID);
+//
+//			menuTable.setItems(menuData);
+//		} catch (Exception e) {
+//			SharedMethod.alertDisplay(1, "메뉴 세팅 실패", "메뉴 세팅 실패", "메뉴 세팅 실패");
+//		}
 
 	} // end of menuTableViewSetting
 

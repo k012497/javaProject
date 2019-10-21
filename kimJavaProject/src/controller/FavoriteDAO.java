@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.FavoriteVO;
+import model.MenuVO;
 
 public class FavoriteDAO {
 
@@ -85,44 +86,86 @@ public class FavoriteDAO {
 		return list;
 	}
 
+	// 해당 사용자가 특정 식당을 즐찾 등록 했는지 확인. 했으면 1 안 했으면 0 리턴
+	public int getFavFlag(int restId, String memberId) {
+		boolean flag = false;
+		ObservableList<FavoriteVO> list = FXCollections.observableArrayList();
+		String dml = "select * from favoriteTBL where restaurantID = ? and memberID = ?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			pstmt.setInt(1, restId);
+			pstmt.setString(2, memberId);
+			rs = pstmt.executeQuery();
+			while (rs.next()) { // 다음 레코드가 있을 동안
+				list.add(new FavoriteVO(rs.getString(2), rs.getInt(1)));
+				flag = true;
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+
+		if (flag == false) {
+			return 0;
+		}
+		
+		return 1;	
+
+	}
+
 	public int getFavCount(int restID) {
 		ObservableList<String> list = FXCollections.observableArrayList();
-	      String dml = "select count(f.restaurantID)" + 
-	      		"	from favoriteTBL f, restaurantTBL r" + 
-	      		"	where f.restaurantID = r.restaurantID and f.restaurantID = ?" + 
-	      		"	group by f.restaurantID";
+		String dml = "select count(f.restaurantID)" + "	from favoriteTBL f, restaurantTBL r"
+				+ "	where f.restaurantID = r.restaurantID and f.restaurantID = ?" + "	group by f.restaurantID";
 
-	      Connection con = null;
-	      PreparedStatement pstmt = null;
-	      ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
 
-	      int count = 0;
-	      try {
-	         con = DBUtil.getConnection();
-	         pstmt = con.prepareStatement(dml);
-	         pstmt.setInt(1, restID);
-	         rs = pstmt.executeQuery();
-	         while (rs.next()) { // 다음 레코드가 있을 동안
-	            count = rs.getInt(1);
-	         }
-	      } catch (SQLException se) {
-	         System.out.println(se);
-	      } catch (Exception e) {
-	         System.out.println(e);
-	      } finally {
-	         try {
-	            if (rs != null)
-	               rs.close();
-	            if (pstmt != null)
-	               pstmt.close();
-	            if (con != null)
-	               con.close();
-	         } catch (SQLException se) {
-	         }
-	      }
-	      return count;
+		int count = 0;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			pstmt.setInt(1, restID);
+			rs = pstmt.executeQuery();
+			while (rs.next()) { // 다음 레코드가 있을 동안
+				count = rs.getInt(1);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return count;
 	}
-	
+
 	// data 삭제 기능 - delete
 	public void getFavDelete(int no) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문

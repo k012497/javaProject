@@ -137,11 +137,11 @@ public class SingUpController implements Initializable {
 		int i = memberDAO.getUserIdSearch(txtId.getText());
 
 		if (i == 1) {
-			SharedMethod.alertDisplay(1, "아이디 중복", "이미 사용중인 아이디입니다.", "다른 아이디를 입력해주세요.");
+			SharedMethod.alertDisplay(5, "아이디 중복", "이미 사용중인 아이디입니다.", "다른 아이디를 입력해주세요.");
 			return;
 		} else if (i == -1) {
 			idCheck = true;
-			SharedMethod.alertDisplay(1, "아이디 사용가능", "사용할 수 있는 아이디입니다.", "다른 항목도 입력해주세요.");
+			SharedMethod.alertDisplay(5, "아이디 사용가능", "사용할 수 있는 아이디입니다.", "다른 항목도 입력해주세요.");
 		}
 	}
 
@@ -152,7 +152,7 @@ public class SingUpController implements Initializable {
 		if (txtId.getText().equals("") || txtName.getText().equals("") || txtPhoneNum.getText().equals("")
 				|| txtPw.getText().equals("") || cbAge.getValue().equals("")
 				|| cbDong.getValue().equals("") || cbGu.getValue().equals("") || cbGender.getValue().equals("")) {
-			SharedMethod.alertDisplay(1, "빈칸 있음", "빈칸 없이 입력 해주세요", "재입력 바랍니다");
+			SharedMethod.alertDisplay(5, "빈칸 있음", "빈칸 없이 입력 해주세요", "재입력 바랍니다");
 		} else {
 			if (idCheck) {
 				try {
@@ -164,7 +164,7 @@ public class SingUpController implements Initializable {
 					// TODO: handle exception
 				}
 				try {
-					mainView = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+					mainView = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
 					Scene scene = new Scene(mainView);
 					mainStage = new Stage();
 					mainStage.setTitle("[김시스터즈]");
@@ -173,7 +173,7 @@ public class SingUpController implements Initializable {
 					((Stage) btnSignUp.getScene().getWindow()).close();
 					mainStage.show();
 				} catch (Exception e1) {
-					SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+					SharedMethod.alertDisplay(1, "로그인 창 콜실패", "로그인 창 부르기 실패", e1.toString() + e1.getMessage());
 				}
 				MemberVO memberID = new MemberVO();
 				int count = 1;
@@ -187,7 +187,7 @@ public class SingUpController implements Initializable {
 				Stage stage1 = (Stage) btnSignUp.getScene().getWindow();
 				stage1.close();
 			} else {
-				SharedMethod.alertDisplay(1, "ID 중복 체크", "ID 중복 체크를 하지 않음", "ID 중복 체크를 눌러주세요");
+				SharedMethod.alertDisplay(5, "ID 중복 체크", "ID 중복 체크를 하지 않음", "ID 중복 체크를 눌러주세요");
 			}
 		}
 

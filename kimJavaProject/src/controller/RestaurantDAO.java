@@ -424,7 +424,7 @@ public class RestaurantDAO {
 	// 지역별 식당 검색 기능
 	public ArrayList<CustomThing> getRestByAddr(String gu, String dong) throws Exception {
 		ArrayList<CustomThing> list = new ArrayList<CustomThing>();
-		String dml = "select restaurantID, restaurantName, address, avgStars from restaurantTBL where address like ?";
+		String dml = "select restaurantID, restaurantName, address, avgStars, imageFileName from restaurantTBL where address like ?";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -437,7 +437,7 @@ public class RestaurantDAO {
 			pstmt.setString(1, addrToSearch);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				retval = new CustomThing(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4));
+				retval = new CustomThing(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5));
 				list.add(retval);
 			}
 		} catch (SQLException se) {
@@ -461,7 +461,7 @@ public class RestaurantDAO {
 	// 지역 & 종류별 식당 검색 기능
 	public ArrayList<CustomThing> getRestByAddrAndKind(String gu, String dong, String kind) throws Exception {
 		ArrayList<CustomThing> list = new ArrayList<CustomThing>();
-		String dml = "select restaurantID, restaurantName, address, avgStars from restaurantTBL where address like ? and kind = ?";
+		String dml = "select restaurantID, restaurantName, address, avgStars, imageFileName from restaurantTBL where address like ? and kind = ?";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -475,7 +475,7 @@ public class RestaurantDAO {
 			pstmt.setString(2, kind);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				retval = new CustomThing(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4));
+				retval = new CustomThing(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5));
 				list.add(retval);
 			}
 		} catch (SQLException se) {

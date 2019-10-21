@@ -49,9 +49,11 @@ public class ManageMemberController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		//아이디는 수정 불가 
+		txtMemId.setDisable(true);
+		
 		//table column setting
 		memberTableColSetting();
-		
 		//load total list into tableView
 		totalList();
 
