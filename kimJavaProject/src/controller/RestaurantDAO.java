@@ -355,6 +355,7 @@ public class RestaurantDAO {
 			con = DBUtil.getConnection();
 
 			// ④ 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
+			pstmt = con.prepareStatement(dml);
 			pstmt.setInt(1, count);
 			pstmt.setInt(2, restId);
 
@@ -362,7 +363,7 @@ public class RestaurantDAO {
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(1, " correction", "correction completed", "SUCCESS!");
+				SharedMethod.alertDisplay(5, " 즐겨찾기 등록 ", "즐겨찾기에 추가되었습니다.", "SUCCESS!");
 			} else {
 				SharedMethod.alertDisplay(1, " correction error", "correction failed", "TRY AGAIN!");
 			}

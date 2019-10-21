@@ -99,6 +99,10 @@ public class MainController implements Initializable {
 	ObservableList<RestaurantVO> restData;
 	ObservableList<MenuVO> menuData;
 
+	RestaurantDAO restaurantDAO = new RestaurantDAO();
+	ArrayList<RestaurantVO> rvo = null;
+	String fileName = null;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// 라벨, 버튼, 콤보박스 설정
@@ -154,12 +158,24 @@ public class MainController implements Initializable {
 				SharedMethod.alertDisplay(1, "등록된 식당 없음", "등록된 식당이 없습니다.", "다른 지역/종류를 검색해주세요 ");
 				return;
 			}
+			String nameString = listView.getSelectionModel().getSelectedItems().get(0).getName();
+			System.out.println(nameString);
+			ArrayList<RestaurantVO> rvoList = null;
+			try {
+				rvoList = restaurantDAO.getRestByName(nameString);
+				
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			String file = rvoList.get(0).getImageFileName();
+			System.out.println(file);
 
 			final ListView<CustomThing> listView = new ListView<CustomThing>(data);
 			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
 				@Override
 				public ListCell<CustomThing> call(ListView<CustomThing> listView) {
-					return new CustomListCell("r1571630130340_배러댄.jpg");
+					return new CustomListCell(file);
 				}
 			});
 
@@ -387,13 +403,23 @@ public class MainController implements Initializable {
 				return;
 			}
 			
+			
+			try {
+				rvo = restaurantDAO.getRestByName(selectedRest.get(0).getName());
+				
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			fileName = rvo.get(0).getImageFileName();
+			
 
 			final ListView<CustomThing> listView = new ListView<CustomThing>(data);
 			listView.getSelectionModel().getSelectedItems().get(0);
 			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
 				@Override
 				public ListCell<CustomThing> call(ListView<CustomThing> listView) {
-					return new CustomListCell("r1571630130340_배러댄.jpg");
+					return new CustomListCell(fileName);
 				}
 			});
 
@@ -524,8 +550,11 @@ public class MainController implements Initializable {
 
 			// 즐겨찾기 속성에 추가
 			RestaurantDAO restDAO = new RestaurantDAO();
-			restDAO.getFavCountUpdate(favDAO.getFavCount(restId), restId);
-
+			int favoriteCount = favDAO.getFavCount(restId);
+			System.out.println("식 아이디="+restId);
+			System.out.println("즐찾 수 = "+favoriteCount);
+			restDAO.getFavCountUpdate(favoriteCount, restId);
+			System.out.println("테스트");
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "즐겨찾기 추가 실패", "즐겨찾기 추가 실패");
 		}

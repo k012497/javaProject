@@ -150,7 +150,7 @@ public class SingUpController implements Initializable {
 		Parent mainView = null;
 		Stage mainStage = null;
 		if (txtId.getText().equals("") || txtName.getText().equals("") || txtPhoneNum.getText().equals("")
-				|| txtPw.getText().equals("") || txtPwCheck.getText().equals("") || cbAge.getValue().equals("")
+				|| txtPw.getText().equals("") || cbAge.getValue().equals("")
 				|| cbDong.getValue().equals("") || cbGu.getValue().equals("") || cbGender.getValue().equals("")) {
 			SharedMethod.alertDisplay(1, "빈칸 있음", "빈칸 없이 입력 해주세요", "재입력 바랍니다");
 		} else {
