@@ -90,7 +90,7 @@ public class MenuDAO {
 	public ObservableList<MenuVO> getMenu(int restId) {
 		ObservableList<MenuVO> list = FXCollections.observableArrayList();
 //		MenuVO list = null;
-		String dml = "select menuName, menuPrice from menuTBL where restaurantID = ?";
+		String dml = "select menuName, menuPrice, menuId from menuTBL where restaurantID = ?";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -103,7 +103,7 @@ public class MenuDAO {
 			rs = pstmt.executeQuery();
 			while (rs.next()) { // 다음 레코드가 있을 동안
 //				list = new MenuVO(rs.getString(1), rs.getInt(2));
-				list.add(new MenuVO(rs.getString(1), rs.getInt(2)));
+				list.add(new MenuVO(rs.getString(1), rs.getInt(2), rs.getInt(3)));
 			}
 		} catch (SQLException se) {
 			System.out.println(se);

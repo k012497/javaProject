@@ -73,6 +73,26 @@ public class MyPageController implements Initializable {
 
 		
 		btnCancel.setOnAction((e)->handlerButtonCancel());
+		
+		btnEdit.setOnAction((e) -> handlerEditButtonAction());
+	}
+
+	public void handlerEditButtonAction() {
+		try {
+			//////if 비번v필드 일치 확인///////
+			if ( txtName.getText().equals("") || txtNumber.getText().equals("")
+					|| txtPw.getText().equals("") || cbGu.getValue().equals("") || cbDong.getValue().equals("") || cbAge.getValue().equals("")) {
+				throw new Exception();
+			} else {
+				MemberVO mvo = new MemberVO(txtPw.getText(), txtName.getText(), txtNumber.getText(), cbGu.getValue() + " " + cbDong.getValue(), cbAge.getValue());
+				
+				MemberDAO memberDAO = new MemberDAO();
+				MemberVO memberVO = memberDAO.getMemberUpdate(mvo, lblMemberId.getText());
+				getMemberInfo();
+			}
+		} catch (Exception e) {
+			SharedMethod.alertDisplay(1, "CORRECTION FAILED", "error!", e.toString());
+		}
 	}
 
 	public void handlerButtonCancel() {

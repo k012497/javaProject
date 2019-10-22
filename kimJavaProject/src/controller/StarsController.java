@@ -19,7 +19,9 @@ public class StarsController implements Initializable {
 	Label lblNum;
 	@FXML
 	Slider sldSize;
-
+	@FXML
+	Label lblRestId;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
@@ -33,9 +35,15 @@ public class StarsController implements Initializable {
 			stage.close();
 		});
 		
-//		btnOk.setOnAction((e)->{
-//			MainController.handlerAddStarsAction();
-//		});
+		btnOk.setOnAction((e)->{
+			int result = MainController.handlerAddStarsAction(lblNum.getText());
+			if(result == 1) {
+				Stage stage = (Stage) (btnCancel.getScene().getWindow());
+				stage.close();
+			}else {
+				SharedMethod.alertDisplay(5, "별점 등록 실패", "별점 등록 실패", "별점 등록에 실패하였습니다.");
+			}
+		});
 
 	}
 

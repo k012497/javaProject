@@ -21,7 +21,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -39,6 +38,7 @@ import model.FavoriteVO;
 import model.MemberVO;
 import model.MenuVO;
 import model.RestaurantVO;
+import model.ReviewVO;
 
 public class MainController implements Initializable {
 	@FXML
@@ -73,7 +73,7 @@ public class MainController implements Initializable {
 	private Label lblRecommend;
 	@FXML
 	private Label lblMember;
-
+	private static String memberID;
 	@FXML
 	private ComboBox<String> cbGu;
 	ObservableList<String> addressGuList;
@@ -111,6 +111,9 @@ public class MainController implements Initializable {
 			addressComboBoxSetting();
 		});
 		buttonInitSetting(true, true);
+		
+		//load가 끝난 후 라벨의 텍스트에 ID가 세팅되면 그 값을 저장
+		Platform.runLater(()-> {memberID = lblMember.getText();});
 
 		// 검색 버튼 눌렀을 때
 		btnSearch.setOnAction((e) -> handlerSearchAction(e));
@@ -416,7 +419,7 @@ public class MainController implements Initializable {
 		StackPane root = new StackPane();
 		root.getChildren().add(listView);
 	}
-
+static int selectedRestId;
 	public void handlerListViewPressed(MouseEvent e, ListView<CustomThing> listView) {
 		selectedRest = listView.getSelectionModel().getSelectedItems();
 		try {
@@ -436,6 +439,7 @@ public class MainController implements Initializable {
 
 			try {
 				rvo = restDAO.getRestByName(selectedRest.get(0).getName());
+				selectedRestId = selectedRest.get(0).getRestaurantID();
 			} catch (Exception e1) {
 				SharedMethod.alertDisplay(1, "식당 정보오류", "식당 정보오류", "식당 정보를 불러올 수 없습니다. ");
 			}
@@ -477,11 +481,11 @@ public class MainController implements Initializable {
 
 					try {
 						// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
-						int restID = selectedRest.get(0).getRestaurantID();
-						System.out.println(restID);
+						//int restID = selectedRest.get(0).getRestaurantID();
+						System.out.println(selectedRestId);
 						MenuDAO menuDAO = new MenuDAO();
 						menuData = FXCollections.observableArrayList();
-						menuData = menuDAO.getMenu(restID);
+						menuData = menuDAO.getMenu(selectedRestId);
 
 						menuTable.setItems(menuData);
 					} catch (Exception e) {
@@ -490,6 +494,7 @@ public class MainController implements Initializable {
 
 				}
 			});
+			
 			lblName.setText(rvo.get(0).getRestaurantName());
 			lblAddress.setText(rvo.get(0).getAddress());
 			lblPhoneNum.setText(rvo.get(0).getTelephone());
@@ -498,6 +503,7 @@ public class MainController implements Initializable {
 			lblReserve.setText(rvo.get(0).getReservation());
 			lblStars.setText(String.valueOf(rvo.get(0).getAvgStars()));
 
+			
 			btnCancel.setOnAction((e1) -> {
 				stage.close();
 			});
@@ -631,5 +637,33 @@ public class MainController implements Initializable {
 //		}
 
 	} // end of menuTableViewSetting
+
+	public static int handlerAddStarsAction(String stars) {
+		System.out.println("메인창으로 전달 "+ stars);
+		System.out.println("선택식당 "+ selectedRestId);
+		System.out.println("t사용자 " +memberID);
+		
+		// 1. 리뷰 테이블에 insert
+		ReviewVO rvo = new ReviewVO(memberID, selectedRestId, Double.parseDouble(stars));
+		ReviewDAO reviewDAO = new ReviewDAO();
+		RestaurantDAO restaurantDAO = new RestaurantDAO();
+		int result = 0;
+		try {
+			result = reviewDAO.getReviewRegiste(rvo);
+			if(result == 0) {
+				SharedMethod.alertDisplay(5, "리뷰 등록 실패 ", "리뷰 등록 실패 ㅠㅠ", "리뷰 등록 실패하였습니다 ");
+				return 0;
+			}else {
+				// 2. 식당 테이블의 별점 정보 수정
+				restaurantDAO.getRestStarsUpdate(selectedRestId);
+				return 1;
+			}
+		} catch (Exception e) {
+			SharedMethod.alertDisplay(5, "리뷰 등록 실패 ", "리뷰 등록 실패 ㅠㅠ", "리뷰 등록 실패하였습니다 ");
+		}
+		
+		return 0;
+		
+	}
 
 }

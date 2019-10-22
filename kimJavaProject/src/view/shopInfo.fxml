@@ -83,11 +83,6 @@
       </HBox>
       <Button id="btnCancel" layoutX="464.0" layoutY="5.0" mnemonicParsing="false" text="X" />
       <Label layoutX="11.0" layoutY="280.0" text="[Menu]" />
-      <ImageView id="imgAddStars" fitHeight="30.0" fitWidth="30.0" layoutX="456.0" layoutY="264.0">
-         <image>
-            <Image url="@../images/plus.png" />
-         </image>
-      </ImageView>
       <Label id="lblName" layoutX="254.0" layoutY="23.0" text="Name">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -126,7 +121,6 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Label layoutX="399.0" layoutY="275.0" text="별점 등록" />
       <Label layoutX="257.0" layoutY="101.0" text="주차" />
       <Label layoutX="257.0" layoutY="128.0" text="포장" />
       <Label layoutX="257.0" layoutY="153.0" text="예약" />

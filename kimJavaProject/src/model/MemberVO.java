@@ -23,6 +23,27 @@ public class MemberVO {
 		this.gender = gender;
 		this.ageGroup = ageGroup;
 	}
+	
+	public MemberVO(String password, String name, String phoneNumer, String address,
+			String ageGroup) {
+		super();
+		this.password = password;
+		this.name = name;
+		this.phoneNumer = phoneNumer;
+		this.address = address;
+		this.ageGroup = ageGroup;
+	}
+
+	public MemberVO(String password, String name, String phoneNumer, String address, String gender,
+			String ageGroup) {
+		super();
+		this.password = password;
+		this.name = name;
+		this.phoneNumer = phoneNumer;
+		this.address = address;
+		this.gender = gender;
+		this.ageGroup = ageGroup;
+	}
 
 	public String getMemberID() {
 		return memberID;

@@ -5,6 +5,7 @@ public class MenuVO {
 	private int restaurantID;
 	private String menuName;
 	private int menuPrice;
+	
 	public MenuVO(int menuID, int restaurantID, String menuName, int menuPrice) {
 		super();
 		this.menuID = menuID;
@@ -22,6 +23,12 @@ public class MenuVO {
 		super();
 		this.menuName = menuName;
 		this.menuPrice = menuPrice;
+	}
+
+	public MenuVO(String menuName, int menuPrice, int menuID) {
+		this.menuName = menuName;
+		this.menuPrice = menuPrice;
+		this.menuID = menuID;
 	}
 
 	public int getMenuID() {

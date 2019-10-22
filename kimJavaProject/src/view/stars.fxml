@@ -10,6 +10,7 @@
 
 <AnchorPane prefHeight="280.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StarsController">
    <children>
+      <Label fx:id="lblRestId" layoutX="7.0" layoutY="5.0" prefHeight="17.0" prefWidth="6.0" textFill="#d7d7d7" />
       <Label layoutX="76.0" layoutY="18.0" text="소중한 별점을 남겨 주세요!">
          <font>
             <Font size="30.0" />

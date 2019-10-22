@@ -383,6 +383,49 @@ public class RestaurantDAO {
 			}
 		}
 	}
+	
+	public void getRestStarsUpdate(int restId) throws Exception {
+		// ② 데이터 처리를 위한 SQL 문
+		String dml = "update restaurantTBL set avgStars = (Select Round(Avg(stars), ?) from reviewTBL where restaurantId = ?) "
+				+ "where restaurantID = ? ";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
+			con = DBUtil.getConnection();
+			
+			// ④ 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
+			pstmt = con.prepareStatement(dml);
+			pstmt.setInt(1, restId);
+			pstmt.setInt(2, restId);
+			pstmt.setInt(3, restId);
+
+			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			int i = pstmt.executeUpdate();
+			if (i == 1) {
+				SharedMethod.alertDisplay(5, "리뷰 등록 성공!", "리뷰 등록 성공!!", "리뷰를 정상적으로 등록하였습니다 ");
+			} else {
+				SharedMethod.alertDisplay(1, " correction error", "correction failed", "TRY AGAIN!");
+				return;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+		} finally {
+			try {
+				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+			}
+		}
+		return;
+	}
 
 	// 이름으로 식당 검색 기능
 	public ArrayList<RestaurantVO> getRestByName(String name) throws Exception {

@@ -65,7 +65,7 @@ public class CustomListView extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		ObservableList<CustomThing> data = FXCollections.observableArrayList();
-		data.addAll(new CustomThing(1,"Cheese", "22", 1.23, "r1571635861165_heart_icon-icons.com_54429.png"));
+		data.addAll(new CustomThing(1,"Cheese", "22", 1.23, "r1571635861165_heart_icon-icons.com_54429.png"), new CustomThing(1,"Cheese", "22", 1.23, "r1571663215254_plus_circle_icon-icons.com_66720.png"));
 
 		final ListView<CustomThing> listView = new ListView<CustomThing>(data);
 		listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
