@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -25,6 +26,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.MemberVO;
 import model.RestaurantVO;
+import model.ReviewJoinRestaurantVO;
+import model.ReviewVO;
 
 public class MyPageController implements Initializable {
 	@FXML
@@ -54,15 +57,23 @@ public class MyPageController implements Initializable {
 	private TextField txtPw;
 	@FXML
 	private TextField txtPwAgain;
+	@FXML
+	private Tab favTab;
+	@FXML
+	private Tab reviewTab;
 
 	@FXML
 	private TableView<RestaurantVO> favTable;
+	private ObservableList<RestaurantVO> favData;
 	@FXML
-	private TableView reviewTable;
+	private TableView<ReviewJoinRestaurantVO> reviewTable;
+	private ObservableList<ReviewJoinRestaurantVO> reviewData;
 
 	ArrayList<MemberVO> memberList;
-	private ObservableList<RestaurantVO> favData;
 
+	private boolean favFlag = false;
+	private boolean reviewFlag = false;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		comboBoxInitSetting();
@@ -72,17 +83,62 @@ public class MyPageController implements Initializable {
 				getMemberInfo();
 			}
 		});
+		
 		favTableColSetting();
-		totalFavList();
+		reviewTableColSetting();
 
 		btnCancel.setOnAction((e) -> handlerButtonCancel());
 		btnLeave.setOnAction((e) -> handlerButtonLeaveAction());
 		btnEdit.setOnAction((e) -> handlerEditButtonAction());
+		
+		//창이 다시 실행되지 않는 한 테이블뷰 로드는 한 번만 하도록 함 
+		favFlag = true;
+		favTab.setOnSelectionChanged((e) -> {
+			if(favFlag) {
+				ArrayList<RestaurantVO> list = null;
+				RestaurantDAO restDAO = new RestaurantDAO();
+				RestaurantVO restVO = null;
+				list = restDAO.getListForFav(lblMemberId.getText());
+
+				if (list == null) {
+					SharedMethod.alertDisplay(1, "warning", "ERROR in CALLING DB", "please check again");
+				}
+
+				for (int i = 0; i < list.size(); i++) {
+					restVO = list.get(i);
+					favData.add(restVO);
+				}
+				favTable.setItems(favData);
+			}
+			favFlag = false;
+		});
+		
+		reviewFlag = true;
+		reviewTab.setOnSelectionChanged((e) -> {
+			if(reviewFlag) {
+				ArrayList<ReviewJoinRestaurantVO> list = null;
+				ReviewDAO reviewDAO = new ReviewDAO();
+				ReviewJoinRestaurantVO reviewVO = null;
+				list = reviewDAO.getReveiw(lblMemberId.getText());
+
+				if (list == null) {
+					SharedMethod.alertDisplay(1, "warning", "ERROR in CALLING DB", "please check again");
+				}
+
+				for (int i = 0; i < list.size(); i++) {
+					reviewVO = list.get(i);
+					reviewData.add(reviewVO);
+				}
+				reviewTable.setItems(reviewData);
+			}
+			reviewFlag = false;
+		});
+		
 	}
 
 	public void handlerEditButtonAction() {
 
-		SharedMethod.alertDisplay(1, "정보수정", "정보수정", "정보 수정을 하려면 관리자에게 카톡으로 문의 해주세요 \n\n\n\n\n카카오톡 : @맛있을지도 김시스터즈");
+//		SharedMethod.alertDisplay(1, "정보수정", "정보수정", "정보 수정을 하려면 관리자에게 카톡으로 문의 해주세요 \n\n\n\n\n카카오톡 : @맛있을지도 김시스터즈");
 
 //		try {
 //			//////if 비번v필드 일치 확인///////
@@ -172,6 +228,31 @@ public class MyPageController implements Initializable {
 		}
 	}
 
+	public void favTableColSetting() {
+		favData = FXCollections.observableArrayList();
+		favTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
+
+		TableColumn colName = new TableColumn("상호명");
+		colName.setPrefWidth(200);
+		colName.setStyle("-fx-alignment:CENTER;");
+		colName.setCellValueFactory(new PropertyValueFactory("restaurantName"));
+
+		TableColumn colAddr = new TableColumn("주소");
+		colAddr.setPrefWidth(200);
+		colAddr.setStyle("-fx-alignment:CENTER;");
+		colAddr.setCellValueFactory(new PropertyValueFactory("address"));
+
+		TableColumn colKind = new TableColumn("음식 종류");
+		colKind.setMaxWidth(100);
+		colKind.setStyle("-fx-alignment:CENTER;");
+		colKind.setCellValueFactory(new PropertyValueFactory("kind"));
+
+		// 컬럼 객체들을 테이블 뷰에 추가 & 항목 추가
+		//favTable.setItems(favData);
+		favTable.getColumns().addAll(colName, colAddr, colKind);
+
+	} // end of favTableColSetting
+	
 	public void totalFavList() {
 		ArrayList<RestaurantVO> list = null;
 		RestaurantDAO restDAO = new RestaurantDAO();
@@ -186,31 +267,47 @@ public class MyPageController implements Initializable {
 			restVO = list.get(i);
 			favData.add(restVO);
 		}
-	}// end of totalList
 
-	public void favTableColSetting() {
-		favData = FXCollections.observableArrayList();
-		favTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
+	}// end of totalList
+	
+	public void reviewTableColSetting() {
+		reviewData = FXCollections.observableArrayList();
+		reviewTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
 
 		TableColumn colName = new TableColumn("상호명");
-		colName.setMaxWidth(150);
+		colName.setPrefWidth(200);
 		colName.setStyle("-fx-alignment:CENTER;");
 		colName.setCellValueFactory(new PropertyValueFactory("restaurantName"));
 
-		TableColumn colAddr = new TableColumn("주소");
-		colAddr.setMaxWidth(200);
-		colAddr.setStyle("-fx-alignment:CENTER;");
-		colAddr.setCellValueFactory(new PropertyValueFactory("address"));
+		TableColumn colStars = new TableColumn("별점");
+		colStars.setMaxWidth(60);
+		colStars.setStyle("-fx-alignment:CENTER;");
+		colStars.setCellValueFactory(new PropertyValueFactory("stars"));
 
-		TableColumn colKind = new TableColumn("음식 종류");
-		colKind.setMaxWidth(100);
-		colKind.setStyle("-fx-alignment:CENTER;");
-		colKind.setCellValueFactory(new PropertyValueFactory("kind"));
+		TableColumn colDate = new TableColumn("등록일");
+		colDate.setPrefWidth(150);
+		colDate.setStyle("-fx-alignment:CENTER;");
+		colDate.setCellValueFactory(new PropertyValueFactory("registeDate"));
 
 		// 컬럼 객체들을 테이블 뷰에 추가 & 항목 추가
-		favTable.setItems(favData);
-		favTable.getColumns().addAll(colName, colAddr, colKind);
+		reviewTable.getColumns().addAll(colName, colStars, colDate);
 
-	} // end of favTableColSetting
+	} // end of reviewColSetting
+	
+	public void totalReviewList() {
+		ArrayList<ReviewJoinRestaurantVO> list = null;
+		ReviewDAO reviewDAO = new ReviewDAO();
+		ReviewJoinRestaurantVO reviewVO = null;
+		list = reviewDAO.getReveiw(lblMemberId.getText());
+
+		if (list == null) {
+			SharedMethod.alertDisplay(1, "warning", "ERROR in CALLING DB", "please check again");
+		}
+
+		for (int i = 0; i < list.size(); i++) {
+			reviewVO = list.get(i);
+			reviewData.add(reviewVO);
+		}
+	}// end of totalList
 
 }

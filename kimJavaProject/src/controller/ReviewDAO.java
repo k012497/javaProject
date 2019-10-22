@@ -4,16 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import model.MemberVO;
+import model.ReviewJoinRestaurantVO;
 import model.ReviewVO;
 
 public class ReviewDAO {
 	public int getReviewRegiste(ReviewVO rvo) throws Exception {
-		String dml = "insert into reviewTBL " + "(reviewID, memberID, restaurantID, stars, registeDate)"
-				+ " values " + "(null, ?, ?, ?, now())";
+		String dml = "insert into reviewTBL " + "(reviewID, memberID, restaurantID, stars, registeDate)" + " values "
+				+ "(null, ?, ?, ?, now())";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -48,41 +47,42 @@ public class ReviewDAO {
 		}
 		return count;
 	}
-	
-	//특정 사용자의 리뷰 가져오기 
-		public ObservableList<ReviewVO> getReveiw(int memberID) {
-			ObservableList<ReviewVO> list = FXCollections.observableArrayList();
+
+	// 특정 사용자의 리뷰 가져오기
+	public ArrayList<ReviewJoinRestaurantVO> getReveiw(String memberID) {
+		ArrayList<ReviewJoinRestaurantVO> list = new ArrayList<ReviewJoinRestaurantVO>();
 //			MenuVO list = null;
-			String dml = "select * from reviewTBL where memberID = ?";
+		String dml = "select restaurantTBL.restaurantName, reviewTBL.stars, reviewTBL.registeDate from restaurantTBL inner join reviewTBL on restaurantTBL.restaurantID = reviewTBL.restaurantID \n" + 
+				"where reviewTBL.memberId = ?;";
 
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
 
-			try {
-				con = DBUtil.getConnection();
-				pstmt = con.prepareStatement(dml);
-				pstmt.setInt(1, memberID);
-				rs = pstmt.executeQuery();
-				while (rs.next()) { // 다음 레코드가 있을 동안
-					list.add(new ReviewVO(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getDouble(4), rs.getString(5)));
-				}
-			} catch (SQLException se) {
-				System.out.println(se);
-			} catch (Exception e) {
-				System.out.println(e);
-			} finally {
-				try {
-					if (rs != null)
-						rs.close();
-					if (pstmt != null)
-						pstmt.close();
-					if (con != null)
-						con.close();
-				} catch (SQLException se) {
-				}
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			pstmt.setString(1, memberID);
+			rs = pstmt.executeQuery();
+			while (rs.next()) { // 다음 레코드가 있을 동안
+				list.add(new ReviewJoinRestaurantVO(rs.getString(1), rs.getDouble(2), rs.getString(3)));
 			}
-			return list;
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
 		}
+		return list;
+	}
 
 }

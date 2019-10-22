@@ -10,12 +10,12 @@
 
 <AnchorPane prefHeight="550.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="9.0" layoutY="12.0" prefHeight="230.0" prefWidth="231.0" style="-fx-background-color: #dcdcdc;">
+      <AnchorPane layoutX="9.0" layoutY="12.0" prefHeight="226.0" prefWidth="231.0" style="-fx-background-color: #dcdcdc;">
          <children>
             <ImageView id="imgView" fx:id="imgView" fitHeight="207.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
-      <HBox alignment="CENTER" layoutX="9.0" layoutY="252.0" prefHeight="27.0" prefWidth="283.0">
+      <HBox alignment="CENTER" layoutX="9.0" layoutY="252.0" prefHeight="27.0" prefWidth="270.0">
          <children>
             <HBox prefHeight="26.0" prefWidth="87.0" spacing="3.0">
                <children>
@@ -37,7 +37,7 @@
                   </Label>
                </children>
             </HBox>
-            <HBox prefHeight="27.0" prefWidth="89.0" spacing="3.0">
+            <HBox prefHeight="27.0" prefWidth="82.0" spacing="3.0">
                <children>
                   <ImageView id="imgStars" fitHeight="20.0" fitWidth="20.0">
                      <image>
@@ -92,7 +92,7 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Label id="lblAddress" layoutX="254.0" layoutY="48.0" text="Address">
@@ -128,5 +128,10 @@
       <Label layoutX="257.0" layoutY="101.0" text="주차" />
       <Label layoutX="257.0" layoutY="128.0" text="포장" />
       <Label layoutX="257.0" layoutY="153.0" text="예약" />
+      <ImageView id="refresh" fitHeight="23.0" fitWidth="20.0" layoutX="435.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/refresh.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

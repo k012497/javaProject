@@ -213,9 +213,9 @@ public class RestaurantDAO {
 	// 특정 사용자가 즐겨찾기에 등록한 식당의 리스트 가져오기
 	public ArrayList<RestaurantVO> getListForFav(String memberId) {
 		ArrayList<RestaurantVO> list = new ArrayList<RestaurantVO>();
-		String dml = "select restaurantTBL.restaurantName, restaurantTBL.address, restaurantTBL.kind " + 
-				"from restaurantTBL inner join favoriteTBL on restaurantTBL.restaurantID = favoriteTBL.restaurantID " + 
-				"inner join memberTBL on memberTBL.memberID = favoriteTBL.memberID where memberTBL.memberID = ? group by favoriteTBL.restaurantID";
+		String dml = "select restaurantTBL.restaurantName, restaurantTBL.address, restaurantTBL.kind "
+				+ "from restaurantTBL inner join favoriteTBL on restaurantTBL.restaurantID = favoriteTBL.restaurantID "
+				+ "inner join memberTBL on memberTBL.memberID = favoriteTBL.memberID where memberTBL.memberID = ? group by favoriteTBL.restaurantID";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -302,7 +302,7 @@ public class RestaurantDAO {
 		try {
 			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
-			
+
 			// ④ 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, rvo.getRestaurantName());
@@ -342,7 +342,7 @@ public class RestaurantDAO {
 		}
 		return rvo;
 	}
-	
+
 	// 즐찾 카운트 수정
 	public void getFavCountUpdate(int count, int restId) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
@@ -383,10 +383,10 @@ public class RestaurantDAO {
 			}
 		}
 	}
-	
+
 	public void getRestStarsUpdate(int restId) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
-		String dml = "update restaurantTBL set avgStars = (Select Round(Avg(stars), ?) from reviewTBL where restaurantId = ?) "
+		String dml = "update restaurantTBL set avgStars = (Select Round(Avg(stars), 2) from reviewTBL where restaurantId = ?) "
 				+ "where restaurantID = ? ";
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -394,12 +394,11 @@ public class RestaurantDAO {
 		try {
 			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
-			
+
 			// ④ 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
 			pstmt.setInt(1, restId);
 			pstmt.setInt(2, restId);
-			pstmt.setInt(3, restId);
 
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
@@ -443,7 +442,9 @@ public class RestaurantDAO {
 			pstmt.setString(1, addrToSearch);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				retval = new RestaurantVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getDouble(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13));
+				retval = new RestaurantVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getDouble(9),
+						rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13));
 				list.add(retval);
 			}
 		} catch (SQLException se) {
@@ -480,7 +481,8 @@ public class RestaurantDAO {
 			pstmt.setString(1, addrToSearch);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				retval = new CustomThing(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5));
+				retval = new CustomThing(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4),
+						rs.getString(5));
 				list.add(retval);
 			}
 		} catch (SQLException se) {
@@ -501,7 +503,7 @@ public class RestaurantDAO {
 		return list;
 	}
 
-	// 지역 & 종류별 식당 검색 기능
+	// 지역 & 종류별 식당 검색 하기
 	public ArrayList<CustomThing> getRestByAddrAndKind(String gu, String dong, String kind) throws Exception {
 		ArrayList<CustomThing> list = new ArrayList<CustomThing>();
 		String dml = "select restaurantID, restaurantName, address, avgStars, imageFileName from restaurantTBL where address like ? and kind = ?";
@@ -518,7 +520,8 @@ public class RestaurantDAO {
 			pstmt.setString(2, kind);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				retval = new CustomThing(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getString(5));
+				retval = new CustomThing(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4),
+						rs.getString(5));
 				list.add(retval);
 			}
 		} catch (SQLException se) {
@@ -537,6 +540,42 @@ public class RestaurantDAO {
 			}
 		}
 		return list;
+	}
+
+	// 식당 아이디로 평균 별점 가져오기 
+	public double getAvgStarsbyId(int id) {
+		double avgStars = 0;
+		String dml = "select avgStars from restaurantTBL where restaurantID = ?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			pstmt.setInt(1, id);
+			rs = pstmt.executeQuery();
+			int i = 0;
+			while (rs.next()) { // 다음 레코드가 있을 동안
+				avgStars = rs.getDouble(1);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return avgStars;
 	}
 
 }

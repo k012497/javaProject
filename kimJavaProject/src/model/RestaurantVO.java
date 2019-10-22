@@ -3,6 +3,13 @@ package model;
 import java.sql.Date;
 
 public class RestaurantVO {
+	@Override
+	public String toString() {
+		return "RestaurantVO [restaurantID=" + restaurantID + ", restaurantName=" + restaurantName + ", address="
+				+ address + ", telephone=" + telephone + ", kind=" + kind + ", veganLevel=" + veganLevel
+				+ ", imageFileName=" + imageFileName + ", favCount=" + favCount + ", avgStars=" + avgStars + "]";
+	}
+
 	private int restaurantID;
 	private String restaurantName;
 	private String address;

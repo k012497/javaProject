@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -89,6 +90,9 @@ public class MainController implements Initializable {
 	// Inject controller
 	@FXML
 	private MyPageController myPageController;
+	
+	static int selectedRestId;
+	static double starsUpdated;
 
 	@FXML
 	private ListView<CustomThing> listView;
@@ -425,8 +429,7 @@ public class MainController implements Initializable {
 		root.getChildren().add(listView);
 	}
 
-	static int selectedRestId;
-	static String starsUpdated;
+
 	public void handlerListViewPressed(MouseEvent e, ListView<CustomThing> listView) {
 		selectedRest = listView.getSelectionModel().getSelectedItems();
 		try {
@@ -463,6 +466,7 @@ public class MainController implements Initializable {
 			ImageView imgLocation = (ImageView) root.lookup("#imgLocation");
 			ImageView imgFav = (ImageView) root.lookup("#imgFav");
 			ImageView imgStars = (ImageView) root.lookup("#imgStars");
+			ImageView refresh = (ImageView) root.lookup("#refresh");
 			TableView<MenuVO> menuTable = (TableView<MenuVO>) root.lookup("#menuTable");
 
 			menuTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
@@ -535,9 +539,10 @@ public class MainController implements Initializable {
 			imgLocation.setOnMousePressed((e2) -> handlerLocationAction(imgLocation, lblName.getText()));
 			imgStars.setOnMousePressed((e4) -> {
 				handlerAddStars(imgStars);
-				lblStars.setText(starsUpdated);
 			});
-			imgFav.setOnMousePressed((e3) -> handlerAddFavorite());
+			
+			refresh.setOnMousePressed((e3) -> lblStars.setText(String.valueOf(restaurantDAO.getAvgStarsbyId(selectedRestId))));
+			imgFav.setOnMousePressed((e4) -> handlerAddFavorite());
 
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
@@ -547,7 +552,13 @@ public class MainController implements Initializable {
 		}
 	}
 
-	private void handlerAddFavorite() {
+	public static double refreshAvgStars() {
+		RestaurantDAO restDAO = new RestaurantDAO();
+		double result = restDAO.getAvgStarsbyId(selectedRestId);
+		return result;
+	}
+	
+	public void handlerAddFavorite() {
 		// 즐겨찾기 테이블에 insert
 		FavoriteDAO favDAO = new FavoriteDAO();
 		int restId = selectedRest.get(0).getRestaurantID();
@@ -682,8 +693,8 @@ public class MainController implements Initializable {
 			} else {
 				// 2. 식당 테이블의 별점 정보 수정
 				restaurantDAO.getRestStarsUpdate(selectedRestId);
-				starsUpdated = stars;
-				
+//				double newStars = restaurantDAO.getAvgStarsbyId(selectedRestId);
+//				starsUpdated = newStars;
 				///////////////////////////
 				return 1;
 			}

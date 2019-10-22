@@ -27,32 +27,21 @@ public class ReviewVO {
 	public int getReviewID() {
 		return reviewID;
 	}
-	public void setReview(int review) {
-		this.reviewID = review;
-	}
+
 	public String getMemberID() {
 		return memberID;
 	}
-	public void setMemberID(String memberID) {
-		this.memberID = memberID;
-	}
+
 	public int getRestaurantID() {
 		return restaurantID;
 	}
-	public void setRestaurantID(int restaurantID) {
-		this.restaurantID = restaurantID;
-	}
+
 	public double getStars() {
 		return stars;
 	}
-	public void setStars(double stars) {
-		this.stars = stars;
-	}
+
 	public String getRegisteDate() {
 		return registeDate;
-	}
-	public void setRegisteDate(String registeDate) {
-		this.registeDate = registeDate;
 	}
 	
 }

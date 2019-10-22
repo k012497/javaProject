@@ -38,6 +38,8 @@ public class StarsController implements Initializable {
 		btnOk.setOnAction((e)->{
 			int result = MainController.handlerAddStarsAction(lblNum.getText());
 			if(result == 1) {
+				double starsUpdated = MainController.refreshAvgStars();
+				
 				Stage stage = (Stage) (btnCancel.getScene().getWindow());
 				stage.close();
 			}else {

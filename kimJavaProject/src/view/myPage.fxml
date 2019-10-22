@@ -76,7 +76,7 @@
             </AnchorPane>
         </content>
       </Tab>
-      <Tab closable="false" text="my 찜뽕">
+      <Tab fx:id="favTab" closable="false" text="my 찜뽕">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -85,7 +85,7 @@
             </AnchorPane>
         </content>
       </Tab>
-      <Tab closable="false" text="my review">
+      <Tab fx:id="reviewTab" closable="false" text="my review">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
