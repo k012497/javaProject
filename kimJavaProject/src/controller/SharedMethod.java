@@ -111,7 +111,7 @@ public class SharedMethod {
 		}));
 	}
 
-	// 텍스트필드 입력값 포맷설정기능(13자리 숫자만 받음)
+	// 텍스트필드 입력값 포맷설정기능(11자리 숫자만 받음)
 	public static void inputDecimalFormatThirteenDigit(TextField textField) {
 		// 숫자만 입력(정수만 입력받음), 실수입력받고싶으면new DecimalFormat("###.#");
 		DecimalFormat format = new DecimalFormat("##############");
@@ -135,5 +135,33 @@ public class SharedMethod {
 			}
 		}));
 	}
+	
+	//영문 + 숫자만 입력 받는 함수
+	   public static boolean checkOnlyNumberAndEnglish(String textInput) {
+
+	      /*
+	       * SharedMethod.checkOnlyNumberAndEnglish(txtId.getText());
+	       * SharedMethod.checkOnlyNumberAndEnglish(txtPhoneNum.getText());
+	       * SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
+	       */
+	      char chrInput;
+
+	      for (int i = 0; i < textInput.length(); i++) {
+
+	         chrInput = textInput.charAt(i); // 입력받은 텍스트에서 문자 하나하나 가져와서 체크
+
+	         if (chrInput >= 0x61 && chrInput <= 0x7A) {
+	            // 영문(소문자) OK!
+	         } else if (chrInput >= 0x41 && chrInput <= 0x5A) {
+	            // 영문(대문자) OK!
+	         } else if (chrInput >= 0x30 && chrInput <= 0x39) {
+	            // 숫자 OK!
+	         } else {
+	            alertDisplay(1, "[오류발생]","영문과 숫자 이외에 다른 글자가 포함되어있습니다.","영문과 숫자로만 입력해주세요");
+	            return false; // 영문자도 아니고 숫자도 아님!
+	         }
+	      }
+	      return true;
+	   }
 
 }

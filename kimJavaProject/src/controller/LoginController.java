@@ -155,131 +155,139 @@ public class LoginController implements Initializable {
 			SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
 		}
 	}
+	
+	// 3. ID찾기
+	   public void handlerLabelFindId() {
+	      try {
+	         Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/findID.fxml"));
+	         Stage stage = new Stage(StageStyle.UTILITY);
+	         stage.initModality(Modality.WINDOW_MODAL);
+	         stage.initOwner(lblFindId.getScene().getWindow());
+	         stage.setTitle("아이디 찾기");
 
-	public void handlerLabelFindPw() {
-		try {
-			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/findPw.fxml"));
-			Stage stage = new Stage(StageStyle.UTILITY);
-			stage.initModality(Modality.WINDOW_MODAL);
-			stage.initOwner(lblFindId.getScene().getWindow());
-			stage.setTitle("비밀번호 찾기");
+	         Button btnOk = (Button) barChartRoot.lookup("#btnOk");
+	         Button btnCancel = (Button) barChartRoot.lookup("#btnCancel");
+	         TextField txtName = (TextField) barChartRoot.lookup("#txtName");
+	         TextField txtPhoneNum = (TextField) barChartRoot.lookup("#txtPhoneNum");
 
-			Button btnOk = (Button) barChartRoot.lookup("#btnOk");
-			Button btnCancel = (Button) barChartRoot.lookup("#btnCancel");
-			TextField txtName = (TextField) barChartRoot.lookup("#txtName");
-			TextField txtPhoneNum = (TextField) barChartRoot.lookup("#txtPhoneNum");
-			TextField txtId = (TextField) barChartRoot.lookup("#txtId");
+	         SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
+	         
+	         btnOk.setOnAction((event) -> {
+	            SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
+	            String existID = null;
+	            try {
+	               existID = MemberDAO.findIDByPhone(txtPhoneNum.getText(), txtName.getText());
+	               System.out.println("existID" + existID);
+	               int existPW = 0;
+	               if (existID == null) {
+	                  SharedMethod.alertDisplay(1, "ID 찾기 실패", "ID찾기실패", "[ID 찾기 실패]: 존재하지 않는 회원정보 입니다.");
+	                  return;
+	               } else {
+	                  SharedMethod.alertDisplay(1, "ID 찾기 성공", "ID찾기성공",
+	                        "[ID 찾기 성공]:  회원님의 아이디는 " + existID + " 입니다.");
+	                  stage.close();
+	               }
+	            } catch (Exception e) {
+	               e.printStackTrace();
+	            }
+	         });
 
-			btnOk.setOnAction(e -> {
-				if (txtId.getText().equals("")) {
-					SharedMethod.alertDisplay(1, "오류발생", "오류가 발생하였습니다.", "[ID양식 오류] : 아이디를 다시 입력 하세요. ");
-				} else {
-					try {
-						String existPW = MemberDAO.findPWByPhone(txtName.getText(), txtPhoneNum.getText(),
-								txtId.getText());
-						System.out.println(existPW);
+	         // 취소 버튼 누르면 다시 로그인 페이지로 돌아가기
+	         btnCancel.setOnAction((e3) -> {
+	            Parent mainView = null;
+	            Stage mainStage = null;
 
-						if (existPW == null) {
-							SharedMethod.alertDisplay(1, "경고", "pw찾기 실패", "[PW 찾기 실패]: 존재하지 않는 회원정보 입니다.");
-							return;
-						} else {
-							SharedMethod.alertDisplay(1, "성공", "ID찾기 성공",
-									"[ID 찾기 성공]: 회원님의 패스워드는 " + existPW + " 입니다.");
-							stage.close();
-						}
+	            try {
+	               mainView = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+	               Scene scene = new Scene(mainView);
+	               mainStage = new Stage();
+	               mainStage.setTitle("[김시스터즈]");
+	               mainStage.setScene(scene);
+	               mainStage.setResizable(true);
+	               ((Stage) btnSignIn.getScene().getWindow()).close();
+	               mainStage.show();
+	            } catch (Exception e1) {
+	               SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+	            }
+	         });
 
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-				}
-			});
+	         Scene scene = new Scene(barChartRoot);
+	         stage.setScene(scene);
+	         stage.show();
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	      }
 
-			// 취소 버튼 누르면 다시 로그인 페이지로 돌아가기
-			btnCancel.setOnAction((e3) -> {
-				Parent mainView = null;
-				Stage mainStage = null;
+	   }
+	
+	// 4. PW찾기
+	   public void handlerLabelFindPw() {
+	      try {
+	         Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/findPw.fxml"));
+	         Stage stage = new Stage(StageStyle.UTILITY);
+	         stage.initModality(Modality.WINDOW_MODAL);
+	         stage.initOwner(lblFindId.getScene().getWindow());
+	         stage.setTitle("비밀번호 찾기");
 
-				try {
-					mainView = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
-					Scene scene = new Scene(mainView);
-					mainStage = new Stage();
-					mainStage.setTitle("[김시스터즈]");
-					mainStage.setScene(scene);
-					mainStage.setResizable(true);
-					((Stage) btnSignIn.getScene().getWindow()).close();
-					mainStage.show();
-				} catch (Exception e1) {
-					SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
-				}
-			});
+	         Button btnOk = (Button) barChartRoot.lookup("#btnOk");
+	         Button btnCancel = (Button) barChartRoot.lookup("#btnCancel");
+	         TextField txtName = (TextField) barChartRoot.lookup("#txtName");
+	         TextField txtPhoneNum = (TextField) barChartRoot.lookup("#txtPhoneNum");
+	         TextField txtId = (TextField) barChartRoot.lookup("#txtId");
 
-			Scene scene = new Scene(barChartRoot);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	         SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
+	         
+	         btnOk.setOnAction(e -> {
+	            if (txtId.getText().equals("")) {
+	               SharedMethod.alertDisplay(1, "오류발생", "오류가 발생하였습니다.", "[PW양식 오류] : 패스워드를 다시 입력 하세요. ");
+	            } else {
+	               try {
+	                  String existPW = MemberDAO.findPWByPhone(txtName.getText(), txtPhoneNum.getText(),
+	                        txtId.getText());
+	                  System.out.println(existPW);
 
-	private void handlerLabelFindId() {
-		try {
-			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/findID.fxml"));
-			Stage stage = new Stage(StageStyle.UTILITY);
-			stage.initModality(Modality.WINDOW_MODAL);
-			stage.initOwner(lblFindId.getScene().getWindow());
-			stage.setTitle("아이디 찾기");
+	                  if (existPW == null) {
+	                     SharedMethod.alertDisplay(1, "경고", "pw찾기 실패", "[PW 찾기 실패]: 존재하지 않는 회원정보 입니다.");
+	                     return;
+	                  } else {
+	                     SharedMethod.alertDisplay(1, "성공", "PW찾기 성공",
+	                           "[PW 찾기 성공]: 회원님의 패스워드는 " + existPW + " 입니다.");
+	                     stage.close();
+	                  }
 
-			Button btnOk = (Button) barChartRoot.lookup("#btnOk");
-			Button btnCancel = (Button) barChartRoot.lookup("#btnCancel");
-			TextField txtName = (TextField) barChartRoot.lookup("#txtName");
-			TextField txtPhoneNum = (TextField) barChartRoot.lookup("#txtPhoneNum");
+	               } catch (Exception e1) {
+	                  e1.printStackTrace();
+	               }
+	            }
+	         });
 
-			btnOk.setOnAction((event) -> {
-				SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
-				String existID = null;
-				try {
-					existID = MemberDAO.findIDByPhone(txtPhoneNum.getText(), txtName.getText());
-					System.out.println("&&&&&" + existID);
-					int existPW = 0;
-					if (existID == null) {
-						SharedMethod.alertDisplay(1, "ID 찾기 실패", "ID찾기실패", "[ID 찾기 실패]: 존재하지 않는 회원정보 입니다.");
-						return;
-					} else {
-						SharedMethod.alertDisplay(1, "ID 찾기 성공", "ID찾기성공",
-								"[ID 찾기 성공]:  회원님의 아이디는 " + existID + " 입니다.");
-						stage.close();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
+	         // 취소 버튼 누르면 다시 로그인 페이지로 돌아가기
+	         btnCancel.setOnAction((e3) -> {
+	            Parent mainView = null;
+	            Stage mainStage = null;
 
-			// 취소 버튼 누르면 다시 로그인 페이지로 돌아가기
-			btnCancel.setOnAction((e3) -> {
-				Parent mainView = null;
-				Stage mainStage = null;
+	            try {
+	               mainView = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+	               Scene scene = new Scene(mainView);
+	               mainStage = new Stage();
+	               mainStage.setTitle("[김시스터즈]");
+	               mainStage.setScene(scene);
+	               mainStage.setResizable(true);
+	               ((Stage) btnSignIn.getScene().getWindow()).close();
+	               mainStage.show();
+	            } catch (Exception e1) {
+	               SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+	            }
+	         });
 
-				try {
-					mainView = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
-					Scene scene = new Scene(mainView);
-					mainStage = new Stage();
-					mainStage.setTitle("[김시스터즈]");
-					mainStage.setScene(scene);
-					mainStage.setResizable(true);
-					((Stage) btnSignIn.getScene().getWindow()).close();
-					mainStage.show();
-				} catch (Exception e1) {
-					SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
-				}
-			});
+	         Scene scene = new Scene(barChartRoot);
+	         stage.setScene(scene);
+	         stage.show();
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	      }
+	   }
 
-			Scene scene = new Scene(barChartRoot);
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-	}
 
 }

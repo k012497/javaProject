@@ -15,7 +15,7 @@
       <Button id="btnOk" layoutX="44.0" layoutY="381.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="86.0" text="Ok" />
       <TextField id="txtName" layoutX="41.0" layoutY="222.0" prefHeight="39.0" prefWidth="268.0" promptText="이름(Name)" />
       <TextField id="txtId" layoutX="41.0" layoutY="317.0" prefHeight="39.0" prefWidth="268.0" promptText="아이디(ID)" />
-      <TextField id="txtPhoneNum" layoutX="41.0" layoutY="269.0" prefHeight="39.0" prefWidth="268.0" promptText="전화번호(Phone Number)" />
+      <TextField id="txtPhoneNum" layoutX="41.0" layoutY="269.0" prefHeight="39.0" prefWidth="268.0" promptText="전화번호(Phone Number) - 제외 " />
       <Label layoutX="41.0" layoutY="172.0" text="Find PW" textFill="#030303">
          <font>
             <Font size="27.0" />

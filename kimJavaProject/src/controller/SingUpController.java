@@ -132,7 +132,7 @@ public class SingUpController implements Initializable {
 
 	// 중복확인
 	public void handleBtnIdCheckAction(ActionEvent e) {
-		// 1. 중복확인 버튼 이벤트 처리
+		// 중복확인 버튼 이벤트 처리
 		MemberDAO memberDAO = new MemberDAO();
 		int i = memberDAO.getUserIdSearch(txtId.getText());
 
@@ -145,53 +145,67 @@ public class SingUpController implements Initializable {
 		}
 	}
 
-	// sign up버튼
-	public void handleBtnSignUpAction() {
-		Parent mainView = null;
-		Stage mainStage = null;
-		if (txtId.getText().equals("") || txtName.getText().equals("") || txtPhoneNum.getText().equals("")
-				|| txtPw.getText().equals("") || cbAge.getValue().equals("")
-				|| cbDong.getValue().equals("") || cbGu.getValue().equals("") || cbGender.getValue().equals("")) {
-			SharedMethod.alertDisplay(5, "빈칸 있음", "빈칸 없이 입력 해주세요", "재입력 바랍니다");
-		} else {
-			if (idCheck) {
-				try {
-					MemberDAO memberDAO = new MemberDAO();
-					MemberVO mvo = new MemberVO(txtId.getText().trim(), txtPw.getText(), txtName.getText().trim(),
-							txtPhoneNum.getText().trim(), cbGu.getValue() + " " + cbDong.getValue(), cbGender.getValue(), cbAge.getValue());
-					memberDAO.getMemberRegiste(mvo);
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-				try {
-					mainView = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
-					Scene scene = new Scene(mainView);
-					mainStage = new Stage();
-					mainStage.setTitle("[김시스터즈]");
-					mainStage.setScene(scene);
-					mainStage.setResizable(true);
-					((Stage) btnSignUp.getScene().getWindow()).close();
-					mainStage.show();
-				} catch (Exception e1) {
-					SharedMethod.alertDisplay(1, "로그인 창 콜실패", "로그인 창 부르기 실패", e1.toString() + e1.getMessage());
-				}
-				MemberVO memberID = new MemberVO();
-				int count = 1;
-//            int count = MemberDAO.insertMemberDataSearch(memberID);
+	// 3. sign up버튼
+	   public void handleBtnSignUpAction() {
+	      if (txtPw.getText().equals(txtPwCheck.getText())) {
+	      } else {
+	         SharedMethod.alertDisplay(1, "비밀번호 오류", "[비밀번호 오류]", "비밀번호 오류입니다 다시 확인 해주세요");
+	         return;
+	      }
+	      Parent mainView = null;
+	      Stage mainStage = null;
 
-				// if(memberID.getText().equals("") || memberPassword.getText().equals(""))
+	      SharedMethod.checkOnlyNumberAndEnglish(txtId.getText());
+	      SharedMethod.checkOnlyNumberAndEnglish(txtPhoneNum.getText());
+	      SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
 
-				if (count != 0) {
-					SharedMethod.alertDisplay(5, "회원가입", "회원가입", "회원가입성공 : 회원가입을 축하드립니다.");
-				}
-				Stage stage1 = (Stage) btnSignUp.getScene().getWindow();
-				stage1.close();
-			} else {
-				SharedMethod.alertDisplay(5, "ID 중복 체크", "ID 중복 체크를 하지 않음", "ID 중복 체크를 눌러주세요");
-			}
-		}
+	      // 콤보박스 안에 값이 없을때 빈칸없이 입력
+	      if (txtId.getText().equals("") || txtName.getText().equals("") || txtPhoneNum.getText().equals("")
+	            || txtPw.getText().equals("") || cbAge.getValue() == null || cbDong.getValue() == null
+	            || cbGu.getValue() == null || cbGender.getValue() == null) {
 
-	}
+	         SharedMethod.alertDisplay(1, "빈칸 있음", "빈칸 없이 입력 해주세요", "재입력 바랍니다");
+	      }
+
+	      else {
+	         if (idCheck) {
+	            try {
+	               MemberDAO memberDAO = new MemberDAO();
+	               MemberVO mvo = new MemberVO(txtId.getText().trim(), txtPw.getText(), txtName.getText().trim(),
+	                     txtPhoneNum.getText().trim(), cbGu.getValue() + " " + cbDong.getValue(),
+	                     cbGender.getValue(), cbAge.getValue());
+	               memberDAO.getMemberRegiste(mvo);
+	            } catch (Exception e) {
+	            }
+	            try {
+	               mainView = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+	               Scene scene = new Scene(mainView);
+	               mainStage = new Stage();
+	               mainStage.setTitle("[김시스터즈]");
+	               mainStage.setScene(scene);
+	               mainStage.setResizable(true);
+	               ((Stage) btnSignUp.getScene().getWindow()).close();
+	               mainStage.show();
+	            } catch (Exception e1) {
+	               SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+	            }
+	            MemberVO memberID = new MemberVO();
+	            int count = 1;
+	            // int count = MemberDAO.insertMemberDataSearch(memberID);
+
+	            // if(memberID.getText().equals("") || memberPassword.getText().equals(""))
+
+	            if (count != 0) {
+	               SharedMethod.alertDisplay(5, "회원가입", "회원가입", "회원가입성공 : 회원가입을 축하드립니다.");
+	            }
+	            Stage stage1 = (Stage) btnSignUp.getScene().getWindow();
+	            stage1.close();
+	         } else {
+	            SharedMethod.alertDisplay(1, "ID 중복 체크", "ID 중복 체크를 하지 않음", "ID 중복 체크를 눌러주세요");
+	         }
+	      }
+
+	   }
 
 	// cancel버튼
 	public void handelBtnCancelAction() {
