@@ -18,6 +18,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -157,14 +158,13 @@ public class ManageRestController implements Initializable {
 
 		// 신규 식당 등록
 		btnNewRest.setOnAction((e) -> handlerNewRestAction(e));
-
 	}
 
 	public void handlerBtnMenuDeleteAction() {
 		try {
 			MenuDAO menuDAO = new MenuDAO();
 			menuDAO.getMenuDelete(selectedMenu.get(0).getMenuID());
-
+////////////////////////////////////////////////////////////////////////
 			menuData.removeAll(menuData);
 			menuTable.setItems(menuDAO.getMenu(selectedMenu.get(0).getRestaurantID()));
 		} catch (Exception e) {
@@ -178,12 +178,22 @@ public class ManageRestController implements Initializable {
 			if (txtMenuName.getText().equals("") || txtMenuPrice.getText().equals("")) {
 				throw new Exception();
 			} else {
-				MenuVO mvo = new MenuVO(txtMenuName.getText(), Integer.parseInt(txtMenuPrice.getText()));
 				MenuDAO menuDAO = new MenuDAO();
+				MenuVO mvo = new MenuVO(txtMenuName.getText(), Integer.parseInt(txtMenuPrice.getText()));
 				System.out.println(selectedMenuId);
 				MenuVO menuVO = menuDAO.getMenuUpdate(mvo, selectedMenuId);
-				menuData.remove(selectedIndex);
-				menuData.add(selectedIndex, mvo);
+				
+				menuData.remove(selectedIndex); // 선택된 레코드를 지워버리고
+				// 해당 식당의 메뉴를 불러온다.
+				try {
+					// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
+					int restID = selectedRest.get(0).getRestaurantID();
+					menuData = FXCollections.observableArrayList();
+					menuData = menuDAO.getMenu(restID);
+					menuTable.setItems(menuData);
+				} catch (Exception e) {
+				SharedMethod.alertDisplay(1, "메뉴 가져오기 실패", "메뉴 가져오기 실패", "메뉴를 가져오는 데에 실패했습니다.");
+				}
 			}
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "CORRECTION FAILED", "메뉴 수정 실패", "메뉴 수정에 실패하였습니다");
@@ -415,7 +425,7 @@ public class ManageRestController implements Initializable {
 		btnMenuEdit.setOnAction((e) -> handlerBtnMenuEditAction());
 		btnMenuDelete.setOnAction((e) -> handlerBtnMenuDeleteAction());
 
-		// when click new in restaurant field
+		// when click new in restaurant tab
 		btnNewMenu.setOnAction((e) -> handlerNewMenuAction(e, selectedRestId));
 
 		try {
@@ -455,10 +465,9 @@ public class ManageRestController implements Initializable {
 			MenuDAO menuDAO = new MenuDAO();
 			menuData = FXCollections.observableArrayList();
 			menuData = menuDAO.getMenu(restID);
-
 			menuTable.setItems(menuData);
 		} catch (Exception e) {
-			e.printStackTrace();
+		SharedMethod.alertDisplay(1, "메뉴 가져오기 실패", "메뉴 가져오기 실패", "메뉴를 가져오는 데에 실패했습니다.");
 		}
 	}
 
@@ -473,9 +482,8 @@ public class ManageRestController implements Initializable {
 		selectedIndex = menuTable.getSelectionModel().getSelectedIndex();
 		selectedMenu = menuTable.getSelectionModel().getSelectedItems();
 		selectedMenuId = selectedMenu.get(0).getMenuID();
-		System.out.println("아이디 "+selectedMenu.get(0).getRestaurantID());
 		System.out.println("가격 "+selectedMenu.get(0).getMenuPrice());
-		System.out.println("테이블선택시 "+selectedMenuId);
+		System.out.println("아이디 "+selectedMenuId);
 		
 		try {
 			// 가져온 정보를 데이터 필드에 출력
@@ -529,11 +537,23 @@ public class ManageRestController implements Initializable {
 
 			cbNewKind.setItems(kindList);
 			cbNewVege.setItems(vegeList);
+			cbNewVege.setDisable(true);
 			cbNewTakeout.setItems(booleanList);
 			cbNewReserve.setItems(booleanList);
 			cbNewPark.setItems(booleanList);
-
 			txtNewAddr.setText("123");
+			
+			cbNewKind.valueProperty().addListener(new ChangeListener<String>() {
+
+				@Override
+				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+					if(cbNewKind.getValue().equals("채식")) {
+						cbNewVege.setDisable(false);
+					}
+				}
+			});
+			
+			
 			AddressDAO addressDAO = new AddressDAO();
 			addressGuList = addressDAO.getGu();
 			cbGu.setItems(addressGuList);
@@ -549,8 +569,6 @@ public class ManageRestController implements Initializable {
 			
 
 			btnRestRegiste.setOnAction((e1) -> {
-				//등록된 식당인지 확인 
-				ArrayList<RestaurantVO> exists = null;
 				
 				if (txtNewName.getText().equals("") || txtNewAddr.getText().equals("")
 						|| txtNewPhone.getText().equals("")
@@ -596,6 +614,7 @@ public class ManageRestController implements Initializable {
 				cbNewPark.setValue("");
 				imageViewInit();
 			});
+			
 			btnClose.setOnAction((e3) -> {
 				// 메뉴 테이블을 다시 세팅하고 창 닫기
 				restData.removeAll(restData);
@@ -621,50 +640,54 @@ public class ManageRestController implements Initializable {
 			stage.setTitle("메뉴 추가하기");
 
 			Button btnClose = (Button) barChartRoot.lookup("#btnClose");
-			Button btnRestRegiste = (Button) barChartRoot.lookup("#btnRestRegiste");
+			Button btnMenuRegiste = (Button) barChartRoot.lookup("#btnMenuRegiste");
 			Button btnClear = (Button) barChartRoot.lookup("#btnClear");
 			TextField txtNewMenu = (TextField) barChartRoot.lookup("#txtNewMenu");
 			TextField txtNewPrice = (TextField) barChartRoot.lookup("#txtNewPrice");
 
-			// 숫자 7자리만 입력받음(정수만 입력받음)
-			DecimalFormat format = new DecimalFormat("#######");
-			// 점수 입력시 길이 제한 이벤트 처리
-			txtNewPrice.setTextFormatter(new TextFormatter<>(event -> {
-				if (event.getControlNewText().isEmpty()) {
-					return event;
-				}
-				ParsePosition parsePosition = new ParsePosition(0);
-				Object object = format.parse(event.getControlNewText(), parsePosition);
-				if (object == null || parsePosition.getIndex() < event.getControlNewText().length()
-						|| event.getControlNewText().length() == 8) {
-					return null;
-				} else {
-					return event;
-				}
-			}));
-
-			btnClear.setOnAction((e1) -> {
-				txtNewMenu.clear();
-				txtNewPrice.clear();
-			});
+			// 숫자 11자리만 입력받음(정수만 입력받음)
+			SharedMethod.inputDecimalFormatThirteenDigit(txtNewPrice);
+			SharedMethod.inputDecimalFormatThirteenDigit(txtMenuPrice);
 
 			btnClose.setOnAction((e2) -> {
 				// 메뉴 테이블을 다시 세팅하고 창 닫기
-				menuTable.setItems(null);
-				MenuDAO menuDAO = new MenuDAO();
-				menuTable.setItems(menuDAO.getMenu(restId));
+//				menuTable.setItems(null);
+//				MenuDAO menuDAO = new MenuDAO();
+//				menuTable.setItems(menuDAO.getMenu(restId));
 				stage.close();
 			});
 
-			btnRestRegiste.setOnAction((e3) -> {
+			btnMenuRegiste.setOnAction((e3) -> {
 				try {
 					MenuVO mvo = new MenuVO(txtNewMenu.getText(), Integer.parseInt(txtNewPrice.getText()));
 					MenuDAO menuDAO = new MenuDAO();
-					menuDAO.getMenuregiste(mvo, restId);
-					SharedMethod.alertDisplay(5, "REGISTERATION SUCCESS", "메뉴 등록 성공!", "신규 메뉴를 등록하였습니다.");
+					int count = menuDAO.getMenuregiste(mvo, restId);
+					if (count != 0) {
+						menuData.removeAll(menuData);
+						// 해당 식당의 메뉴를 불러온다.
+						try {
+							// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
+							int restID = selectedRest.get(0).getRestaurantID();
+							menuData = FXCollections.observableArrayList();
+							menuData = menuDAO.getMenu(restID);
+							menuTable.setItems(menuData);
+						} catch (Exception e4) {
+						SharedMethod.alertDisplay(1, "메뉴 가져오기 실패", "메뉴 가져오기 실패", "메뉴를 가져오는 데에 실패했습니다.");
+						}
+						SharedMethod.alertDisplay(5, "REGISTERATION SUCCESS", "메뉴 등록 성공 !", "메뉴 등록을 성공하였습니다.");
+						stage.close();
+					}
 				} catch (Exception e4) {
 					SharedMethod.alertDisplay(1, "REGISTERATION FAILED", "메뉴 등록 실패!", "메뉴 등록에 실패하였습니다ㅠㅠ");
 					e4.printStackTrace();
+				}
+			});
+			
+			btnClear.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					
 				}
 			});
 

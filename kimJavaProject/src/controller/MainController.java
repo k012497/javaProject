@@ -426,7 +426,7 @@ public class MainController implements Initializable {
 	}
 
 	static int selectedRestId;
-
+	static String starsUpdated;
 	public void handlerListViewPressed(MouseEvent e, ListView<CustomThing> listView) {
 		selectedRest = listView.getSelectionModel().getSelectedItems();
 		try {
@@ -533,7 +533,10 @@ public class MainController implements Initializable {
 			});
 
 			imgLocation.setOnMousePressed((e2) -> handlerLocationAction(imgLocation, lblName.getText()));
-			imgStars.setOnMousePressed((e4) -> handlerAddStars(imgStars));
+			imgStars.setOnMousePressed((e4) -> {
+				handlerAddStars(imgStars);
+				lblStars.setText(starsUpdated);
+			});
 			imgFav.setOnMousePressed((e3) -> handlerAddFavorite());
 
 			Scene scene = new Scene(root);
@@ -679,6 +682,9 @@ public class MainController implements Initializable {
 			} else {
 				// 2. 식당 테이블의 별점 정보 수정
 				restaurantDAO.getRestStarsUpdate(selectedRestId);
+				starsUpdated = stars;
+				
+				///////////////////////////
 				return 1;
 			}
 		} catch (Exception e) {

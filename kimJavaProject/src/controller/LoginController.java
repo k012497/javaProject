@@ -55,23 +55,51 @@ public class LoginController implements Initializable {
 	}
 
 	public void handlerAdminAction(MouseEvent e) {
-
-		Stage mainStage = null;
 		try {
-			Scene scene = new Scene(new StackPane());
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminPage.fxml"));
-			scene.setRoot(loader.load());
-			AdminController controller = loader.getController();
-			controller.init();
-			mainStage = new Stage();
-			mainStage.setScene(scene);
-			mainStage.show();
-			mainStage.setResizable(true);
-			((Stage) btnSignIn.getScene().getWindow()).close();
-			mainStage.show();
-		} catch (Exception e1) {
-			SharedMethod.alertDisplay(1, "ADMIN PAGE LOAD FAILED", "관리자 모드 전환 실패", e1.toString() + e1.getMessage());
+			Parent root = FXMLLoader.load(getClass().getResource("/view/adminPW.fxml"));
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(lblFindId.getScene().getWindow());
+			stage.setTitle("아이디 찾기");
+
+			Button btnOk = (Button) root.lookup("#btnOk");
+			Button btnCancel = (Button) root.lookup("#btnCancel");
+			TextField txtPw = (TextField) root.lookup("#txtPw");
+			
+			btnCancel.setOnAction((e3) -> {
+				stage.close();
+			});
+			
+			btnOk.setOnAction((e4)->{
+				if(txtPw.getText().equals("01240802")) {
+					Stage mainStage = null;
+					try {
+						Scene scene = new Scene(new StackPane());
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminPage.fxml"));
+						scene.setRoot(loader.load());
+						AdminController controller = loader.getController();
+						controller.init();
+						mainStage = new Stage();
+						mainStage.setScene(scene);
+						mainStage.show();
+						mainStage.setResizable(true);
+						((Stage) btnSignIn.getScene().getWindow()).close();
+						mainStage.show();
+					} catch (Exception e1) {
+						SharedMethod.alertDisplay(1, "ADMIN PAGE LOAD FAILED", "관리자 모드 전환 실패", e1.toString() + e1.getMessage());
+					}
+				}else {
+					System.out.println("틀렸지롱");
+				}
+			});
+
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e1) {
+			System.out.println("비번창 호출 실패 ");
 		}
+		
 	}
 
 	// 1. SingIn으로 로그인
