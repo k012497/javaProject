@@ -182,7 +182,6 @@ public class ManageRestController implements Initializable {
 				MenuDAO menuDAO = new MenuDAO();
 				System.out.println(selectedMenuId);
 				MenuVO menuVO = menuDAO.getMenuUpdate(mvo, selectedMenuId);
-				System.out.println("메뉴 수정 됐나연 ");
 				menuData.remove(selectedIndex);
 				menuData.add(selectedIndex, mvo);
 			}
@@ -394,8 +393,8 @@ public class ManageRestController implements Initializable {
 
 		localImage = new Image(localUrl, false);
 		imgView.setImage(localImage);
-		imgView.setFitHeight(250);
-		imgView.setFitWidth(230);
+		imgView.setFitHeight(150);
+		imgView.setFitWidth(130);
 
 		if (selectedFile != null) {
 			selectFileName = selectedFile.getName();
@@ -441,9 +440,8 @@ public class ManageRestController implements Initializable {
 				localUrl = selectedFile.toURI().toURL().toString();
 				localImage = new Image(localUrl, false);
 				imgView.setImage(localImage);
-//				imgView.setFitHeight(250);
-//				imgView.setFitWidth(230);
-
+				imgView.setFitHeight(150);
+				imgView.setFitWidth(130);
 			}
 
 		} catch (Exception e) {
@@ -462,7 +460,6 @@ public class ManageRestController implements Initializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	// when click an object in menu table
@@ -484,11 +481,9 @@ public class ManageRestController implements Initializable {
 			// 가져온 정보를 데이터 필드에 출력
 			txtMenuName.setText(selectedMenu.get(0).getMenuName());
 			txtMenuPrice.setText(String.valueOf(selectedMenu.get(0).getMenuPrice()));
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void handlerBtnRestDeleteAction() {

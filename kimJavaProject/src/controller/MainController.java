@@ -1,6 +1,8 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -102,6 +104,7 @@ public class MainController implements Initializable {
 	RestaurantDAO restaurantDAO = new RestaurantDAO();
 	ArrayList<RestaurantVO> rvo = null;
 	String fileName = null;
+	private File selectedFile = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -111,9 +114,11 @@ public class MainController implements Initializable {
 			addressComboBoxSetting();
 		});
 		buttonInitSetting(true, true);
-		
-		//load가 끝난 후 라벨의 텍스트에 ID가 세팅되면 그 값을 저장
-		Platform.runLater(()-> {memberID = lblMember.getText();});
+
+		// load가 끝난 후 라벨의 텍스트에 ID가 세팅되면 그 값을 저장
+		Platform.runLater(() -> {
+			memberID = lblMember.getText();
+		});
 
 		// 검색 버튼 눌렀을 때
 		btnSearch.setOnAction((e) -> handlerSearchAction(e));
@@ -419,7 +424,9 @@ public class MainController implements Initializable {
 		StackPane root = new StackPane();
 		root.getChildren().add(listView);
 	}
-static int selectedRestId;
+
+	static int selectedRestId;
+
 	public void handlerListViewPressed(MouseEvent e, ListView<CustomThing> listView) {
 		selectedRest = listView.getSelectionModel().getSelectedItems();
 		try {
@@ -452,15 +459,15 @@ static int selectedRestId;
 			Label lblTakeout = (Label) root.lookup("#lblTakeout");
 			Label lblReserve = (Label) root.lookup("#lblReserve");
 			Label lblStars = (Label) root.lookup("#lblStars");
-			ImageView imageView = (ImageView) root.lookup("#imageView");
+			ImageView imageView = (ImageView) root.lookup("#imgView");
 			ImageView imgLocation = (ImageView) root.lookup("#imgLocation");
 			ImageView imgFav = (ImageView) root.lookup("#imgFav");
 			ImageView imgStars = (ImageView) root.lookup("#imgStars");
 			TableView<MenuVO> menuTable = (TableView<MenuVO>) root.lookup("#menuTable");
 
 			menuTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
+			
 			Platform.runLater(new Runnable() {
-
 				@Override
 				public void run() {
 					menuData = FXCollections.observableArrayList();
@@ -481,7 +488,7 @@ static int selectedRestId;
 
 					try {
 						// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
-						//int restID = selectedRest.get(0).getRestaurantID();
+						// int restID = selectedRest.get(0).getRestaurantID();
 						System.out.println(selectedRestId);
 						MenuDAO menuDAO = new MenuDAO();
 						menuData = FXCollections.observableArrayList();
@@ -492,9 +499,27 @@ static int selectedRestId;
 						SharedMethod.alertDisplay(1, "메뉴 세팅 실패", "메뉴 세팅 실패", "메뉴 세팅 실패");
 					}
 
+					//이미지뷰 세팅
+					try {
+						String fileName = selectedRest.get(0).getFileName();
+						selectedFile = new File("/Users/kimsojin/Desktop/code/images/" + fileName);
+						System.out.println(selectedFile);
+						if (selectedFile != null) {
+							// 이미지 파일 경로
+							localUrl = selectedFile.toURI().toURL().toString();
+							localImage = new Image(localUrl, false);
+							System.out.println(localImage.toString());
+							imageView.setImage(localImage);
+							imageView.setFitHeight(250);
+							imageView.setFitWidth(230);
+						}
+					} catch (MalformedURLException e) {
+						SharedMethod.alertDisplay(1, "이미지뷰 세팅 실패", "이미지뷰 세팅 실패", "이미지뷰 세팅 실패");
+					}
+
 				}
 			});
-			
+
 			lblName.setText(rvo.get(0).getRestaurantName());
 			lblAddress.setText(rvo.get(0).getAddress());
 			lblPhoneNum.setText(rvo.get(0).getTelephone());
@@ -503,7 +528,6 @@ static int selectedRestId;
 			lblReserve.setText(rvo.get(0).getReservation());
 			lblStars.setText(String.valueOf(rvo.get(0).getAvgStars()));
 
-			
 			btnCancel.setOnAction((e1) -> {
 				stage.close();
 			});
@@ -526,10 +550,10 @@ static int selectedRestId;
 		int restId = selectedRest.get(0).getRestaurantID();
 
 		int isEmpty = favDAO.getFavFlag(restId, lblMember.getText());
-		
-		if(isEmpty == 0) {
+
+		if (isEmpty == 0) {
 			FavoriteVO fvo = new FavoriteVO(lblMember.getText(), restId);
-			
+
 			try {
 				// 즐겨찾기 테이블에 등록
 				favDAO.getFavregiste(fvo, lblMember.getText());
@@ -548,10 +572,9 @@ static int selectedRestId;
 			} catch (Exception e) {
 				SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "즐겨찾기 추가 실패", "즐겨찾기 추가 실패");
 			}
-		}else {
+		} else {
 			SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "이미 즐겨찾기에 등록되었습니다", "이미 즐겨찾기에 등록되었습니다");
 		}
-		
 
 	}
 
@@ -589,7 +612,7 @@ static int selectedRestId;
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(imgLocation.getScene().getWindow());
-			stage.setTitle("아이디 찾기");
+			stage.setTitle("지도");
 
 			WebView webView = new WebView();
 
@@ -639,10 +662,10 @@ static int selectedRestId;
 	} // end of menuTableViewSetting
 
 	public static int handlerAddStarsAction(String stars) {
-		System.out.println("메인창으로 전달 "+ stars);
-		System.out.println("선택식당 "+ selectedRestId);
-		System.out.println("t사용자 " +memberID);
-		
+		System.out.println("메인창으로 전달 " + stars);
+		System.out.println("선택식당 " + selectedRestId);
+		System.out.println("t사용자 " + memberID);
+
 		// 1. 리뷰 테이블에 insert
 		ReviewVO rvo = new ReviewVO(memberID, selectedRestId, Double.parseDouble(stars));
 		ReviewDAO reviewDAO = new ReviewDAO();
@@ -650,10 +673,10 @@ static int selectedRestId;
 		int result = 0;
 		try {
 			result = reviewDAO.getReviewRegiste(rvo);
-			if(result == 0) {
+			if (result == 0) {
 				SharedMethod.alertDisplay(5, "리뷰 등록 실패 ", "리뷰 등록 실패 ㅠㅠ", "리뷰 등록 실패하였습니다 ");
 				return 0;
-			}else {
+			} else {
 				// 2. 식당 테이블의 별점 정보 수정
 				restaurantDAO.getRestStarsUpdate(selectedRestId);
 				return 1;
@@ -661,9 +684,9 @@ static int selectedRestId;
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(5, "리뷰 등록 실패 ", "리뷰 등록 실패 ㅠㅠ", "리뷰 등록 실패하였습니다 ");
 		}
-		
+
 		return 0;
-		
+
 	}
 
 }
