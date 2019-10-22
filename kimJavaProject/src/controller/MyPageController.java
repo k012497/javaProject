@@ -34,6 +34,9 @@ public class MyPageController implements Initializable {
 	private ComboBox<String> cbAge;
 	ObservableList<String> cbAgeList;
 	@FXML
+	private ComboBox<String> cbGender;
+	ObservableList<String> cbGenderList;
+	@FXML
 	private ComboBox<String> cbGu;
 	ObservableList<String> addressGuList;
 	@FXML
@@ -105,6 +108,28 @@ public class MyPageController implements Initializable {
 	}
 
 	public void handlerEditButtonAction() {
+		if (txtPw.getText().equals(txtPwAgain.getText())) {
+		} else {
+			SharedMethod.alertDisplay(1, "비밀번호 오류", "[비밀번호 오류]", "비밀번호 오류입니다 다시 확인 해주세요");
+			return;
+		}
+		
+		try {
+			if (txtPw.getText().equals("") || txtName.getText().equals("") || txtNumber.getText().equals("")
+					|| cbGu.getValue().equals("") || cbDong.getValue().equals("") || cbGender.getValue().equals("")) {
+				throw new Exception();
+			} else {
+				MemberVO mvo = new MemberVO(lblMemberId.getText(), txtPw.getText(), txtName.getText(),
+					txtNumber.getText(), cbGu.getValue() + " " + cbDong.getValue() , cbGender.getValue(),
+					cbAge.getValue());
+				
+				MemberDAO memberDAO = new MemberDAO();
+				MemberVO memberVO = memberDAO.getMemberUpdate(mvo, lblMemberId.getText());
+			}
+		} catch (Exception e) {
+			SharedMethod.alertDisplay(1, "CORRECTION FAILED", "error!", e.toString());
+		}
+		
 
 //		SharedMethod.alertDisplay(1, "정보수정", "정보수정", "정보 수정을 하려면 관리자에게 카톡으로 문의 해주세요 \n\n\n\n\n카카오톡 : @맛있을지도 김시스터즈");
 
@@ -140,6 +165,7 @@ public class MyPageController implements Initializable {
 			txtNumber.setText(memberList.get(0).getPhoneNumer());
 			txtPw.setText(memberList.get(0).getPassword());
 			cbAge.setValue(memberList.get(0).getAgeGroup());
+			cbGender.setValue(memberList.get(0).getGender());
 
 			String addr = memberList.get(0).getAddress();
 
@@ -170,6 +196,9 @@ public class MyPageController implements Initializable {
 
 		cbAgeList = FXCollections.observableArrayList("10", "20", "30", "40", "50", "60", "70", "80", "90");
 		cbAge.setItems(cbAgeList);
+		
+		cbGenderList = FXCollections.observableArrayList("여", "남");
+		cbGender.setItems(cbGenderList);
 
 	}
 

@@ -72,6 +72,12 @@
                   <ComboBox fx:id="cbGu" layoutX="165.0" layoutY="259.0" prefHeight="29.0" prefWidth="130.0" promptText="구 선택" />
                   <Label id="lblMemberId" fx:id="lblMemberId" alignment="CENTER_RIGHT" layoutX="358.0" layoutY="29.0" prefHeight="17.0" prefWidth="103.0" />
                   <Label layoutX="467.0" layoutY="29.0" text="님" />
+                  <ComboBox fx:id="cbGender" layoutX="358.0" layoutY="176.0" prefWidth="150.0" promptText="연령대 선택" />
+                  <Label layoutX="358.0" layoutY="150.0" text="Gender">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
         </content>
@@ -80,7 +86,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="favTable" layoutX="13.0" layoutY="9.0" prefHeight="491.0" prefWidth="519.0" />
+                  <TableView fx:id="favTable" layoutX="7.0" layoutY="7.0" prefHeight="498.0" prefWidth="528.0" />
                </children>
             </AnchorPane>
         </content>

@@ -190,6 +190,7 @@ public class MemberDAO {
 
 			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
+			System.out.println("11111");
 
 			if (i == 1) {
 				SharedMethod.alertDisplay(1, "member info correction", "correction completed", "SUCCESS!");
@@ -197,6 +198,7 @@ public class MemberDAO {
 				SharedMethod.alertDisplay(1, "member info correction error", "correction failed", "TRY AGAIN!");
 				return null;
 			}
+			System.out.println("33333");
 
 		} catch (SQLException e) {
 			System.out.println("e=[" + e + "]");
