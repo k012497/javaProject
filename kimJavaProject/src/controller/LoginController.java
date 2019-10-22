@@ -7,6 +7,7 @@ import java.text.ParsePosition;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -48,37 +49,37 @@ public class LoginController implements Initializable {
 		txtId.setText("a123");
 		txtPw.setText("123123");
 
-		// 아이디 찾기 
+		// 아이디 찾기
 		lblFindId.setOnMousePressed((e) -> handlerLabelFindId());
-		
-		// 비밀번호 찾기 
+
+		// 비밀번호 찾기
 		lblFindPw.setOnMousePressed((e) -> handlerLabelFindPw());
-		
+
 		// 로그인
 		btnSignIn.setOnAction((e) -> handlerBtnSignInAction(e));
 		// 비밀번호 패스워드필드에 엔터키를 누르면 버튼을 눌리게 하는 함수
-	    txtPw.setOnKeyPressed(e1 -> {
-	         if (e1.getCode().equals(KeyCode.ENTER))
-	            handlerBtnSignInAction(e1);
-	      });
-	      
-		// 회원가입 
+		txtPw.setOnKeyPressed(e1 -> {
+			if (e1.getCode().equals(KeyCode.ENTER))
+				handlerBtnSignInAction(e1);
+		});
+
+		// 회원가입
 		lblSignUp.setOnMousePressed((e) -> handlerLabelSignUpAction(e));
 
 		// 관리자 모드
 		imgAdmin.setOnMousePressed((e) -> handlerAdminAction(e));
 	}
-	
+
 	// 1-1. Login ActionEvent
 	public void handlerBtnSignInAction(ActionEvent e) {
 		handlerSignInAction();
 	}
-	
+
 	// 1-2. Login KeyEvent
 	public void handlerBtnSignInAction(KeyEvent e1) {
 		handlerSignInAction();
 	}
-	
+
 	public void handlerAdminAction(MouseEvent e) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/view/adminPW.fxml"));
@@ -93,6 +94,32 @@ public class LoginController implements Initializable {
 
 			btnCancel.setOnAction((e3) -> {
 				stage.close();
+			});
+
+			txtPw.setOnKeyPressed((e1) -> {
+				if (e1.getCode().equals(KeyCode.ENTER)) {
+					if (txtPw.getText().equals("01240802")) {
+						Stage mainStage = null;
+						try {
+							Scene scene = new Scene(new StackPane());
+							FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminPage.fxml"));
+							scene.setRoot(loader.load());
+							AdminController controller = loader.getController();
+							controller.init();
+							mainStage = new Stage();
+							mainStage.setScene(scene);
+							mainStage.show();
+							mainStage.setResizable(true);
+							((Stage) btnSignIn.getScene().getWindow()).close();
+							mainStage.show();
+						} catch (Exception e2) {
+							SharedMethod.alertDisplay(1, "ADMIN PAGE LOAD FAILED", "관리자 모드 전환 실패",
+									e2.toString() + e2.getMessage());
+						}
+					} else {
+						System.out.println("틀렸지롱");
+					}
+				}
 			});
 
 			btnOk.setOnAction((e4) -> {

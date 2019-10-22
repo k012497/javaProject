@@ -73,67 +73,35 @@ public class MyPageController implements Initializable {
 
 	private boolean favFlag = false;
 	private boolean reviewFlag = false;
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// 콤보박스 세팅
 		comboBoxInitSetting();
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				getMemberInfo();
-			}
-		});
-		
+
+		// 접속한 멤버 정보 불러오기
+		Platform.runLater(() -> getMemberInfo());
+
+		// 테이블뷰 컬럼 세팅
 		favTableColSetting();
 		reviewTableColSetting();
 
 		btnCancel.setOnAction((e) -> handlerButtonCancel());
 		btnLeave.setOnAction((e) -> handlerButtonLeaveAction());
 		btnEdit.setOnAction((e) -> handlerEditButtonAction());
-		
-		//창이 다시 실행되지 않는 한 테이블뷰 로드는 한 번만 하도록 함 
+
+		// 탭을 열면 해당 테이블뷰에 데이터를 가져옴
+		// 창이 다시 실행되지 않는 한 테이블뷰 로드는 한 번만 하도록 함
 		favFlag = true;
 		favTab.setOnSelectionChanged((e) -> {
-			if(favFlag) {
-				ArrayList<RestaurantVO> list = null;
-				RestaurantDAO restDAO = new RestaurantDAO();
-				RestaurantVO restVO = null;
-				list = restDAO.getListForFav(lblMemberId.getText());
-
-				if (list == null) {
-					SharedMethod.alertDisplay(1, "warning", "ERROR in CALLING DB", "please check again");
-				}
-
-				for (int i = 0; i < list.size(); i++) {
-					restVO = list.get(i);
-					favData.add(restVO);
-				}
-				favTable.setItems(favData);
-			}
-			favFlag = false;
+			handlerFavTabAction();
 		});
-		
+
 		reviewFlag = true;
 		reviewTab.setOnSelectionChanged((e) -> {
-			if(reviewFlag) {
-				ArrayList<ReviewJoinRestaurantVO> list = null;
-				ReviewDAO reviewDAO = new ReviewDAO();
-				ReviewJoinRestaurantVO reviewVO = null;
-				list = reviewDAO.getReveiw(lblMemberId.getText());
-
-				if (list == null) {
-					SharedMethod.alertDisplay(1, "warning", "ERROR in CALLING DB", "please check again");
-				}
-
-				for (int i = 0; i < list.size(); i++) {
-					reviewVO = list.get(i);
-					reviewData.add(reviewVO);
-				}
-				reviewTable.setItems(reviewData);
-			}
-			reviewFlag = false;
+			handlerReviewTabAction();
 		});
-		
+
 	}
 
 	public void handlerEditButtonAction() {
@@ -248,28 +216,51 @@ public class MyPageController implements Initializable {
 		colKind.setCellValueFactory(new PropertyValueFactory("kind"));
 
 		// 컬럼 객체들을 테이블 뷰에 추가 & 항목 추가
-		//favTable.setItems(favData);
+		// favTable.setItems(favData);
 		favTable.getColumns().addAll(colName, colAddr, colKind);
 
 	} // end of favTableColSetting
-	
-	public void totalFavList() {
-		ArrayList<RestaurantVO> list = null;
-		RestaurantDAO restDAO = new RestaurantDAO();
-		RestaurantVO restVO = null;
-		list = restDAO.getListForFav(lblMemberId.getText());
 
-		if (list == null) {
-			SharedMethod.alertDisplay(1, "warning", "ERROR in CALLING DB", "please check again");
+	public void handlerFavTabAction() {
+		if (favFlag) {
+			ArrayList<RestaurantVO> list = null;
+			RestaurantDAO restDAO = new RestaurantDAO();
+			RestaurantVO restVO = null;
+			list = restDAO.getListForFav(lblMemberId.getText());
+
+			if (list == null) {
+				SharedMethod.alertDisplay(1, "warning", "ERROR in CALLING DB", "please check again");
+			}
+
+			for (int i = 0; i < list.size(); i++) {
+				restVO = list.get(i);
+				favData.add(restVO);
+			}
+			favTable.setItems(favData);
 		}
+		favFlag = false;
+	}
 
-		for (int i = 0; i < list.size(); i++) {
-			restVO = list.get(i);
-			favData.add(restVO);
+	public void handlerReviewTabAction() {
+		if (reviewFlag) {
+			ArrayList<ReviewJoinRestaurantVO> list = null;
+			ReviewDAO reviewDAO = new ReviewDAO();
+			ReviewJoinRestaurantVO reviewVO = null;
+			list = reviewDAO.getReveiw(lblMemberId.getText());
+
+			if (list == null) {
+				SharedMethod.alertDisplay(1, "warning", "ERROR in CALLING DB", "please check again");
+			}
+
+			for (int i = 0; i < list.size(); i++) {
+				reviewVO = list.get(i);
+				reviewData.add(reviewVO);
+			}
+			reviewTable.setItems(reviewData);
 		}
+		reviewFlag = false;
+	}
 
-	}// end of totalList
-	
 	public void reviewTableColSetting() {
 		reviewData = FXCollections.observableArrayList();
 		reviewTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
@@ -293,21 +284,5 @@ public class MyPageController implements Initializable {
 		reviewTable.getColumns().addAll(colName, colStars, colDate);
 
 	} // end of reviewColSetting
-	
-	public void totalReviewList() {
-		ArrayList<ReviewJoinRestaurantVO> list = null;
-		ReviewDAO reviewDAO = new ReviewDAO();
-		ReviewJoinRestaurantVO reviewVO = null;
-		list = reviewDAO.getReveiw(lblMemberId.getText());
-
-		if (list == null) {
-			SharedMethod.alertDisplay(1, "warning", "ERROR in CALLING DB", "please check again");
-		}
-
-		for (int i = 0; i < list.size(); i++) {
-			reviewVO = list.get(i);
-			reviewData.add(reviewVO);
-		}
-	}// end of totalList
 
 }

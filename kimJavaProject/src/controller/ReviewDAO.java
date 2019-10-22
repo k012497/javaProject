@@ -52,8 +52,9 @@ public class ReviewDAO {
 	public ArrayList<ReviewJoinRestaurantVO> getReveiw(String memberID) {
 		ArrayList<ReviewJoinRestaurantVO> list = new ArrayList<ReviewJoinRestaurantVO>();
 //			MenuVO list = null;
-		String dml = "select restaurantTBL.restaurantName, reviewTBL.stars, reviewTBL.registeDate from restaurantTBL inner join reviewTBL on restaurantTBL.restaurantID = reviewTBL.restaurantID \n" + 
-				"where reviewTBL.memberId = ?;";
+		String dml = "select restaurantTBL.restaurantName, reviewTBL.stars, reviewTBL.registeDate "
+				+ "from restaurantTBL inner join reviewTBL on restaurantTBL.restaurantID = reviewTBL.restaurantID " + 
+				"where reviewTBL.memberId = ? order by reviewTBL.registeDate desc";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
