@@ -96,31 +96,27 @@ public class MainController implements Initializable {
 	private ComboBox<String> cbDong;
 	ObservableList<String> addressDongList;
 
-	// Inject controller
-	@FXML
-	private MyPageController myPageController;
-
 	static int selectedRestId;
 	static double starsUpdated;
 
 	@FXML
 	private ListView<CustomThing> listView;
-	private final ObservableList<RestaurantVO> imageData = FXCollections.observableArrayList();
-	private String localUrl = ""; // 이미지 파일 경로
+//	private final ObservableList<RestaurantVO> imageData = FXCollections.observableArrayList();
+	private String localUrl = "";
 	private Image localImage;
 
-	private int selectedIndex;
+//	private int selectedIndex;
 	private ObservableList<CustomThing> selectedRest;
 	ObservableList<RestaurantVO> restData;
 	ObservableList<MenuVO> menuData;
 
 	RestaurantDAO restaurantDAO = new RestaurantDAO();
-	ArrayList<RestaurantVO> rvo = null;
-	String fileName = null;
-	private File selectedFile = null;
-
+	ArrayList<RestaurantVO> rvo;
 	ArrayList<RestaurantVO> data;
+	String fileName;
+	private File selectedFile;
 
+	// 영업중인 식당을 계산하기 위해 현재 시간을 가져올 변수 선언
 	static Date now = new Date();
 	static int nowHours = now.getHours();
 	static int nowMinutes = now.getMinutes();
@@ -135,10 +131,9 @@ public class MainController implements Initializable {
 		});
 		buttonInitSetting(true, true);
 
-		// load가 끝난 후 라벨의 텍스트에 ID가 세팅되면 그 값을 저장
+		// load가 끝난 후 라벨의 텍스트에 ID가 세팅되면 해당 ID의 정보 불러옴
 		Platform.runLater(() -> {
 			getMemberInfo();
-
 		});
 
 		// 검색 버튼 눌렀을 때
@@ -160,12 +155,14 @@ public class MainController implements Initializable {
 		btnCafe.setOnAction((e) -> setListWithImagebyKind("카페"));
 		btnBuffet.setOnAction((e) -> setListWithImagebyKind("뷔페"));
 
+		// 연령대별 인기식당을 눌렀을 때
 		hBoxPopular.setOnMousePressed((e) -> handlerFavBarChartAction(e));
 
 		// 로그아웃 버튼 눌렀을 때
 		btnSignOut.setOnAction((e) -> handlerSignOutAction());
 	}
 
+	// 접속중인 사용자의 정보를 불러오는 메소드
 	public void getMemberInfo() {
 		memberID = lblMember.getText();
 		MemberDAO memberDAO = new MemberDAO();
@@ -177,6 +174,24 @@ public class MainController implements Initializable {
 		}
 	}
 
+	// 로그아웃 버튼을 눌렀을 때 현재 창을 닫고 로그인 창으로 돌아감
+	public void handlerSignOutAction() {
+		Stage primaryStage = new Stage();
+		Parent loader;
+		try {
+			loader = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+			Scene scene = new Scene(loader);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (IOException e) {
+			SharedMethod.alertDisplay(1, "로그인창 콜실패", "로그인창 부르기 실패", e.toString() + e.getMessage());
+		}
+
+		Stage stage = (Stage) btnSignOut.getScene().getWindow();
+		stage.close();
+	}
+
+	// 음식 종류에 따른 리스트 뷰 모달창을 호출하는 메소드
 	public void setListWithImagebyKind(String kind) {
 		try {
 			Stage stage = new Stage(StageStyle.UTILITY);
@@ -189,6 +204,7 @@ public class MainController implements Initializable {
 			ObservableList<CustomThing> data = FXCollections.observableArrayList();
 			RestaurantDAO restDAO = new RestaurantDAO();
 
+			// 해당 지역 및 종류에 등록된 식당이 없는 경우
 			try {
 				if (restDAO.getRestByAddrAndKind(cbGu.getValue(), cbDong.getValue(), kind).get(0) == null) {
 					SharedMethod.alertDisplay(5, "!", "등록된 식당 없음", "등록된 식당이 없습니다.");
@@ -223,22 +239,15 @@ public class MainController implements Initializable {
 		root.getChildren().add(listView);
 	}
 
-	private void handlerSignOutAction() {
-		Stage primaryStage = new Stage();
-		Parent loader;
-		try {
-			loader = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
-			Scene scene = new Scene(loader);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (IOException e) {
-			SharedMethod.alertDisplay(1, "로그인창 콜실패", "로그인창 부르기 실패", e.toString() + e.getMessage());
-		}
-
-		Stage stage = (Stage) btnSignOut.getScene().getWindow();
-		stage.close();
-	}
-
+	/*
+	 * 접속중인 사용자의 연령대에 맞는 인기식당을 BarChart로 보여주는 창을 띄우는 메소드 2019-10-23
+	 * 
+	 * 라벨을 클릭하면 이벤트를 전달 받아서 실행되는 메소드.
+	 * 라벨에 적힌 사용자의 연령대 값을 파라미터로 select 메소드에 전달함 
+	 * 해당 연령대가 즐겨찾기에 많이 등록한 식당을 내림차순으로 가져온다.
+	 * 
+	 * 만든이 : 김소진
+	 */
 	public void handlerFavBarChartAction(MouseEvent e) {
 		// 별점 순으로 정렬한 식당 리스트 10개를 가져온다.
 		RestaurantDAO restaurantDAO = new RestaurantDAO();
@@ -273,7 +282,7 @@ public class MainController implements Initializable {
 			stage.show();
 
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			SharedMethod.alertDisplay(5, "창 호출 실패", "창 호출 실패", "창을 열지 못했습니다.");
 		}
 	}
 
@@ -631,21 +640,28 @@ public class MainController implements Initializable {
 							CheckBox chkFriOff = (CheckBox) root.lookup("#chkFriOff");
 							CheckBox chkSatOff = (CheckBox) root.lookup("#chkSatOff");
 							CheckBox chkSunOff = (CheckBox) root.lookup("#chkSunOff");
-							
+
 							btnOk.setOnAction((e3) -> {
 								stage.close();
 							});
 							OpenDAO openDAO = new OpenDAO();
 							ArrayList<OpenVO> ovo = null;
 							ovo = openDAO.getOpenHours(selectedRestId);
-							cbMonOpen.setText(ovo.get(0).getMonOpen()); cbMonClose.setText(ovo.get(0).getMonClose());
-							cbTueOpen.setText(ovo.get(0).getMonOpen()); cbTueClose.setText(ovo.get(0).getTueClose());
-							cbWedOpen.setText(ovo.get(0).getMonOpen()); cbWedClose.setText(ovo.get(0).getWedClose());
-							cbThuOpen.setText(ovo.get(0).getMonOpen()); cbThuClose.setText(ovo.get(0).getThuClose());
-							cbFriOpen.setText(ovo.get(0).getMonOpen()); cbFriClose.setText(ovo.get(0).getFriClose());
-							cbSatOpen.setText(ovo.get(0).getMonOpen()); cbSatClose.setText(ovo.get(0).getSatClose());
-							cbSunOpen.setText(ovo.get(0).getMonOpen()); cbSunClose.setText(ovo.get(0).getSunClose());
-							
+							cbMonOpen.setText(ovo.get(0).getMonOpen());
+							cbMonClose.setText(ovo.get(0).getMonClose());
+							cbTueOpen.setText(ovo.get(0).getMonOpen());
+							cbTueClose.setText(ovo.get(0).getTueClose());
+							cbWedOpen.setText(ovo.get(0).getMonOpen());
+							cbWedClose.setText(ovo.get(0).getWedClose());
+							cbThuOpen.setText(ovo.get(0).getMonOpen());
+							cbThuClose.setText(ovo.get(0).getThuClose());
+							cbFriOpen.setText(ovo.get(0).getMonOpen());
+							cbFriClose.setText(ovo.get(0).getFriClose());
+							cbSatOpen.setText(ovo.get(0).getMonOpen());
+							cbSatClose.setText(ovo.get(0).getSatClose());
+							cbSunOpen.setText(ovo.get(0).getMonOpen());
+							cbSunClose.setText(ovo.get(0).getSunClose());
+
 							chkMonOff.setDisable(true);
 							chkTueOff.setDisable(true);
 							chkWedOff.setDisable(true);
@@ -761,8 +777,11 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/*
+	 * 해당 식당의 지도를 새 창의 WebView로 띄워주는 메소드 Google map API URL을 이용하여 query에 상호명을 전달 만든이
+	 * 만든이 : 김소진
+	 */
 	public void handlerLocationAction(ImageView imgLocation, String name) {
-		// new stage with web view
 		try {
 
 			Stage stage = new Stage(StageStyle.UTILITY);
@@ -818,9 +837,6 @@ public class MainController implements Initializable {
 	} // end of menuTableViewSetting
 
 	public static int handlerAddStarsAction(String stars) {
-		System.out.println("메인창으로 전달 " + stars);
-		System.out.println("선택식당 " + selectedRestId);
-		System.out.println("t사용자 " + memberID);
 
 		// 1. 리뷰 테이블에 insert
 		ReviewVO rvo = new ReviewVO(memberID, selectedRestId, Double.parseDouble(stars));
@@ -845,6 +861,7 @@ public class MainController implements Initializable {
 		return 0;
 	}
 
+	// 해당 식당의 영업시간(OpenVO)를 받아와서 오늘의 요일에 따른 open/close시간을 checkOpenHour에 전달
 	public int checkTime() {
 		OpenDAO openDAO = new OpenDAO();
 		ArrayList<OpenVO> ovo = openDAO.getOpenHours(selectedRestId);
@@ -852,10 +869,6 @@ public class MainController implements Initializable {
 		// 해당 식당의 운영시간 정보가 등록되지 않았을 경우
 		if (ovo == null)
 			return 0;
-
-		// check now time
-		System.out.println(nowHours);
-		System.out.println(nowMinutes);
 
 		if (nowHours < 10 && nowMinutes >= 10) {
 			nowTime = "0" + nowHours + ":" + nowMinutes;
@@ -918,16 +931,22 @@ public class MainController implements Initializable {
 		}
 
 		return result;
-
 	}
 
+	/*
+	 * 식당이 현재 영업중인지 계산하기 위한 메소드 2019-10-23
+	 * 
+	 * compareTo()메소드를 이용하여 현재시간과 오픈시간, 마감시간을 비교함 (String ) time1.compareTo(time2)
+	 * => time1이 time2보다 이후 날짜이면 양수, 반대의 경우 음수, 같으면 0을 반환
+	 * 
+	 * 영업중인 경우 1을, 그렇지 않은 경우 -1을 반환. 만든이 : 김소진
+	 */
 	public static int checkOpenHour(String open, String close) {
 		try {
-			// time1.compareTo(time2) : time1 - time2를 반환. >> time1이 time2보다 이후 날짜이면 양수,
-			// 반대의 경우 (-), 같으면 0
 			int result1 = nowTime.compareTo(open);
 			int result2 = close.compareTo(nowTime);
 
+			// 오픈시간 < 현재시간 < 마감시간이어야 영업중인 상태이므로
 			if (result1 >= 0 && result2 >= 0) {
 				return 1;
 			} else {
@@ -938,5 +957,4 @@ public class MainController implements Initializable {
 		}
 		return 0;
 	}
-
 }

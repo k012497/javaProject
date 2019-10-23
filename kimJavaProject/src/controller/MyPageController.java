@@ -29,6 +29,10 @@ import model.RestaurantVO;
 import model.ReviewJoinRestaurantVO;
 import model.ReviewVO;
 
+/*
+ * 사용자가 본인의 정보(인적 정보, 즐겨찾기 목록, 별점 목록)을 관리할 수 있는 페이지를 위한 컨트롤러
+ * 만든이 : 김소진 
+ */
 public class MyPageController implements Initializable {
 	@FXML
 	private ComboBox<String> cbAge;
@@ -89,28 +93,39 @@ public class MyPageController implements Initializable {
 		favTableColSetting();
 		reviewTableColSetting();
 
+		// 메인으로 버튼을 눌렀을 때 
 		btnCancel.setOnAction((e) -> handlerButtonCancel());
+		
+		// 회원탈퇴 버튼을 눌렀을 때 
 		btnLeave.setOnAction((e) -> handlerButtonLeaveAction());
+		
+		// 정보 수정 버튼을 눌렀을 때
 		btnEdit.setOnAction((e) -> handlerEditButtonAction());
 
-		// 탭을 열면 해당 테이블뷰에 데이터를 가져옴
-		// 창이 다시 실행되지 않는 한 테이블뷰 로드는 한 번만 하도록 함
+		/*
+		 * my찜뽕 탭을 열면 테이블뷰에 각 사용자에 해당하는 데이터를 가져오는 이벤트 처리 
+		 * favFlag를 이용하여 창이 다시 실행되지 않는 한 테이블뷰 로드는 한 번만 하도록 함
+		 * 만든이 : 김소진 
+		 */
 		favFlag = true;
-		favTab.setOnSelectionChanged((e) -> {
-			handlerFavTabAction();
-		});
+		favTab.setOnSelectionChanged((e) -> {handlerFavTabAction();});
 
+		/*
+		 * my review 탭을 열면 테이블뷰에 각 사용자에 해당하는 데이터를 가져오는 이벤트 처리 
+		 * reviewFlag를 이용하여 창이 다시 실행되지 않는 한 테이블뷰 로드는 한 번만 하도록 함
+		 * 만든이 : 김소진 
+		 */
 		reviewFlag = true;
 		reviewTab.setOnSelectionChanged((e) -> {
 			handlerReviewTabAction();
 		});
 		
+		// 휴대폰 번호 필드의 포맷 제한 - 11자리 숫자만
 		SharedMethod.inputDecimalFormatThirteenDigit(txtNumber);
 
 	}
 
 	public void handlerEditButtonAction() {
-		SharedMethod.checkOnlyNumberAndEnglish(txtName.getText());
         SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
         SharedMethod.checkOnlyNumberAndEnglish(txtPwAgain.getText());
         
@@ -200,7 +215,6 @@ public class MyPageController implements Initializable {
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
-				// memberDAO.getMemberDelete(lblMemberId.getText());
 				SharedMethod.alertDisplay(1, "bye", "USER_BYE",
 						"[ok]를 누르면 모든 프로그램이 종료 됩니다\n그동안 저희 프로그램을 이용해 주셔서 감사합니다 (#><#)\n");
 				Platform.exit();

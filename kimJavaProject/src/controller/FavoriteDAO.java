@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.FavoriteVO;
-import model.MenuVO;
 
 public class FavoriteDAO {
 
-	// ① 신규 등록 (data 입력 부분 - insert)
+	// insert
 	public int getFavregiste(FavoriteVO fvo, String memberId) throws Exception {
 
 		String dml = "insert into favoriteTBL " + " values " + "(null, ?, ?)";
@@ -50,7 +49,7 @@ public class FavoriteDAO {
 		return count;
 	}
 
-	// 모든 즐겨찾기 가져오기
+	// select - 모든 즐겨찾기 가져오기
 	public ArrayList<FavoriteVO> getFavTotal(int restId) {
 		ArrayList<FavoriteVO> list = new ArrayList<FavoriteVO>();
 		String dml = "select * from favoriteTBL";
@@ -86,7 +85,8 @@ public class FavoriteDAO {
 		return list;
 	}
 
-	// 해당 사용자가 특정 식당을 즐찾 등록 했는지 확인. 했으면 1 안 했으면 0 리턴
+	// 해당 사용자가 특정 식당을 즐겨찾기에 등록 했는지 확인
+	// 했으면 1, 안 했으면 0을 리턴
 	public int getFavFlag(int restId, String memberId) {
 		boolean flag = false;
 		ObservableList<FavoriteVO> list = FXCollections.observableArrayList();
@@ -130,10 +130,10 @@ public class FavoriteDAO {
 
 	}
 
+	// select - 즐겨찾기에 등록된 횟수
 	public int getFavCount(int restID) {
-		ObservableList<String> list = FXCollections.observableArrayList();
 		String dml = "select count(f.restaurantID)" + "	from favoriteTBL f, restaurantTBL r"
-				+ "	where f.restaurantID = r.restaurantID and f.restaurantID = ?" + "	group by f.restaurantID";
+				+ "	where f.restaurantID = r.restaurantID and f.restaurantID = ?" + " group by f.restaurantID";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -149,9 +149,7 @@ public class FavoriteDAO {
 				count = rs.getInt(1);
 			}
 		} catch (SQLException se) {
-			System.out.println(se);
 		} catch (Exception e) {
-			System.out.println(e);
 		} finally {
 			try {
 				if (rs != null)
@@ -166,29 +164,29 @@ public class FavoriteDAO {
 		return count;
 	}
 
-	// data 삭제 기능 - delete
+	// delete - 해당 id의 즐겨찾기 레코드를 삭제  
 	public void getFavDelete(int no) throws Exception {
-		// ② 데이터 처리를 위한 SQL 문
+		// 데이터 처리를 위한 SQL 문
 		String dml = "delete from favoriteTBL where favoriteID = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
+			// DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			// SQL문을 수행후 처리 결과를 얻어옴
 			pstmt = con.prepareStatement(dml);
 			pstmt.setInt(1, no);
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(5, "delete menu", "delete completed", "SUCCESS!");
+				SharedMethod.alertDisplay(5, "삭제 성공", "삭제 성공", "삭제를 성공했습니다!");
 
 			} else {
-				SharedMethod.alertDisplay(1, "delete menu", "delete not completed", "FAIL!");
+				SharedMethod.alertDisplay(1, "삭제 실패", "삭제 실패", "삭제에 실패했습니다");
 			}
 
 		} catch (SQLException e) {
@@ -197,7 +195,7 @@ public class FavoriteDAO {
 			System.out.println("e=[" + e + "]");
 		} finally {
 			try {
-				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				// 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
 				if (pstmt != null)
 					pstmt.close();
 				if (con != null)
@@ -208,9 +206,9 @@ public class FavoriteDAO {
 
 	}
 
-	// 수정기능
+	// update - 해당 id의 즐겨찾기 레코드를 수정
 	public FavoriteVO getFavUpdate(FavoriteVO fvo, int favId) throws Exception {
-		// ② 데이터 처리를 위한 SQL 문
+		// 데이터 처리를 위한 SQL 문
 		String dml = "update favoriteTBL set " + "memberID=?, restaurantID=? where favID=?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -241,7 +239,7 @@ public class FavoriteDAO {
 			System.out.println("e=[" + e + "]");
 		} finally {
 			try {
-				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				// 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
 				if (pstmt != null)
 					pstmt.close();
 				if (con != null)
@@ -250,6 +248,5 @@ public class FavoriteDAO {
 			}
 		}
 		return fvo;
-//		}
 	}
 }

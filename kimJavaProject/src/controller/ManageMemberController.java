@@ -17,6 +17,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.MemberVO;
 
+/*
+ * 멤버 정보를 관리(조회/수정/삭제)할 수 있는 탭
+ * 만든이 : 김소진
+ */
 public class ManageMemberController implements Initializable {
 	// member management tab
 	@FXML
@@ -40,37 +44,34 @@ public class ManageMemberController implements Initializable {
 	@FXML
 	private Button btnMemEdit;
 
-	// chart analysis tab
-
-	private MemberDAO memberDAO;
 	private ObservableList<MemberVO> data;
 	private int selectedIndex;
 	private ObservableList<MemberVO> selectedMember;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//아이디는 수정 불가 
-		txtMemId.setDisable(true);
-		
-		//table column setting
+		// 멤버 테이블 뷰에 칼럼 및 데이터 세팅
 		memberTableColSetting();
-		//load total list into tableView
 		totalList();
+		
+		// 아이디는 수정 불가 
+		txtMemId.setDisable(true);
 
-		// initial setting - comboBox;
+		// 콤보박스 세팅
 		cbMemAge.setItems(FXCollections.observableArrayList("10", "20", "30", "40", "50", "60", "70", "80", "90"));
 		
-		// when click btnMemEdit
+		// 테이블 뷰 속 객체를 눌렀을 때
+		memTable.setOnMousePressed((e) -> handlerTableViewPressedAction());
+
+		// 수정 버튼을 눌렀을 때
 		btnMemEdit.setOnAction((ActionEvent event) -> handlerBtnMemEditAction());
 		
-		// when select an object in tableView
-		memTable.setOnMousePressed((e) -> handlerTableViewPressedAction());
-		
-		// when click btnMemDelete
+		// 삭제 버튼을 눌렀을 때 
 		btnMemDelete.setOnAction((e)-> handlerBtnDeleteAction());
 
 	}
 
+	// 테이블 뷰의 칼럼에 세팅할 데이터, 이름, 너비를 정함 
 	public void memberTableColSetting() {
 		data = FXCollections.observableArrayList();
 		memTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
@@ -117,6 +118,7 @@ public class ManageMemberController implements Initializable {
 
 	} // end of memberTableViewSetting
 
+	// 빈칸이 없으면 각 필드 내용을 담은 MemberVO로 만들고 DB에 저장하는 함수. 2019-10-17
 	public void handlerBtnMemEditAction() {
 		try {
 			if (txtMemId.getText().equals("") || txtMemPw.getText().equals("") || txtMemName.getText().equals("")
@@ -139,6 +141,7 @@ public class ManageMemberController implements Initializable {
 
 	}// end of handlerBtnMemEditAction
 
+	// DB에 저장된 모든 멤버 레코드를 가져와서 ObservableList에 저장
 	public void totalList() {
 		ArrayList<MemberVO> list = null;
 		MemberDAO memberDAO = new MemberDAO();
@@ -155,14 +158,14 @@ public class ManageMemberController implements Initializable {
 		}
 	}// end of totalList
 
+	// 누른 위치와 해당 객체를 가져와서 필드에 데이터를 출력
 	public void handlerTableViewPressedAction() {
-		// 테이블 뷰 객체 없는 부분 클릭 시 방어
 		try {
 			// 누른 위치와 해당 객체를 가져온다
 			selectedIndex = memTable.getSelectionModel().getSelectedIndex();
 			selectedMember = memTable.getSelectionModel().getSelectedItems();
 
-			// 가져온 정보를 데이터 필드에 출력
+			// 가져온 정보를 필드에 출력
 			txtMemId.setText(selectedMember.get(0).getMemberID());
 			cbMemAge.setValue(selectedMember.get(0).getAgeGroup());
 			txtMemPw.setText(selectedMember.get(0).getPassword());
@@ -174,6 +177,7 @@ public class ManageMemberController implements Initializable {
 		}
 	}
 
+	//선택한 테이블뷰의 인덱스를 이용하여 해당 객체를 DB에서 삭제하고, 테이블뷰를 다시 세팅하는 함수
 	public void handlerBtnDeleteAction() {
 		try {
 			MemberDAO memberDAO = new MemberDAO();
@@ -183,7 +187,5 @@ public class ManageMemberController implements Initializable {
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "DELETE ERROR", "error", "error");
 		}
-
-		// 경고창 확인/취소 값 받아서 삭제할 지 말 지 이벤트 처리
 	}
 }

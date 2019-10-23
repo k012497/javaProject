@@ -789,7 +789,13 @@ public class ManageRestController implements Initializable {
 			});
 
 			btnRestRegiste.setOnAction((e1) -> {
-
+				for(RestaurantVO rvo : restData) {
+					// 이미 존재하는 식당명일 경우 등록 불가
+					if(rvo.getRestaurantName().equals(txtNewName.getText())) {
+						SharedMethod.alertDisplay(1, "REGISTERATION FAILED", "식당 등록 실패 !", "이미 등록된 상호명입니다. \n프랜차이즈의 경우 지점명을 명시해주세요 ^v^");
+						return;
+					}
+				}
 				if (txtNewName.getText().equals("") || txtNewAddr.getText().equals("")
 						|| txtNewPhone.getText().equals("")
 						|| cbNewKind.getSelectionModel().getSelectedItem().equals("")

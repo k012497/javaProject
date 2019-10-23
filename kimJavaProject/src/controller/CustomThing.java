@@ -1,4 +1,7 @@
 package controller;
+/*
+ * listView에 담길 타입
+ */
 
 public class CustomThing {
     private String name;

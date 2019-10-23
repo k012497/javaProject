@@ -10,8 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+/*
+ * listView Cell 정의 및 생성을 위한 클래스
+ */
 
 public class CustomListCell extends ListCell<CustomThing> {
 	private HBox content;
@@ -34,7 +37,7 @@ public class CustomListCell extends ListCell<CustomThing> {
 	@Override
 	protected void updateItem(CustomThing item, boolean empty) {
 		super.updateItem(item, empty);
-		if (item != null && !empty) { // <== test for null item and empty parameter
+		if (item != null && !empty) { // test for null item and empty parameter
 			name.setText(item.getName());
 			address.setText(String.valueOf(item.getAddress()));
 			avgStars.setText(String.valueOf(item.getAvgStars()));
@@ -48,7 +51,6 @@ public class CustomListCell extends ListCell<CustomThing> {
 				imgView.setFitHeight(100);
 
 			} catch (FileNotFoundException e) {
-				
 			}
 			setGraphic(content);
 		} else {

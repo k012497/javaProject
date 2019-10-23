@@ -157,7 +157,7 @@ public class SharedMethod {
 	         } else if (chrInput >= 0x30 && chrInput <= 0x39) {
 	            // 숫자 OK!
 	         } else {
-	            alertDisplay(1, "[오류발생]","영문과 숫자 이외에 다른 글자가 포함되어있습니다.","영문과 숫자로만 입력해주세요");
+	            alertDisplay(5, "[오류발생]","영문과 숫자 이외에 다른 글자가 포함되어있습니다.","영문과 숫자로만 입력해주세요");
 	            return false; // 영문자도 아니고 숫자도 아님!
 	         }
 	      }

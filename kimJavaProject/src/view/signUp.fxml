@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="700.0" prefWidth="351.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SingUpController">
+<AnchorPane prefHeight="681.0" prefWidth="351.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SingUpController">
    <children>
       <TextField fx:id="txtId" layoutX="41.0" layoutY="198.0" prefHeight="45.0" prefWidth="161.0" promptText="아이디(ID)" />
       <TextField fx:id="txtPhoneNum" layoutX="40.0" layoutY="448.0" prefHeight="45.0" prefWidth="268.0" promptText="전화번호(PhoneNumber) - 제외 " />
@@ -16,8 +16,8 @@
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Button fx:id="btnSignUp" layoutX="85.0" layoutY="649.0" mnemonicParsing="false" text="Sign up" />
-      <Button fx:id="btnCancel" layoutX="183.0" layoutY="649.0" mnemonicParsing="false" text="Cancel" />
+      <Button fx:id="btnSignUp" layoutX="101.0" layoutY="626.0" mnemonicParsing="false" text="Sign up" />
+      <Button fx:id="btnCancel" layoutX="199.0" layoutY="626.0" mnemonicParsing="false" text="Cancel" />
       <Label layoutX="39.0" layoutY="155.0" text="Sign Up">
          <font>
             <Font size="27.0" />
@@ -30,7 +30,6 @@
          </font>
       </Label>
       <ComboBox fx:id="cbAge" layoutX="190.0" layoutY="404.0" prefHeight="29.0" prefWidth="119.0" promptText="연령대 선택" />
-      <Label fx:id="lblPwCheck" alignment="CENTER" layoutX="45.0" layoutY="608.0" text="* password check message" textFill="#868686" />
       <ComboBox fx:id="cbGu" layoutX="41.0" layoutY="334.0" prefHeight="29.0" prefWidth="130.0" promptText="구 선택" />
       <ComboBox fx:id="cbDong" layoutX="178.0" layoutY="334.0" prefHeight="29.0" prefWidth="130.0" promptText="동 선택" />
       <Label layoutX="40.0" layoutY="307.0" text="주소 Address">

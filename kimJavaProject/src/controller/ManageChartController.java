@@ -45,6 +45,7 @@ public class ManageChartController implements Initializable {
 		pieChartSetting();
 	}
 
+	// 파이차트 세팅
 	public void pieChartSetting() {
 		RestaurantDAO restaurantDAO = new RestaurantDAO();
 		
@@ -58,6 +59,7 @@ public class ManageChartController implements Initializable {
 				new PieChart.Data("뷔페", (double)restaurantDAO.getCountbyKind("뷔페")),
 				new PieChart.Data("중식", (double)restaurantDAO.getCountbyKind("중식"))));
 
+		// 파이 클릭 시 비율(%) 정보를 라벨에 출력
 		for (final PieChart.Data data : pieChart.getData()) {
 			data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 				double total = 0;
@@ -71,6 +73,7 @@ public class ManageChartController implements Initializable {
 		}
 	}
 
+	// 별점이 높은 식당 순으로 상위 10개 식당을 바차트에 출력한 모달창 띄우기
 	public void handlerStarsBarChartAction(MouseEvent e) {
 		// 별점 순으로 정렬한 식당 리스트 10개를 가져온다.
 		RestaurantDAO restaurantDAO = new RestaurantDAO();
@@ -120,9 +123,9 @@ public class ManageChartController implements Initializable {
 		}
 	}
 
+	// 구를 기준으로 각 지역에 등록된 식당 수를 바차트로 출력한 화면을 띄우기
 	public void handlerCountBarChartAction(MouseEvent e) {
 		RestaurantDAO restaurantDAO = new RestaurantDAO();
-//		data = restaurantDAO.getCountbyGu("");
 
 		try {
 			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/barchart.fxml"));
