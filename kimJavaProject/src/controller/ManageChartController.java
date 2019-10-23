@@ -70,12 +70,12 @@ public class ManageChartController implements Initializable{
 			// 모든 학생들의 국어점수 가져와서 막대그래프에 넣기
 			XYChart.Series seriesStars = new XYChart.Series(); // chart label
 			seriesStars.setName("별점");
-			ObservableList koreanList = FXCollections.observableArrayList();
+			ObservableList starsList = FXCollections.observableArrayList();
 			for (int i = 0; i < data.size(); i++) {
-				koreanList.add(new XYChart.Data(data.get(i).getRestaurantName(), data.get(i).getAvgStars()));
+				starsList.add(new XYChart.Data(data.get(i).getRestaurantName(), data.get(i).getAvgStars()));
 			}
 
-			seriesStars.setData(koreanList);
+			seriesStars.setData(starsList);
 			barChart.getData().add(seriesStars);
 			
 

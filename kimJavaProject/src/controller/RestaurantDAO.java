@@ -10,7 +10,7 @@ import model.RestaurantVO;
 
 public class RestaurantDAO {
 
-	// ① 신규 학생 점수 등록 (data 입력 부분 - insert)
+	// 신규 식당 등록
 	public int getRestregiste(RestaurantVO rvo) throws Exception {
 
 		String dml = "insert into restaurantTBL "
@@ -59,7 +59,7 @@ public class RestaurantDAO {
 		return count;
 	}
 
-	// data(전체 리스트) 가져오기 - select
+	// 전체 식당 리스트 가져오기 - select
 	public ArrayList<RestaurantVO> getRestTotal() {
 		ArrayList<RestaurantVO> list = new ArrayList<RestaurantVO>();
 		String dml = "select * from restaurantTBL";
@@ -343,7 +343,7 @@ public class RestaurantDAO {
 		return rvo;
 	}
 
-	// 즐찾 카운트 수정
+	// favCount(즐겨찾기 개수) 수정
 	public void getFavCountUpdate(int count, int restId) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
 		String dml = "update restaurantTBL set favCount = ? where restaurantID = ?";
@@ -384,6 +384,7 @@ public class RestaurantDAO {
 		}
 	}
 
+	// avgStars(평균 별점) 업데이트
 	public void getRestStarsUpdate(int restId) throws Exception {
 		// ② 데이터 처리를 위한 SQL 문
 		String dml = "update restaurantTBL set avgStars = (Select Round(Avg(stars), 2) from reviewTBL where restaurantId = ?) "
@@ -542,7 +543,7 @@ public class RestaurantDAO {
 		return list;
 	}
 
-	// 식당 아이디로 평균 별점 가져오기 
+	// 식당 아이디로 평균 별점 가져오기
 	public double getAvgStarsbyId(int id) {
 		double avgStars = 0;
 		String dml = "select avgStars from restaurantTBL where restaurantID = ?";
@@ -578,4 +579,40 @@ public class RestaurantDAO {
 		return avgStars;
 	}
 
+	public ArrayList<RestaurantVO> getTopFavCounByAge(int ageGroup) {
+		ArrayList<RestaurantVO> list = new ArrayList<RestaurantVO>();
+		String dml = "select restaurantTBL.restaurantName, restaurantTBL.favCount from memberTBL INNER join favoriteTBL on memberTBL.memberID = favoriteTBL.memberID " + 
+				"INNER join restaurantTBL on restaurantTBL.restaurantID = favoriteTBL.restaurantID " + 
+				"where memberTBL.ageGroup = ? group by restaurantTBL.restaurantID order by count(restaurantTBL.restaurantID) desc limit 5";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		RestaurantVO retval = null;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			pstmt.setInt(1, ageGroup);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				retval = new RestaurantVO(rs.getString(1), rs.getInt(2));
+				list.add(retval);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return list;
+	}
 }

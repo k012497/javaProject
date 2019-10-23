@@ -66,6 +66,11 @@ public class RestaurantVO {
 		this.address = address;
 		this.kind = kind;
 	}
+	
+	public RestaurantVO(String restaurantName, int favCount) {
+		this.restaurantName = restaurantName;
+		this.favCount = favCount;
+	}
 
 	public RestaurantVO() {
 		

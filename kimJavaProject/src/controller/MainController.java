@@ -13,12 +13,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -30,6 +31,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
@@ -68,12 +70,18 @@ public class MainController implements Initializable {
 	private Button btnKorean;
 	@FXML
 	private Button btnSearch;
+	
+	@FXML
+	private HBox hBoxPopular;
 
 	@FXML
 	private ImageView imgOpen;
 
 	@FXML
 	private Label lblRecommend;
+	@FXML
+	private Label lblAge;
+
 	@FXML
 	private Label lblMember;
 	private static String memberID;
@@ -83,14 +91,14 @@ public class MainController implements Initializable {
 	@FXML
 	private ComboBox<String> cbDong;
 	ObservableList<String> addressDongList;
-	@FXML
-	private ComboBox<String> cbArrange;
-	ObservableList<String> arrangeList = FXCollections.observableArrayList("기본 정렬", "별점순");
+//	@FXML
+//	private ComboBox<String> cbArrange;
+//	ObservableList<String> arrangeList = FXCollections.observableArrayList("기본 정렬", "별점순");
 
 	// Inject controller
 	@FXML
 	private MyPageController myPageController;
-	
+
 	static int selectedRestId;
 	static double starsUpdated;
 
@@ -109,6 +117,8 @@ public class MainController implements Initializable {
 	ArrayList<RestaurantVO> rvo = null;
 	String fileName = null;
 	private File selectedFile = null;
+	
+	ArrayList<RestaurantVO> data;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -121,7 +131,8 @@ public class MainController implements Initializable {
 
 		// load가 끝난 후 라벨의 텍스트에 ID가 세팅되면 그 값을 저장
 		Platform.runLater(() -> {
-			memberID = lblMember.getText();
+			getMemberInfo();
+
 		});
 
 		// 검색 버튼 눌렀을 때
@@ -142,9 +153,22 @@ public class MainController implements Initializable {
 		btnGlobal.setOnAction((e) -> setListWithImagebyKind("세계음식"));
 		btnCafe.setOnAction((e) -> setListWithImagebyKind("카페"));
 		btnBuffet.setOnAction((e) -> setListWithImagebyKind("뷔페"));
+		
+		hBoxPopular.setOnMousePressed((e) -> handlerFavBarChartAction(e));
 
 		// 로그아웃 버튼 눌렀을 때
 		btnSignOut.setOnAction((e) -> handlerSignOutAction());
+	}
+
+	public void getMemberInfo() {
+		memberID = lblMember.getText();
+		MemberDAO memberDAO = new MemberDAO();
+		try {
+			ArrayList<MemberVO> memberList = memberDAO.getMemberInfoUsingId(lblMember.getText());
+			lblAge.setText(String.valueOf(memberList.get(0).getAgeGroup()));
+		} catch (Exception e1) {
+			SharedMethod.alertDisplay(5, "멤버 정보 호출 실패", "멤버 정보 호출 실패", "멤버 정보를 불러오지 못했습니다.");
+		}
 	}
 
 	public void setListWithImagebyKind(String kind) {
@@ -184,8 +208,8 @@ public class MainController implements Initializable {
 			listView.setOnMousePressed((e) -> handlerListViewPressed(e, listView));
 
 			StackPane root = new StackPane();
-			root.getChildren().add(listView);
-			stage.setScene(new Scene(root, 500, 500));
+			root.getChildren().addAll(listView);
+			stage.setScene(new Scene(root, 500, 700));
 			stage.show();
 		} catch (IOException e) {
 			SharedMethod.alertDisplay(1, "리스트 창 호출 실패 ", "리스트 창 호출 실패", "리스트 창 호출 실패하였습니다. ");
@@ -209,6 +233,45 @@ public class MainController implements Initializable {
 
 		Stage stage = (Stage) btnSignOut.getScene().getWindow();
 		stage.close();
+	}
+	
+	public void handlerFavBarChartAction(MouseEvent e) {
+		// 별점 순으로 정렬한 식당 리스트 10개를 가져온다. 
+		RestaurantDAO restaurantDAO = new RestaurantDAO();
+		data = restaurantDAO.getTopFavCounByAge(Integer.parseInt(lblAge.getText()));
+		
+		try {
+			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/barchart.fxml"));
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(lblAge.getScene().getWindow());
+			stage.setTitle("연령대별 인기 식당");
+
+			BarChart barChart = (BarChart) barChartRoot.lookup("#barChart");
+			Button btnClose = (Button) barChartRoot.lookup("#btnClose");
+			
+
+			XYChart.Series seriesFav = new XYChart.Series();
+			seriesFav.setName("즐찾 수");
+			ObservableList countList = FXCollections.observableArrayList();
+			for (int i = 0; i < data.size(); i++) {
+				countList.add(new XYChart.Data(data.get(i).getRestaurantName(), data.get(i).getFavCount()));
+			}
+
+			seriesFav.setData(countList);
+			barChart.getData().add(seriesFav);
+
+			btnClose.setOnAction((event) -> {
+				stage.close();
+			});
+
+			Scene scene = new Scene(barChartRoot);
+			stage.setScene(scene);
+			stage.show();
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	public void handlerButtonAllAction() {
@@ -429,13 +492,12 @@ public class MainController implements Initializable {
 		root.getChildren().add(listView);
 	}
 
-
 	public void handlerListViewPressed(MouseEvent e, ListView<CustomThing> listView) {
 		selectedRest = listView.getSelectionModel().getSelectedItems();
 		try {
 			int restId = selectedRest.get(0).getRestaurantID();
 		} catch (Exception e2) {
-			SharedMethod.alertDisplay(1, "식당 정보 읽기 실패 ", "식당 정보 읽기 실패 ", "식당 정보 읽기 실패 ");
+			SharedMethod.alertDisplay(1, "식당 정보 읽기 실패 ", "식당 정보 읽기 실패", "등록된 식당을 클릭해주세");
 		}
 
 		RestaurantDAO restDAO = new RestaurantDAO();
@@ -470,7 +532,7 @@ public class MainController implements Initializable {
 			TableView<MenuVO> menuTable = (TableView<MenuVO>) root.lookup("#menuTable");
 
 			menuTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
-			
+
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
@@ -503,7 +565,7 @@ public class MainController implements Initializable {
 						SharedMethod.alertDisplay(1, "메뉴 세팅 실패", "메뉴 세팅 실패", "메뉴 세팅 실패");
 					}
 
-					//이미지뷰 세팅
+					// 이미지뷰 세팅
 					try {
 						String fileName = selectedRest.get(0).getFileName();
 						selectedFile = new File("/Users/kimsojin/Desktop/code/images/" + fileName);
@@ -540,8 +602,9 @@ public class MainController implements Initializable {
 			imgStars.setOnMousePressed((e4) -> {
 				handlerAddStars(imgStars);
 			});
-			
-			refresh.setOnMousePressed((e3) -> lblStars.setText(String.valueOf(restaurantDAO.getAvgStarsbyId(selectedRestId))));
+
+			refresh.setOnMousePressed(
+					(e3) -> lblStars.setText(String.valueOf(restaurantDAO.getAvgStarsbyId(selectedRestId))));
 			imgFav.setOnMousePressed((e4) -> handlerAddFavorite());
 
 			Scene scene = new Scene(root);
@@ -557,7 +620,7 @@ public class MainController implements Initializable {
 		double result = restDAO.getAvgStarsbyId(selectedRestId);
 		return result;
 	}
-	
+
 	public void handlerAddFavorite() {
 		// 즐겨찾기 테이블에 insert
 		FavoriteDAO favDAO = new FavoriteDAO();
