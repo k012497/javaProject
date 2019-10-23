@@ -49,7 +49,7 @@
                         <Insets bottom="3.0" left="3.0" top="3.0" />
                      </HBox.margin>
                      <font>
-                        <Font size="12.0" />
+                        <Font name="NanumSquareOTF Regular" size="12.0" />
                      </font>
                      <padding>
                         <Insets left="2.0" />
@@ -87,47 +87,74 @@
       <TableView id="menuTable" fx:id="menuTable" layoutX="10.0" layoutY="303.0" prefHeight="236.0" prefWidth="480.0" />
       <Button id="btnCancel" layoutX="464.0" layoutY="5.0" mnemonicParsing="false" text="X" />
       <Label layoutX="11.0" layoutY="280.0" text="[Menu]" />
-      <Label id="lblName" layoutX="254.0" layoutY="23.0" text="Name">
+      <Label id="lblName" layoutX="254.0" layoutY="37.0" text="Name">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
          <font>
-            <Font name="System Bold" size="18.0" />
+            <Font name="NanumSquareOTF ExtraBold" size="18.0" />
          </font>
       </Label>
-      <Label id="lblAddress" layoutX="254.0" layoutY="48.0" text="Address">
+      <Label id="lblAddress" layoutX="254.0" layoutY="64.0" text="Address">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font>
       </Label>
-      <Label id="lblPhoneNum" layoutX="254.0" layoutY="73.0" text="Number">
+      <Label id="lblPhoneNum" layoutX="254.0" layoutY="87.0" text="Number">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font>
       </Label>
-      <Label id="lblPark" layoutX="289.0" layoutY="99.0" text="Paking">
+      <Label id="lblPark" layoutX="288.0" layoutY="113.0" text="Paking">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font>
       </Label>
-      <Label id="lblTakeout" layoutX="289.0" layoutY="125.0" text="TakeOut">
+      <Label id="lblTakeout" layoutX="288.0" layoutY="137.0" text="TakeOut">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font>
       </Label>
-      <Label id="lblReserve" layoutX="289.0" layoutY="150.0" text="Reservation">
+      <Label id="lblReserve" layoutX="288.0" layoutY="163.0" text="Reservation">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font>
       </Label>
-      <Label id="lblOpenHours" layoutX="254.0" layoutY="177.0" prefHeight="23.0" prefWidth="150.0" text="Business hours">
+      <Label id="lblOpenHours" layoutX="253.0" layoutY="189.0" prefHeight="23.0" prefWidth="150.0" text="영업시간 정보 없음">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font>
       </Label>
-      <Label layoutX="257.0" layoutY="101.0" text="주차" />
-      <Label layoutX="257.0" layoutY="128.0" text="포장" />
-      <Label layoutX="257.0" layoutY="153.0" text="예약" />
+      <Label layoutX="256.0" layoutY="115.0" text="주차">
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font></Label>
+      <Label layoutX="256.0" layoutY="140.0" text="포장">
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font></Label>
+      <Label layoutX="256.0" layoutY="166.0" text="예약">
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font></Label>
       <ImageView id="refresh" fitHeight="23.0" fitWidth="20.0" layoutX="435.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/refresh.png" />

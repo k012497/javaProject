@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -31,7 +33,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -43,6 +44,7 @@ import javafx.util.Callback;
 import model.FavoriteVO;
 import model.MemberVO;
 import model.MenuVO;
+import model.OpenVO;
 import model.RestaurantVO;
 import model.ReviewVO;
 
@@ -71,7 +73,7 @@ public class MainController implements Initializable {
 	private Button btnKorean;
 	@FXML
 	private Button btnSearch;
-	
+
 	@FXML
 	private HBox hBoxPopular;
 
@@ -82,19 +84,16 @@ public class MainController implements Initializable {
 	private Label lblRecommend;
 	@FXML
 	private Label lblAge;
-
 	@FXML
 	private Label lblMember;
 	private static String memberID;
+
 	@FXML
 	private ComboBox<String> cbGu;
 	ObservableList<String> addressGuList;
 	@FXML
 	private ComboBox<String> cbDong;
 	ObservableList<String> addressDongList;
-//	@FXML
-//	private ComboBox<String> cbArrange;
-//	ObservableList<String> arrangeList = FXCollections.observableArrayList("기본 정렬", "별점순");
 
 	// Inject controller
 	@FXML
@@ -118,8 +117,13 @@ public class MainController implements Initializable {
 	ArrayList<RestaurantVO> rvo = null;
 	String fileName = null;
 	private File selectedFile = null;
-	
+
 	ArrayList<RestaurantVO> data;
+
+	static Date now = new Date();
+	static int nowHours = now.getHours();
+	static int nowMinutes = now.getMinutes();
+	static String nowTime;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -154,7 +158,7 @@ public class MainController implements Initializable {
 		btnGlobal.setOnAction((e) -> setListWithImagebyKind("세계음식"));
 		btnCafe.setOnAction((e) -> setListWithImagebyKind("카페"));
 		btnBuffet.setOnAction((e) -> setListWithImagebyKind("뷔페"));
-		
+
 		hBoxPopular.setOnMousePressed((e) -> handlerFavBarChartAction(e));
 
 		// 로그아웃 버튼 눌렀을 때
@@ -178,8 +182,7 @@ public class MainController implements Initializable {
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(btnAll.getScene().getWindow());
 			stage.setTitle("식당 리스트");
-			
-			
+
 			restData = null;
 
 			ObservableList<CustomThing> data = FXCollections.observableArrayList();
@@ -234,12 +237,12 @@ public class MainController implements Initializable {
 		Stage stage = (Stage) btnSignOut.getScene().getWindow();
 		stage.close();
 	}
-	
+
 	public void handlerFavBarChartAction(MouseEvent e) {
-		// 별점 순으로 정렬한 식당 리스트 10개를 가져온다. 
+		// 별점 순으로 정렬한 식당 리스트 10개를 가져온다.
 		RestaurantDAO restaurantDAO = new RestaurantDAO();
 		data = restaurantDAO.getTopFavCounByAge(Integer.parseInt(lblAge.getText()));
-		
+
 		try {
 			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/barchart.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
@@ -249,7 +252,6 @@ public class MainController implements Initializable {
 
 			BarChart barChart = (BarChart) barChartRoot.lookup("#barChart");
 			Button btnClose = (Button) barChartRoot.lookup("#btnClose");
-			
 
 			XYChart.Series seriesFav = new XYChart.Series();
 			seriesFav.setName("즐찾 수");
@@ -444,7 +446,6 @@ public class MainController implements Initializable {
 
 			restData = null;
 
-
 			ObservableList<CustomThing> data = FXCollections.observableArrayList();
 			RestaurantDAO restDAO = new RestaurantDAO();
 
@@ -496,7 +497,7 @@ public class MainController implements Initializable {
 		try {
 			int restId = selectedRest.get(0).getRestaurantID();
 		} catch (Exception e2) {
-			SharedMethod.alertDisplay(1, "식당 정보 읽기 실패 ", "식당 정보 읽기 실패", "등록된 식당을 클릭해주세");
+			SharedMethod.alertDisplay(1, "식당 정보 읽기 실패 ", "식당 정보 읽기 실패", "등록된 식당을 클릭해주세요");
 		}
 
 		RestaurantDAO restDAO = new RestaurantDAO();
@@ -513,6 +514,7 @@ public class MainController implements Initializable {
 				selectedRestId = selectedRest.get(0).getRestaurantID();
 			} catch (Exception e1) {
 				SharedMethod.alertDisplay(1, "식당 정보오류", "식당 정보오류", "식당 정보를 불러올 수 없습니다. ");
+				return;
 			}
 
 			Button btnCancel = (Button) root.lookup("#btnCancel");
@@ -523,6 +525,7 @@ public class MainController implements Initializable {
 			Label lblTakeout = (Label) root.lookup("#lblTakeout");
 			Label lblReserve = (Label) root.lookup("#lblReserve");
 			Label lblStars = (Label) root.lookup("#lblStars");
+			Label lblOpenHours = (Label) root.lookup("#lblOpenHours");
 			ImageView imageView = (ImageView) root.lookup("#imgView");
 			ImageView imgLocation = (ImageView) root.lookup("#imgLocation");
 			ImageView imgFav = (ImageView) root.lookup("#imgFav");
@@ -554,7 +557,7 @@ public class MainController implements Initializable {
 					try {
 						// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
 						// int restID = selectedRest.get(0).getRestaurantID();
-						System.out.println(selectedRestId);
+						System.out.println("selectedRestId  " + selectedRestId);
 						MenuDAO menuDAO = new MenuDAO();
 						menuData = FXCollections.observableArrayList();
 						menuData = menuDAO.getMenu(selectedRestId);
@@ -568,7 +571,7 @@ public class MainController implements Initializable {
 					try {
 						String fileName = selectedRest.get(0).getFileName();
 						selectedFile = new File("/Users/kimsojin/Desktop/code/images/" + fileName);
-						System.out.println(selectedFile);
+						System.out.println("selectedFile = " + selectedFile);
 						if (selectedFile != null) {
 							// 이미지 파일 경로
 							localUrl = selectedFile.toURI().toURL().toString();
@@ -580,6 +583,14 @@ public class MainController implements Initializable {
 						}
 					} catch (MalformedURLException e) {
 						SharedMethod.alertDisplay(1, "이미지뷰 세팅 실패", "이미지뷰 세팅 실패", "이미지뷰 세팅 실패");
+					}
+
+					// 영업중인지 검사
+					int resultNum = checkTime();
+					if (resultNum == 1) {
+						lblOpenHours.setText("영업중!");
+					} else if (resultNum == -1) {
+						lblOpenHours.setText("영업 종료");
 					}
 
 				}
@@ -755,9 +766,7 @@ public class MainController implements Initializable {
 			} else {
 				// 2. 식당 테이블의 별점 정보 수정
 				restaurantDAO.getRestStarsUpdate(selectedRestId);
-//				double newStars = restaurantDAO.getAvgStarsbyId(selectedRestId);
-//				starsUpdated = newStars;
-				///////////////////////////
+
 				return 1;
 			}
 		} catch (Exception e) {
@@ -765,7 +774,100 @@ public class MainController implements Initializable {
 		}
 
 		return 0;
+	}
 
+	public int checkTime() {
+		OpenDAO openDAO = new OpenDAO();
+		ArrayList<OpenVO> ovo = openDAO.getOpenHours(selectedRestId);
+
+		// 해당 식당의 운영시간 정보가 등록되지 않았을 경우
+		if (ovo == null)
+			return 0;
+
+		// check now time
+		System.out.println(nowHours);
+		System.out.println(nowMinutes);
+
+		if (nowHours < 10 && nowMinutes >= 10) {
+			nowTime = "0" + nowHours + ":" + nowMinutes;
+		} else if (nowHours >= 10 && nowMinutes < 10) {
+			nowTime = nowHours + ":0" + nowMinutes;
+		} else if (nowMinutes < 10 && nowHours < 10) {
+			nowTime = "0" + nowHours + ":0" + nowMinutes;
+		} else {
+			nowTime = nowHours + ":" + nowMinutes;
+		}
+		System.out.println(nowTime);
+
+		// get day of week
+		Calendar cal = Calendar.getInstance();
+		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+
+		System.out.println("ovo= " + ovo.toString());
+		String monOpen = ovo.get(0).getMonOpen();
+		String monClose = ovo.get(0).getMonClose();
+		String tueOpen = ovo.get(0).getTueOpen();
+		String tueClose = ovo.get(0).getTueClose();
+		String wedOpen = ovo.get(0).getWedOpen();
+		String wedClose = ovo.get(0).getWedClose();
+		String thuOpen = ovo.get(0).getThuOpen();
+		String thuClose = ovo.get(0).getThuClose();
+		String friOpen = ovo.get(0).getFriOpen();
+		String friClose = ovo.get(0).getFriClose();
+		String satOpen = ovo.get(0).getSatOpen();
+		String satClose = ovo.get(0).getSatClose();
+		String sunOpen = ovo.get(0).getSunOpen();
+		String sunClose = ovo.get(0).getSunClose();
+
+		int result = 0;
+		// switch case by dayOfWeek
+		switch (dayOfWeek) {
+		case 1:
+			result = checkOpenHour(sunOpen, sunClose);
+			break;
+		case 2:
+			result = checkOpenHour(monOpen, monClose);
+			break;
+		case 3:
+			result = checkOpenHour(tueOpen, tueClose);
+			break;
+		case 4:
+			result = checkOpenHour(wedOpen, wedClose);
+			break;
+		case 5:
+			result = checkOpenHour(thuOpen, thuClose);
+			break;
+		case 6:
+			result = checkOpenHour(friOpen, friClose);
+			break;
+		case 7:
+			result = checkOpenHour(satOpen, satClose);
+			break;
+
+		default:
+			break;
+		}
+
+		return result;
+
+	}
+
+	public static int checkOpenHour(String open, String close) {
+		try {
+			// time1.compareTo(time2) : time1 - time2를 반환. >> time1이 time2보다 이후 날짜이면 양수,
+			// 반대의 경우 (-), 같으면 0
+			int result1 = nowTime.compareTo(open);
+			int result2 = close.compareTo(nowTime);
+
+			if (result1 >= 0 && result2 >= 0) {
+				return 1;
+			} else {
+				return -1;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }

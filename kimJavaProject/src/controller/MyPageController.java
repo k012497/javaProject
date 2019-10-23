@@ -104,10 +104,17 @@ public class MyPageController implements Initializable {
 		reviewTab.setOnSelectionChanged((e) -> {
 			handlerReviewTabAction();
 		});
+		
+		SharedMethod.inputDecimalFormatThirteenDigit(txtNumber);
 
 	}
 
 	public void handlerEditButtonAction() {
+		SharedMethod.checkOnlyNumberAndEnglish(txtName.getText());
+        SharedMethod.checkOnlyNumberAndEnglish(txtNumber.getText());
+        SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
+        SharedMethod.checkOnlyNumberAndEnglish(txtPwAgain.getText());
+        
 		if (txtPw.getText().equals(txtPwAgain.getText())) {
 		} else {
 			SharedMethod.alertDisplay(1, "비밀번호 오류", "[비밀번호 오류]", "비밀번호 오류입니다 다시 확인 해주세요");

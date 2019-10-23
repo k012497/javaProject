@@ -90,7 +90,7 @@ public class SingUpController implements Initializable {
 		btnCancel.setOnAction(e -> {
 			handelBtnCancelAction();
 		});
-		
+
 		SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
 	}
 

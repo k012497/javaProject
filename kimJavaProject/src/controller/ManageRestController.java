@@ -78,6 +78,8 @@ public class ManageRestController implements Initializable {
 	private ImageView imgView;
 	@FXML
 	private ImageView imgOpenHours;
+	@FXML
+	private HBox openHours;
 
 	@FXML
 	private ComboBox<String> cbGu;
