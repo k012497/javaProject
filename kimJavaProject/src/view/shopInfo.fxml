@@ -10,12 +10,12 @@
 
 <AnchorPane prefHeight="550.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="9.0" layoutY="12.0" prefHeight="226.0" prefWidth="231.0" style="-fx-background-color: #dcdcdc;">
+      <AnchorPane layoutX="9.0" layoutY="12.0" prefHeight="218.0" prefWidth="231.0" style="-fx-background-color: #dcdcdc;">
          <children>
             <ImageView id="imgView" fx:id="imgView" fitHeight="207.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
-      <HBox alignment="CENTER" layoutX="9.0" layoutY="252.0" prefHeight="27.0" prefWidth="270.0">
+      <HBox alignment="CENTER" layoutX="9.0" layoutY="246.0" prefHeight="27.0" prefWidth="270.0">
          <children>
             <HBox prefHeight="26.0" prefWidth="87.0" spacing="3.0">
                <children>
@@ -87,7 +87,7 @@
       <TableView id="menuTable" fx:id="menuTable" layoutX="10.0" layoutY="303.0" prefHeight="236.0" prefWidth="480.0" />
       <Button id="btnCancel" layoutX="464.0" layoutY="5.0" mnemonicParsing="false" text="X" />
       <Label layoutX="11.0" layoutY="280.0" text="[Menu]" />
-      <Label id="lblName" layoutX="254.0" layoutY="37.0" text="Name">
+      <Label id="lblName" layoutX="253.0" layoutY="37.0" text="Name">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
@@ -103,7 +103,7 @@
             <Font name="NanumSquareOTF Regular" size="13.0" />
          </font>
       </Label>
-      <Label id="lblPhoneNum" layoutX="254.0" layoutY="87.0" text="Number">
+      <Label id="lblPhoneNum" layoutX="254.0" layoutY="88.0" text="Number">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
@@ -160,5 +160,22 @@
             <Image url="@../images/refresh.png" />
          </image>
       </ImageView>
+      <HBox id="businessHours" alignment="CENTER" layoutX="249.0" layoutY="212.0" prefHeight="27.0" prefWidth="131.0">
+         <children>
+            <Label id="lblOpenHours" prefHeight="23.0" prefWidth="102.0" text="Business Hours">
+               <font>
+                  <Font name="NanumSquareOTF Regular" size="13.0" />
+               </font>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </Label>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/external_link.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

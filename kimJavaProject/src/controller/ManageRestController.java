@@ -8,8 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -29,16 +27,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.MemberVO;
 import model.MenuVO;
 import model.RestaurantVO;
 
@@ -427,6 +424,7 @@ public class ManageRestController implements Initializable {
 		btnMenuEdit.setOnAction((e) -> handlerBtnMenuEditAction());
 		btnMenuDelete.setOnAction((e) -> handlerBtnMenuDeleteAction());
 
+		openHours.setOnMousePressed((e) -> handlerOpenHours());
 		// when click new in restaurant tab
 		btnNewMenu.setOnAction((e) -> handlerNewMenuAction(e, selectedRestId));
 
@@ -470,6 +468,34 @@ public class ManageRestController implements Initializable {
 			menuTable.setItems(menuData);
 		} catch (Exception e) {
 		SharedMethod.alertDisplay(1, "메뉴 가져오기 실패", "메뉴 가져오기 실패", "메뉴를 가져오는 데에 실패했습니다.");
+		}
+	}
+
+	public void handlerOpenHours() {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("/view/openHours.fxml"));
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(openHours.getScene().getWindow());
+			stage.setTitle("아이디 찾기");
+
+			Button btnOk = (Button) root.lookup("#btnOk");
+//			Button btnCancel = (Button) root.lookup("#btnCancel");
+//			TextField txtName = (TextField) root.lookup("#txtName");
+//			TextField txtPhoneNum = (TextField) root.lookup("#txtPhoneNum");
+
+			
+
+			btnOk.setOnAction((e3) -> {
+				stage.close();
+			});
+
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

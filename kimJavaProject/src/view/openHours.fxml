@@ -23,88 +23,88 @@
                <children>
                   <Label text="월">
                      <font>
-                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="13.0" />
                      </font></Label>
-                  <ComboBox fx:id="cbMonOpen" prefHeight="27.0" prefWidth="80.0" />
+                  <ComboBox id="cbMonOpen" fx:id="cbMonOpen" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
                   <Label text="~" />
-                  <ComboBox fx:id="cbMonClose" prefHeight="27.0" prefWidth="80.0" />
-                  <CheckBox fx:id="chkMonOff" mnemonicParsing="false" text="off" />
+                  <ComboBox id="cbMonClose" fx:id="cbMonClose" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
+                  <CheckBox id="chkMonOff" fx:id="chkMonOff" mnemonicParsing="false" text="off" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
                <children>
                   <Label text="화">
                      <font>
-                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="13.0" />
                      </font></Label>
-                  <ComboBox fx:id="cbTueOpen" prefHeight="27.0" prefWidth="80.0" />
+                  <ComboBox id="cbTueOpen" fx:id="cbTueOpen" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
                   <Label text="~" />
-                  <ComboBox fx:id="cbTueClose" prefHeight="27.0" prefWidth="80.0" />
-                  <CheckBox fx:id="chkTueOff" mnemonicParsing="false" text="off" />
+                  <ComboBox id="cbTueClose" fx:id="cbTueClose" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
+                  <CheckBox id="chkTueOff" fx:id="chkTueOff" mnemonicParsing="false" text="off" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
                <children>
                   <Label text="수">
                      <font>
-                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="13.0" />
                      </font></Label>
-                  <ComboBox fx:id="cbWedOpen" prefHeight="27.0" prefWidth="80.0" />
+                  <ComboBox id="cbWedOpen" fx:id="cbWedOpen" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
                   <Label text="~" />
-                  <ComboBox fx:id="cbWedClose" prefHeight="27.0" prefWidth="80.0" />
-                  <CheckBox fx:id="chkWedOff" mnemonicParsing="false" text="off" />
+                  <ComboBox id="cbWedClose" fx:id="cbWedClose" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
+                  <CheckBox id="chkWedOff" fx:id="chkWedOff" mnemonicParsing="false" text="off" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
                <children>
                   <Label text="목">
                      <font>
-                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="13.0" />
                      </font></Label>
-                  <ComboBox fx:id="cbThuOpen" prefHeight="27.0" prefWidth="80.0" />
+                  <ComboBox id="cbThuOpen" fx:id="cbThuOpen" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
                   <Label text="~" />
-                  <ComboBox fx:id="cbThuClose" prefHeight="27.0" prefWidth="80.0" />
-                  <CheckBox fx:id="chkThuOff" mnemonicParsing="false" text="off" />
+                  <ComboBox id="cbThuClose" fx:id="cbThuClose" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
+                  <CheckBox id="chkThuOff" fx:id="chkThuOff" mnemonicParsing="false" text="off" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
                <children>
                   <Label text="금">
                      <font>
-                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="13.0" />
                      </font></Label>
-                  <ComboBox fx:id="cbFriOpen" prefHeight="27.0" prefWidth="80.0" />
+                  <ComboBox id="cbFriOpen" fx:id="cbFriOpen" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
                   <Label text="~" />
-                  <ComboBox fx:id="cbFriClose" prefHeight="27.0" prefWidth="80.0" />
-                  <CheckBox fx:id="chkFriOff" mnemonicParsing="false" text="off" />
+                  <ComboBox id="cbFriClose" fx:id="cbFriClose" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
+                  <CheckBox id="chkFriOff" fx:id="chkFriOff" mnemonicParsing="false" text="off" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
                <children>
                   <Label text="토">
                      <font>
-                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="13.0" />
                      </font></Label>
-                  <ComboBox fx:id="cbSatOpen" prefHeight="27.0" prefWidth="80.0" />
+                  <ComboBox id="cbSatOpen" fx:id="cbSatOpen" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
                   <Label text="~" />
-                  <ComboBox fx:id="cbSatClose" prefHeight="27.0" prefWidth="80.0" />
-                  <CheckBox fx:id="chkSatOff" mnemonicParsing="false" text="off" />
+                  <ComboBox id="cbSatClose" fx:id="cbSatClose" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
+                  <CheckBox id="chkSatOff" fx:id="chkSatOff" mnemonicParsing="false" text="off" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="27.0" prefWidth="300.0" spacing="10.0">
                <children>
                   <Label text="일">
                      <font>
-                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="13.0" />
                      </font></Label>
-                  <ComboBox fx:id="cbSunOpen" prefHeight="27.0" prefWidth="80.0" />
+                  <ComboBox id="cbSunOpen" fx:id="cbSunOpen" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
                   <Label text="~" />
-                  <ComboBox fx:id="cbSunClose" prefHeight="27.0" prefWidth="80.0" />
-                  <CheckBox fx:id="chkSunOff" mnemonicParsing="false" text="off" />
+                  <ComboBox id="cbSunClose" fx:id="cbSunClose" prefHeight="27.0" prefWidth="90.0" promptText="00:00" />
+                  <CheckBox id="chkSunOff" fx:id="chkSunOff" mnemonicParsing="false" text="off" />
                </children>
             </HBox>
          </children>
       </VBox>
-      <Button fx:id="btnOk" layoutX="144.0" layoutY="359.0" mnemonicParsing="false" text="OK" />
+      <Button id="btnOk" fx:id="btnOk" layoutX="144.0" layoutY="359.0" mnemonicParsing="false" text="OK" />
    </children>
 </AnchorPane>

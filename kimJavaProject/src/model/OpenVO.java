@@ -29,6 +29,9 @@ public class OpenVO {
 		this.sunClose = sunClose;
 	}
 
+	public OpenVO() {
+	}
+
 	public String getMonOpen() {
 		return monOpen;
 	}

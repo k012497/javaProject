@@ -23,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -518,6 +519,7 @@ public class MainController implements Initializable {
 			}
 
 			Button btnCancel = (Button) root.lookup("#btnCancel");
+			HBox businessHours = (HBox) root.lookup("#businessHours");
 			Label lblName = (Label) root.lookup("#lblName");
 			Label lblAddress = (Label) root.lookup("#lblAddress");
 			Label lblPhoneNum = (Label) root.lookup("#lblPhoneNum");
@@ -589,9 +591,74 @@ public class MainController implements Initializable {
 					int resultNum = checkTime();
 					if (resultNum == 1) {
 						lblOpenHours.setText("영업중!");
+						businessHours.setDisable(false);
 					} else if (resultNum == -1) {
 						lblOpenHours.setText("영업 종료");
+						businessHours.setDisable(true);
 					}
+
+					businessHours.setOnMousePressed((e) -> {
+						try {
+							Parent root = FXMLLoader.load(getClass().getResource("/view/openHours.fxml"));
+							Stage stage = new Stage(StageStyle.UTILITY);
+							stage.initModality(Modality.WINDOW_MODAL);
+							stage.initOwner(businessHours.getScene().getWindow());
+							stage.setTitle("아이디 찾기");
+
+							Button btnOk = (Button) root.lookup("#btnOk");
+							ComboBox<String> cbMonOpen = (ComboBox<String>) root.lookup("#cbMonOpen");
+							ComboBox<String> cbTueOpen = (ComboBox<String>) root.lookup("#cbTueOpen");
+							ComboBox<String> cbWedOpen = (ComboBox<String>) root.lookup("#cbWedOpen");
+							ComboBox<String> cbThuOpen = (ComboBox<String>) root.lookup("#cbThuOpen");
+							ComboBox<String> cbFriOpen = (ComboBox<String>) root.lookup("#cbFriOpen");
+							ComboBox<String> cbSatOpen = (ComboBox<String>) root.lookup("#cbSatOpen");
+							ComboBox<String> cbSunOpen = (ComboBox<String>) root.lookup("#cbSunOpen");
+
+							ComboBox<String> cbMonClose = (ComboBox<String>) root.lookup("#cbMonClose");
+							ComboBox<String> cbTueClose = (ComboBox<String>) root.lookup("#cbTueClose");
+							ComboBox<String> cbWedClose = (ComboBox<String>) root.lookup("#cbWedClose");
+							ComboBox<String> cbThuClose = (ComboBox<String>) root.lookup("#cbThuClose");
+							ComboBox<String> cbFriClose = (ComboBox<String>) root.lookup("#cbFriClose");
+							ComboBox<String> cbSatClose = (ComboBox<String>) root.lookup("#cbSatClose");
+							ComboBox<String> cbSunClose = (ComboBox<String>) root.lookup("#cbSunClose");
+
+							CheckBox chkMonOff = (CheckBox) root.lookup("#chkMonOff");
+							CheckBox chkTueOff = (CheckBox) root.lookup("#chkTueOff");
+							CheckBox chkWedOff = (CheckBox) root.lookup("#chkWedOff");
+							CheckBox chkThuOff = (CheckBox) root.lookup("#chkThuOff");
+							CheckBox chkFriOff = (CheckBox) root.lookup("#chkFriOff");
+							CheckBox chkSatOff = (CheckBox) root.lookup("#chkSatOff");
+							CheckBox chkSunOff = (CheckBox) root.lookup("#chkSunOff");
+							
+							btnOk.setOnAction((e3) -> {
+								stage.close();
+							});
+							OpenDAO openDAO = new OpenDAO();
+							ArrayList<OpenVO> ovo = null;
+							ovo = openDAO.getOpenHours(selectedRestId);
+							cbMonOpen.setValue(ovo.get(0).getMonOpen()); cbMonClose.setValue(ovo.get(0).getMonClose());
+							cbTueOpen.setValue(ovo.get(0).getMonOpen()); cbTueClose.setValue(ovo.get(0).getTueClose());
+							cbWedOpen.setValue(ovo.get(0).getMonOpen()); cbWedClose.setValue(ovo.get(0).getWedClose());
+							cbThuOpen.setValue(ovo.get(0).getMonOpen()); cbThuClose.setValue(ovo.get(0).getThuClose());
+							cbFriOpen.setValue(ovo.get(0).getMonOpen()); cbFriClose.setValue(ovo.get(0).getFriClose());
+							cbSatOpen.setValue(ovo.get(0).getMonOpen()); cbSatClose.setValue(ovo.get(0).getSatClose());
+							cbSunOpen.setValue(ovo.get(0).getMonOpen()); cbSunClose.setValue(ovo.get(0).getSunClose());
+							
+							chkMonOff.setDisable(true);
+							chkTueOff.setDisable(true);
+							chkWedOff.setDisable(true);
+							chkThuOff.setDisable(true);
+							chkFriOff.setDisable(true);
+							chkSatOff.setDisable(true);
+							chkSunOff.setDisable(true);
+
+							Scene scene = new Scene(root);
+							stage.setScene(scene);
+							stage.show();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						}
+					});
 
 				}
 			});

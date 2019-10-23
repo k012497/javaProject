@@ -111,7 +111,6 @@ public class MyPageController implements Initializable {
 
 	public void handlerEditButtonAction() {
 		SharedMethod.checkOnlyNumberAndEnglish(txtName.getText());
-        SharedMethod.checkOnlyNumberAndEnglish(txtNumber.getText());
         SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
         SharedMethod.checkOnlyNumberAndEnglish(txtPwAgain.getText());
         
@@ -136,25 +135,6 @@ public class MyPageController implements Initializable {
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "CORRECTION FAILED", "error!", e.toString());
 		}
-		
-
-//		SharedMethod.alertDisplay(1, "정보수정", "정보수정", "정보 수정을 하려면 관리자에게 카톡으로 문의 해주세요 \n\n\n\n\n카카오톡 : @맛있을지도 김시스터즈");
-
-//		try {
-//			//////if 비번v필드 일치 확인///////
-//			if ( txtName.getText().equals("") || txtNumber.getText().equals("")
-//					|| txtPw.getText().equals("") || cbGu.getValue().equals("") || cbDong.getValue().equals("") || cbAge.getValue().equals("")) {
-//				throw new Exception();
-//			} else {
-//				MemberVO mvo = new MemberVO(txtPw.getText(), txtName.getText(), txtNumber.getText(), cbGu.getValue() + " " + cbDong.getValue(), cbAge.getValue());
-//				
-//				MemberDAO memberDAO = new MemberDAO();
-//				MemberVO memberVO = memberDAO.getMemberUpdate(mvo, lblMemberId.getText());
-//				getMemberInfo();
-//			}
-//		} catch (Exception e) {
-//			SharedMethod.alertDisplay(1, "CORRECTION FAILED", "error!", e.toString());
-//		}
 	}
 
 	public void handlerButtonCancel() {
