@@ -12,6 +12,7 @@ public class AppMain extends Application {
 
     	Parent loader = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
         Scene scene = new Scene(loader);
+        scene.getStylesheets().add(getClass().getResource("/application/style.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

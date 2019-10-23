@@ -545,17 +545,17 @@ public class ManageRestController implements Initializable {
 				flag = true;
 				cbMonOpen.setValue(ovo.get(0).getMonOpen());
 				cbMonClose.setValue(ovo.get(0).getMonClose());
-				cbTueOpen.setValue(ovo.get(0).getMonOpen());
+				cbTueOpen.setValue(ovo.get(0).getTueOpen());
 				cbTueClose.setValue(ovo.get(0).getTueClose());
-				cbWedOpen.setValue(ovo.get(0).getMonOpen());
+				cbWedOpen.setValue(ovo.get(0).getWedOpen());
 				cbWedClose.setValue(ovo.get(0).getWedClose());
-				cbThuOpen.setValue(ovo.get(0).getMonOpen());
+				cbThuOpen.setValue(ovo.get(0).getThuOpen());
 				cbThuClose.setValue(ovo.get(0).getThuClose());
-				cbFriOpen.setValue(ovo.get(0).getMonOpen());
+				cbFriOpen.setValue(ovo.get(0).getFriOpen());
 				cbFriClose.setValue(ovo.get(0).getFriClose());
-				cbSatOpen.setValue(ovo.get(0).getMonOpen());
+				cbSatOpen.setValue(ovo.get(0).getSatOpen());
 				cbSatClose.setValue(ovo.get(0).getSatClose());
-				cbSunOpen.setValue(ovo.get(0).getMonOpen());
+				cbSunOpen.setValue(ovo.get(0).getSunOpen());
 				cbSunClose.setValue(ovo.get(0).getSunClose());
 			}
 

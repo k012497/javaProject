@@ -568,7 +568,6 @@ public class MainController implements Initializable {
 					try {
 						// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
 						// int restID = selectedRest.get(0).getRestaurantID();
-						System.out.println("selectedRestId  " + selectedRestId);
 						MenuDAO menuDAO = new MenuDAO();
 						menuData = FXCollections.observableArrayList();
 						menuData = menuDAO.getMenu(selectedRestId);
@@ -582,7 +581,6 @@ public class MainController implements Initializable {
 					try {
 						String fileName = selectedRest.get(0).getFileName();
 						selectedFile = new File("/Users/kimsojin/Desktop/code/images/" + fileName);
-						System.out.println("selectedFile = " + selectedFile);
 						if (selectedFile != null) {
 							// 이미지 파일 경로
 							localUrl = selectedFile.toURI().toURL().toString();
@@ -603,7 +601,7 @@ public class MainController implements Initializable {
 						businessHours.setDisable(false);
 					} else if (resultNum == -1) {
 						lblOpenHours.setText("영업 종료");
-						businessHours.setDisable(true);
+						businessHours.setDisable(false);
 					} else {
 						businessHours.setDisable(true);
 					}
@@ -633,42 +631,26 @@ public class MainController implements Initializable {
 							Label cbSatClose = (Label) root.lookup("#lblSatClose");
 							Label cbSunClose = (Label) root.lookup("#lblSunClose");
 
-							CheckBox chkMonOff = (CheckBox) root.lookup("#chkMonOff");
-							CheckBox chkTueOff = (CheckBox) root.lookup("#chkTueOff");
-							CheckBox chkWedOff = (CheckBox) root.lookup("#chkWedOff");
-							CheckBox chkThuOff = (CheckBox) root.lookup("#chkThuOff");
-							CheckBox chkFriOff = (CheckBox) root.lookup("#chkFriOff");
-							CheckBox chkSatOff = (CheckBox) root.lookup("#chkSatOff");
-							CheckBox chkSunOff = (CheckBox) root.lookup("#chkSunOff");
-
-							btnOk.setOnAction((e3) -> {
-								stage.close();
-							});
+							btnOk.setOnAction((e3) -> {stage.close();});
+							
 							OpenDAO openDAO = new OpenDAO();
 							ArrayList<OpenVO> ovo = null;
 							ovo = openDAO.getOpenHours(selectedRestId);
+							System.out.println(ovo.get(0).getThuOpen());
 							cbMonOpen.setText(ovo.get(0).getMonOpen());
 							cbMonClose.setText(ovo.get(0).getMonClose());
-							cbTueOpen.setText(ovo.get(0).getMonOpen());
+							cbTueOpen.setText(ovo.get(0).getTueOpen());
 							cbTueClose.setText(ovo.get(0).getTueClose());
-							cbWedOpen.setText(ovo.get(0).getMonOpen());
+							cbWedOpen.setText(ovo.get(0).getWedOpen());
 							cbWedClose.setText(ovo.get(0).getWedClose());
-							cbThuOpen.setText(ovo.get(0).getMonOpen());
+							cbThuOpen.setText(ovo.get(0).getThuOpen());
 							cbThuClose.setText(ovo.get(0).getThuClose());
-							cbFriOpen.setText(ovo.get(0).getMonOpen());
+							cbFriOpen.setText(ovo.get(0).getFriOpen());
 							cbFriClose.setText(ovo.get(0).getFriClose());
-							cbSatOpen.setText(ovo.get(0).getMonOpen());
+							cbSatOpen.setText(ovo.get(0).getSatOpen());
 							cbSatClose.setText(ovo.get(0).getSatClose());
-							cbSunOpen.setText(ovo.get(0).getMonOpen());
+							cbSunOpen.setText(ovo.get(0).getSunOpen());
 							cbSunClose.setText(ovo.get(0).getSunClose());
-
-							chkMonOff.setDisable(true);
-							chkTueOff.setDisable(true);
-							chkWedOff.setDisable(true);
-							chkThuOff.setDisable(true);
-							chkFriOff.setDisable(true);
-							chkSatOff.setDisable(true);
-							chkSunOff.setDisable(true);
 
 							Scene scene = new Scene(root);
 							stage.setScene(scene);
@@ -731,16 +713,12 @@ public class MainController implements Initializable {
 				favDAO.getFavregiste(fvo, lblMember.getText());
 
 				// 즐겨찾기 테이블에 있는 식당아이디를 카운트해서
-				System.out.println(favDAO.getFavCount(restId));
-				System.out.println("testest");
-
 				// 즐겨찾기 속성에 추가
 				RestaurantDAO restDAO = new RestaurantDAO();
 				int favoriteCount = favDAO.getFavCount(restId);
-				System.out.println("식 아이디=" + restId);
-				System.out.println("즐찾 수 = " + favoriteCount);
+//				System.out.println("식 아이디=" + restId);
+//				System.out.println("즐찾 수 = " + favoriteCount);
 				restDAO.getFavCountUpdate(favoriteCount, restId);
-				System.out.println("테스트");
 			} catch (Exception e) {
 				SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "즐겨찾기 추가 실패", "즐겨찾기 추가 실패");
 			}
@@ -820,19 +798,6 @@ public class MainController implements Initializable {
 		// 컬럼 객체들을 테이블 뷰에 추가 & 항목 추가
 		menuTable.setItems(menuData);
 		menuTable.getColumns().addAll(colName, colPrice);
-
-//		try {
-//			// 누른 식당의 ID를 통해 해당 ID를 가진 메뉴를 불러온다.
-//			int restID = selectedRest.get(0).getRestaurantID();
-//			System.out.println(restID);
-//			MenuDAO menuDAO = new MenuDAO();
-//			menuData = FXCollections.observableArrayList();
-//			menuData = menuDAO.getMenu(restID);
-//
-//			menuTable.setItems(menuData);
-//		} catch (Exception e) {
-//			SharedMethod.alertDisplay(1, "메뉴 세팅 실패", "메뉴 세팅 실패", "메뉴 세팅 실패");
-//		}
 
 	} // end of menuTableViewSetting
 

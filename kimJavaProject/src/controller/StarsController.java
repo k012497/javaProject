@@ -35,11 +35,16 @@ public class StarsController implements Initializable {
 			stage.close();
 		});
 		
+		/*
+		 * Ok버튼을 누르면 해당 별점을 등록하는 메소드 - 2019-10-22
+		 * 접속중인 사용자의 ID를 MainController의 handlerAddStarsAction() 메소드에 전달하여
+		 * reviewTBL에 insert, restaurantTBL의 avgStars를 update
+		 * 
+		 * 만든이 : 김소진
+		 */
 		btnOk.setOnAction((e)->{
 			int result = MainController.handlerAddStarsAction(lblNum.getText());
 			if(result == 1) {
-				double starsUpdated = MainController.refreshAvgStars();
-				
 				Stage stage = (Stage) (btnCancel.getScene().getWindow());
 				stage.close();
 			}else {
