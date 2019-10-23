@@ -31,6 +31,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -173,16 +174,15 @@ public class MainController implements Initializable {
 
 	public void setListWithImagebyKind(String kind) {
 		try {
-			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/test.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(btnAll.getScene().getWindow());
 			stage.setTitle("식당 리스트");
-
+			
+			
 			restData = null;
 
 			ObservableList<CustomThing> data = FXCollections.observableArrayList();
-//	        data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 45.6), new CustomThing("Jam", "addr", 7.89));
 			RestaurantDAO restDAO = new RestaurantDAO();
 
 			try {
@@ -211,7 +211,7 @@ public class MainController implements Initializable {
 			root.getChildren().addAll(listView);
 			stage.setScene(new Scene(root, 500, 700));
 			stage.show();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "리스트 창 호출 실패 ", "리스트 창 호출 실패", "리스트 창 호출 실패하였습니다. ");
 		}
 
@@ -437,7 +437,6 @@ public class MainController implements Initializable {
 
 	public void setListWithImageAll() {
 		try {
-			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/test.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(btnAll.getScene().getWindow());
@@ -445,8 +444,8 @@ public class MainController implements Initializable {
 
 			restData = null;
 
+
 			ObservableList<CustomThing> data = FXCollections.observableArrayList();
-//	        data.addAll(new CustomThing("Cheese", "add", 1.23), new CustomThing("Horse", "add", 45.6), new CustomThing("Jam", "addr", 7.89));
 			RestaurantDAO restDAO = new RestaurantDAO();
 
 			// 해당 지역에 원하는 조건의 식당이 없을 때
@@ -484,7 +483,7 @@ public class MainController implements Initializable {
 			root.getChildren().add(listView);
 			stage.setScene(new Scene(root, 500, 500));
 			stage.show();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "리스트 창 오류 ", "리스트 창 호출 실패 ..", "리스트 창을 불러오지 못했습니다");
 		}
 

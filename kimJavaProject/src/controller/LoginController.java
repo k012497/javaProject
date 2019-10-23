@@ -86,11 +86,13 @@ public class LoginController implements Initializable {
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(lblFindId.getScene().getWindow());
-			stage.setTitle("아이디 찾기");
+			stage.setTitle("관리자 모드로 접속");
 
 			Button btnOk = (Button) root.lookup("#btnOk");
 			Button btnCancel = (Button) root.lookup("#btnCancel");
 			TextField txtPw = (TextField) root.lookup("#txtPw");
+			
+			txtPw.setText("01240802");
 
 			btnCancel.setOnAction((e3) -> {
 				stage.close();

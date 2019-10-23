@@ -16,28 +16,35 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.RestaurantVO;
 
-public class ManageChartController implements Initializable{
+public class ManageChartController implements Initializable {
 
-	@FXML private PieChart pieChart;
-	@FXML private HBox hTopCount;
-	@FXML private HBox hTopStars;
-	
+	@FXML
+	private PieChart pieChart;
+	@FXML
+	private HBox hTopCount;
+	@FXML
+	private HBox hTopStars;
+	@FXML
+	private Label lblPercent;
+
 	ArrayList<RestaurantVO> data;
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		pieChartSetting();
 		hTopStars.setOnMousePressed((e) -> handlerStarsBarChartAction(e));
 		hTopCount.setOnMousePressed((e) -> handlerCountBarChartAction(e));
+		pieChartSetting();
 	}
-	
+
 	public void pieChartSetting() {
 		RestaurantDAO restaurantDAO = new RestaurantDAO();
 		
@@ -50,13 +57,26 @@ public class ManageChartController implements Initializable{
 				new PieChart.Data("카페", (double)restaurantDAO.getCountbyKind("카페")),
 				new PieChart.Data("뷔페", (double)restaurantDAO.getCountbyKind("뷔페")),
 				new PieChart.Data("중식", (double)restaurantDAO.getCountbyKind("중식"))));
+
+		for (final PieChart.Data data : pieChart.getData()) {
+			data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+				double total = 0;
+				for (PieChart.Data d : pieChart.getData()) {
+					total += d.getPieValue();
+				}
+				
+				String text = String.format("%.1f%%", 100 * data.getPieValue() / total);
+				lblPercent.setText(data.getName()+" "+text);
+			});
+		}
+
 	}
 
 	public void handlerStarsBarChartAction(MouseEvent e) {
-		// 별점 순으로 정렬한 식당 리스트 10개를 가져온다. 
+		// 별점 순으로 정렬한 식당 리스트 10개를 가져온다.
 		RestaurantDAO restaurantDAO = new RestaurantDAO();
 		data = restaurantDAO.getRest10();
-		
+
 		try {
 			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/barchart.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
@@ -77,7 +97,6 @@ public class ManageChartController implements Initializable{
 
 			seriesStars.setData(starsList);
 			barChart.getData().add(seriesStars);
-			
 
 			XYChart.Series seriesFav = new XYChart.Series();
 			seriesFav.setName("즐찾 수");
@@ -101,11 +120,11 @@ public class ManageChartController implements Initializable{
 			e1.printStackTrace();
 		}
 	}
-	
+
 	public void handlerCountBarChartAction(MouseEvent e) {
 		RestaurantDAO restaurantDAO = new RestaurantDAO();
 //		data = restaurantDAO.getCountbyGu("");
-		
+
 		try {
 			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/barchart.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
@@ -135,7 +154,7 @@ public class ManageChartController implements Initializable{
 
 			seriesNumber.setData(guList);
 			barChart.getData().add(seriesNumber);
-			
+
 			btnClose.setOnAction((event) -> {
 				stage.close();
 			});

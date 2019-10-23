@@ -90,6 +90,8 @@ public class SingUpController implements Initializable {
 		btnCancel.setOnAction(e -> {
 			handelBtnCancelAction();
 		});
+		
+		SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
 	}
 
 	// 콤보박스 셋팅

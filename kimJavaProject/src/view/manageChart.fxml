@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.chart.*?>
@@ -8,15 +9,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="650.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageChartController">
+<AnchorPane prefHeight="636.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageChartController">
    <children>
-      <Label layoutX="14.0" layoutY="259.0" text="[음식종류 비율]" />
-      <PieChart fx:id="pieChart" layoutX="122.0" layoutY="259.0" prefHeight="357.0" prefWidth="397.0" />
-      <HBox fx:id="hTopStars" alignment="CENTER" layoutX="142.0" layoutY="116.0" prefHeight="35.0" prefWidth="266.0">
+      <Label layoutX="31.0" layoutY="181.0" text="[음식종류 비율]">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="18.0" />
+         </font></Label>
+      <PieChart fx:id="pieChart" layoutX="58.0" layoutY="185.0" prefHeight="395.0" prefWidth="435.0" />
+      <HBox fx:id="hTopStars" alignment="CENTER" layoutX="142.0" layoutY="33.0" prefHeight="35.0" prefWidth="266.0">
          <children>
             <Label text="[별점이 높은 식당 TOP 10]">
                <font>
-                  <Font size="18.0" />
+                  <Font name="NanumSquareOTF Bold" size="18.0" />
                </font>
             </Label>
             <ImageView fitHeight="24.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -26,11 +30,11 @@
             </ImageView>
          </children>
       </HBox>
-      <HBox fx:id="hTopCount" alignment="CENTER" layoutX="155.0" layoutY="166.0" prefHeight="35.0" prefWidth="241.0">
+      <HBox fx:id="hTopCount" alignment="CENTER" layoutX="155.0" layoutY="83.0" prefHeight="35.0" prefWidth="241.0">
          <children>
             <Label text="[지역별 등록 식당 수]">
                <font>
-                  <Font size="18.0" />
+                  <Font name="NanumSquareOTF Bold" size="18.0" />
                </font>
             </Label>
             <ImageView fitHeight="23.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -40,5 +44,9 @@
             </ImageView>
          </children>
       </HBox>
+      <Label fx:id="lblPercent" layoutX="162.0" layoutY="179.0" prefHeight="32.0" prefWidth="159.0" textFill="#da9e69" wrapText="true">
+         <font>
+            <Font name="Nanum Brush Script" size="24.0" />
+         </font></Label>
    </children>
 </AnchorPane>

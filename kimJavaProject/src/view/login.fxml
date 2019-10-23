@@ -13,7 +13,7 @@
       <Button fx:id="btnSignIn" layoutX="39.0" layoutY="396.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="274.0" text="SIGN IN" />
       <Label layoutX="102.0" layoutY="231.0" text="맛있을지도">
          <font>
-            <Font name="NanumSquareOTF Regular" size="32.0" />
+            <Font name="NanumSquareOTF ExtraBold" size="32.0" />
          </font>
       </Label>
       <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="76.0" layoutY="18.0">
@@ -46,6 +46,5 @@
          </children>
       </HBox>
       <PasswordField fx:id="txtPw" layoutX="39.0" layoutY="345.0" prefHeight="39.0" prefWidth="274.0" promptText="Password" />
-      <Button fx:id="btnCancel" layoutX="315.0" layoutY="4.0" mnemonicParsing="false" text="X" />
    </children>
 </AnchorPane>
