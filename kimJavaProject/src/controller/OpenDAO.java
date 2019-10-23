@@ -33,9 +33,9 @@ public class OpenDAO {
 						rs.getString(12), rs.getString(13), rs.getString(14), rs.getString(15));
 				list.add(ovo);
 			}
-			
+
 			list.get(0);
-			
+
 		} catch (IndexOutOfBoundsException e) {
 			return null;
 		} catch (SQLException se) {
@@ -53,11 +53,10 @@ public class OpenDAO {
 			} catch (SQLException se) {
 			}
 		}
-
 		return list;
 	}
 
-	public OpenVO getOpenHoursUpdate(OpenVO ovo, String id) throws Exception {
+	public OpenVO getOpenHoursUpdate(OpenVO ovo, int restId) throws Exception {
 		// 데이터 처리를 위한 SQL 문
 		String dml = "UPDATE openTBL " + "SET "
 				+ "monOpen = ?, monClose = ?,tueOpen = ?,tueClose = ?, wedOpen = ?,wedClose = ?, thuOpen = ?, "
@@ -69,10 +68,24 @@ public class OpenDAO {
 		try {
 			// DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
-
+			System.out.println(ovo.getFriOpen() + "금요일에 만나요 ");
 			// 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, ovo.getMonOpen());
+			pstmt.setString(2, ovo.getMonClose());
+			pstmt.setString(3, ovo.getTueOpen());
+			pstmt.setString(4, ovo.getTueClose());
+			pstmt.setString(5, ovo.getWedOpen());
+			pstmt.setString(6, ovo.getWedClose());
+			pstmt.setString(7, ovo.getThuOpen());
+			pstmt.setString(8, ovo.getThuClose());
+			pstmt.setString(9, ovo.getFriOpen());
+			pstmt.setString(10, ovo.getFriClose());
+			pstmt.setString(11, ovo.getSatOpen());
+			pstmt.setString(12, ovo.getSatClose());
+			pstmt.setString(13, ovo.getSunOpen());
+			pstmt.setString(14, ovo.getSunClose());
+			pstmt.setInt(15, restId);
 
 			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
@@ -101,6 +114,56 @@ public class OpenDAO {
 			}
 		}
 		return ovo;
+	}
+
+	public int getOpenHoursRegiste(OpenVO ovo, int restId) throws Exception {
+		String dml = "insert into openTBL values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "+
+				"?, ?, ?, ?, ?)";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		int count = 0;
+		try {
+			// DBUtil 클래스의 getConnection( )메서드로 데이터베이스와 연결
+			con = DBUtil.getConnection();
+
+			// 입력받은 정보를 처리하기 위하여 SQL문장을 생성
+			pstmt = con.prepareStatement(dml); // for security
+			pstmt.setInt(1, restId);
+			pstmt.setString(2, ovo.getMonOpen());
+			pstmt.setString(3, ovo.getMonClose());
+			pstmt.setString(4, ovo.getTueOpen());
+			pstmt.setString(5, ovo.getTueClose());
+			pstmt.setString(6, ovo.getWedOpen());
+			pstmt.setString(7, ovo.getWedClose());
+			pstmt.setString(8, ovo.getThuOpen());
+			pstmt.setString(9, ovo.getThuClose());
+			pstmt.setString(10, ovo.getFriOpen());
+			pstmt.setString(11, ovo.getFriClose());
+			pstmt.setString(12, ovo.getSatOpen());
+			pstmt.setString(13, ovo.getSatClose());
+			pstmt.setString(14, ovo.getSunOpen());
+			pstmt.setString(15, ovo.getSunClose());
+
+			// SQL문을 수행 후 처리 결과를 얻어옴
+			count = pstmt.executeUpdate(); // workbench에서 번개 누르는 것. 몇 문장을 실행했는지를 리턴
+
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+		} finally {
+			try {
+				// 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+			}
+		}
+		return count;
 	}
 
 }

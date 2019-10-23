@@ -595,32 +595,34 @@ public class MainController implements Initializable {
 					} else if (resultNum == -1) {
 						lblOpenHours.setText("영업 종료");
 						businessHours.setDisable(true);
+					} else {
+						businessHours.setDisable(true);
 					}
 
 					businessHours.setOnMousePressed((e) -> {
 						try {
-							Parent root = FXMLLoader.load(getClass().getResource("/view/openHours.fxml"));
+							Parent root = FXMLLoader.load(getClass().getResource("/view/openHours_shopInfo.fxml"));
 							Stage stage = new Stage(StageStyle.UTILITY);
 							stage.initModality(Modality.WINDOW_MODAL);
 							stage.initOwner(businessHours.getScene().getWindow());
 							stage.setTitle("아이디 찾기");
 
 							Button btnOk = (Button) root.lookup("#btnOk");
-							ComboBox<String> cbMonOpen = (ComboBox<String>) root.lookup("#cbMonOpen");
-							ComboBox<String> cbTueOpen = (ComboBox<String>) root.lookup("#cbTueOpen");
-							ComboBox<String> cbWedOpen = (ComboBox<String>) root.lookup("#cbWedOpen");
-							ComboBox<String> cbThuOpen = (ComboBox<String>) root.lookup("#cbThuOpen");
-							ComboBox<String> cbFriOpen = (ComboBox<String>) root.lookup("#cbFriOpen");
-							ComboBox<String> cbSatOpen = (ComboBox<String>) root.lookup("#cbSatOpen");
-							ComboBox<String> cbSunOpen = (ComboBox<String>) root.lookup("#cbSunOpen");
+							Label cbMonOpen = (Label) root.lookup("#lblMonOpen");
+							Label cbTueOpen = (Label) root.lookup("#lblTueOpen");
+							Label cbWedOpen = (Label) root.lookup("#lblWedOpen");
+							Label cbThuOpen = (Label) root.lookup("#lblThuOpen");
+							Label cbFriOpen = (Label) root.lookup("#lblFriOpen");
+							Label cbSatOpen = (Label) root.lookup("#lblSatOpen");
+							Label cbSunOpen = (Label) root.lookup("#lblSunOpen");
 
-							ComboBox<String> cbMonClose = (ComboBox<String>) root.lookup("#cbMonClose");
-							ComboBox<String> cbTueClose = (ComboBox<String>) root.lookup("#cbTueClose");
-							ComboBox<String> cbWedClose = (ComboBox<String>) root.lookup("#cbWedClose");
-							ComboBox<String> cbThuClose = (ComboBox<String>) root.lookup("#cbThuClose");
-							ComboBox<String> cbFriClose = (ComboBox<String>) root.lookup("#cbFriClose");
-							ComboBox<String> cbSatClose = (ComboBox<String>) root.lookup("#cbSatClose");
-							ComboBox<String> cbSunClose = (ComboBox<String>) root.lookup("#cbSunClose");
+							Label cbMonClose = (Label) root.lookup("#lblMonClose");
+							Label cbTueClose = (Label) root.lookup("#lblTueClose");
+							Label cbWedClose = (Label) root.lookup("#lblWedClose");
+							Label cbThuClose = (Label) root.lookup("#lblThuClose");
+							Label cbFriClose = (Label) root.lookup("#lblFriClose");
+							Label cbSatClose = (Label) root.lookup("#lblSatClose");
+							Label cbSunClose = (Label) root.lookup("#lblSunClose");
 
 							CheckBox chkMonOff = (CheckBox) root.lookup("#chkMonOff");
 							CheckBox chkTueOff = (CheckBox) root.lookup("#chkTueOff");
@@ -636,13 +638,13 @@ public class MainController implements Initializable {
 							OpenDAO openDAO = new OpenDAO();
 							ArrayList<OpenVO> ovo = null;
 							ovo = openDAO.getOpenHours(selectedRestId);
-							cbMonOpen.setValue(ovo.get(0).getMonOpen()); cbMonClose.setValue(ovo.get(0).getMonClose());
-							cbTueOpen.setValue(ovo.get(0).getMonOpen()); cbTueClose.setValue(ovo.get(0).getTueClose());
-							cbWedOpen.setValue(ovo.get(0).getMonOpen()); cbWedClose.setValue(ovo.get(0).getWedClose());
-							cbThuOpen.setValue(ovo.get(0).getMonOpen()); cbThuClose.setValue(ovo.get(0).getThuClose());
-							cbFriOpen.setValue(ovo.get(0).getMonOpen()); cbFriClose.setValue(ovo.get(0).getFriClose());
-							cbSatOpen.setValue(ovo.get(0).getMonOpen()); cbSatClose.setValue(ovo.get(0).getSatClose());
-							cbSunOpen.setValue(ovo.get(0).getMonOpen()); cbSunClose.setValue(ovo.get(0).getSunClose());
+							cbMonOpen.setText(ovo.get(0).getMonOpen()); cbMonClose.setText(ovo.get(0).getMonClose());
+							cbTueOpen.setText(ovo.get(0).getMonOpen()); cbTueClose.setText(ovo.get(0).getTueClose());
+							cbWedOpen.setText(ovo.get(0).getMonOpen()); cbWedClose.setText(ovo.get(0).getWedClose());
+							cbThuOpen.setText(ovo.get(0).getMonOpen()); cbThuClose.setText(ovo.get(0).getThuClose());
+							cbFriOpen.setText(ovo.get(0).getMonOpen()); cbFriClose.setText(ovo.get(0).getFriClose());
+							cbSatOpen.setText(ovo.get(0).getMonOpen()); cbSatClose.setText(ovo.get(0).getSatClose());
+							cbSunOpen.setText(ovo.get(0).getMonOpen()); cbSunClose.setText(ovo.get(0).getSunClose());
 							
 							chkMonOff.setDisable(true);
 							chkTueOff.setDisable(true);

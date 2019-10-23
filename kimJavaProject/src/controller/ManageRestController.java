@@ -23,6 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -37,6 +38,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.MenuVO;
+import model.OpenVO;
 import model.RestaurantVO;
 
 public class ManageRestController implements Initializable {
@@ -124,6 +126,8 @@ public class ManageRestController implements Initializable {
 
 	ObservableList<String> addressGuList;
 	ObservableList<String> addressDongList;
+	
+	boolean flag = false;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -172,7 +176,7 @@ public class ManageRestController implements Initializable {
 	}
 
 	public void handlerBtnMenuEditAction() {
-		
+
 		try {
 			if (txtMenuName.getText().equals("") || txtMenuPrice.getText().equals("")) {
 				throw new Exception();
@@ -181,7 +185,7 @@ public class ManageRestController implements Initializable {
 				MenuVO mvo = new MenuVO(txtMenuName.getText(), Integer.parseInt(txtMenuPrice.getText()));
 				System.out.println(selectedMenuId);
 				MenuVO menuVO = menuDAO.getMenuUpdate(mvo, selectedMenuId);
-				
+
 				menuData.remove(selectedIndex); // 선택된 레코드를 지워버리고
 				// 해당 식당의 메뉴를 불러온다.
 				try {
@@ -191,7 +195,7 @@ public class ManageRestController implements Initializable {
 					menuData = menuDAO.getMenu(restID);
 					menuTable.setItems(menuData);
 				} catch (Exception e) {
-				SharedMethod.alertDisplay(1, "메뉴 가져오기 실패", "메뉴 가져오기 실패", "메뉴를 가져오는 데에 실패했습니다.");
+					SharedMethod.alertDisplay(1, "메뉴 가져오기 실패", "메뉴 가져오기 실패", "메뉴를 가져오는 데에 실패했습니다.");
 				}
 			}
 		} catch (Exception e) {
@@ -298,12 +302,12 @@ public class ManageRestController implements Initializable {
 		colId.setCellValueFactory(new PropertyValueFactory("restaurantID"));
 
 		TableColumn colName = new TableColumn("상호명");
-		colName.setMaxWidth(130);
+		colName.setPrefWidth(200);
 		colName.setStyle("-fx-alignment:CENTER;");
 		colName.setCellValueFactory(new PropertyValueFactory("restaurantName"));
 
 		TableColumn colAddr = new TableColumn("주소");
-		colAddr.setMaxWidth(200);
+		colAddr.setMaxWidth(250);
 		colAddr.setStyle("-fx-alignment:CENTER;");
 		colAddr.setCellValueFactory(new PropertyValueFactory("address"));
 
@@ -363,12 +367,12 @@ public class ManageRestController implements Initializable {
 		menuTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
 
 		TableColumn colName = new TableColumn("메뉴");
-		colName.setMaxWidth(300);
+		colName.setPrefWidth(200);
 		colName.setStyle("-fx-alignment:CENTER;");
 		colName.setCellValueFactory(new PropertyValueFactory("menuName"));
 
 		TableColumn colPrice = new TableColumn("가격");
-		colPrice.setMaxWidth(200);
+		colPrice.setPrefWidth(130);
 		colPrice.setStyle("-fx-alignment:CENTER;");
 		colPrice.setCellValueFactory(new PropertyValueFactory("menuPrice"));
 
@@ -418,13 +422,14 @@ public class ManageRestController implements Initializable {
 		selectedIndex = restTable.getSelectionModel().getSelectedIndex();
 		selectedRest = restTable.getSelectionModel().getSelectedItems();
 		int selectedRestId = selectedRest.get(0).getRestaurantID();
-		System.out.println("선택된 식"+selectedRestId);
+		System.out.println("선택된 식" + selectedRestId);
 
 		menuFieldInitSetting(true, false, true);
 		btnMenuEdit.setOnAction((e) -> handlerBtnMenuEditAction());
 		btnMenuDelete.setOnAction((e) -> handlerBtnMenuDeleteAction());
 
 		openHours.setOnMousePressed((e) -> handlerOpenHours());
+
 		// when click new in restaurant tab
 		btnNewMenu.setOnAction((e) -> handlerNewMenuAction(e, selectedRestId));
 
@@ -467,7 +472,7 @@ public class ManageRestController implements Initializable {
 			menuData = menuDAO.getMenu(restID);
 			menuTable.setItems(menuData);
 		} catch (Exception e) {
-		SharedMethod.alertDisplay(1, "메뉴 가져오기 실패", "메뉴 가져오기 실패", "메뉴를 가져오는 데에 실패했습니다.");
+			SharedMethod.alertDisplay(1, "메뉴 가져오기 실패", "메뉴 가져오기 실패", "메뉴를 가져오는 데에 실패했습니다.");
 		}
 	}
 
@@ -477,16 +482,207 @@ public class ManageRestController implements Initializable {
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(openHours.getScene().getWindow());
-			stage.setTitle("아이디 찾기");
+			stage.setTitle("매장 운영 시간");
 
 			Button btnOk = (Button) root.lookup("#btnOk");
-//			Button btnCancel = (Button) root.lookup("#btnCancel");
-//			TextField txtName = (TextField) root.lookup("#txtName");
-//			TextField txtPhoneNum = (TextField) root.lookup("#txtPhoneNum");
+			Button btnCancel = (Button) root.lookup("#btnCancel");
 
+			ComboBox<String> cbMonOpen = (ComboBox<String>) root.lookup("#cbMonOpen");
+			ComboBox<String> cbTueOpen = (ComboBox<String>) root.lookup("#cbTueOpen");
+			ComboBox<String> cbWedOpen = (ComboBox<String>) root.lookup("#cbWedOpen");
+			ComboBox<String> cbThuOpen = (ComboBox<String>) root.lookup("#cbThuOpen");
+			ComboBox<String> cbFriOpen = (ComboBox<String>) root.lookup("#cbFriOpen");
+			ComboBox<String> cbSatOpen = (ComboBox<String>) root.lookup("#cbSatOpen");
+			ComboBox<String> cbSunOpen = (ComboBox<String>) root.lookup("#cbSunOpen");
+
+			ComboBox<String> cbMonClose = (ComboBox<String>) root.lookup("#cbMonClose");
+			ComboBox<String> cbTueClose = (ComboBox<String>) root.lookup("#cbTueClose");
+			ComboBox<String> cbWedClose = (ComboBox<String>) root.lookup("#cbWedClose");
+			ComboBox<String> cbThuClose = (ComboBox<String>) root.lookup("#cbThuClose");
+			ComboBox<String> cbFriClose = (ComboBox<String>) root.lookup("#cbFriClose");
+			ComboBox<String> cbSatClose = (ComboBox<String>) root.lookup("#cbSatClose");
+			ComboBox<String> cbSunClose = (ComboBox<String>) root.lookup("#cbSunClose");
+
+			CheckBox chkMonOff = (CheckBox) root.lookup("#chkMonOff");
+			CheckBox chkTueOff = (CheckBox) root.lookup("#chkTueOff");
+			CheckBox chkWedOff = (CheckBox) root.lookup("#chkWedOff");
+			CheckBox chkThuOff = (CheckBox) root.lookup("#chkThuOff");
+			CheckBox chkFriOff = (CheckBox) root.lookup("#chkFriOff");
+			CheckBox chkSatOff = (CheckBox) root.lookup("#chkSatOff");
+			CheckBox chkSunOff = (CheckBox) root.lookup("#chkSunOff");
+
+			OpenDAO openDAO = new OpenDAO();
+
+			ArrayList<OpenVO> ovo = null;
+
+			// 콤보박스 세팅
+			ObservableList<String> HoursRangeList;
+			HoursRangeList = FXCollections.observableArrayList("00:00", "01:00", "02:00", "03:00", "04:00", "05:00",
+					"06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00",
+					"17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "24:00");
+
+			cbMonOpen.setItems(HoursRangeList);
+			cbMonClose.setItems(HoursRangeList);
+			cbTueOpen.setItems(HoursRangeList);
+			cbTueClose.setItems(HoursRangeList);
+			cbWedOpen.setItems(HoursRangeList);
+			cbWedClose.setItems(HoursRangeList);
+			cbThuOpen.setItems(HoursRangeList);
+			cbThuClose.setItems(HoursRangeList);
+			cbFriOpen.setItems(HoursRangeList);
+			cbFriClose.setItems(HoursRangeList);
+			cbSatOpen.setItems(HoursRangeList);
+			cbSatClose.setItems(HoursRangeList);
+			cbSunOpen.setItems(HoursRangeList);
+			cbSunClose.setItems(HoursRangeList);
+
+			// 초기값 가져오기 (등록된 운영시간 정보가 있을 경우만)
+			// 수정인지 등록인지 구분하기 위한 flag
+			// 등록된 정보 있을 경우 수정이므로 flag = true, 없을 경우 등록이므로 flag = false;
+
+			ovo = openDAO.getOpenHours(selectedRest.get(0).getRestaurantID());
+			if(ovo != null) {
+				flag = true;
+				cbMonOpen.setValue(ovo.get(0).getMonOpen());
+				cbMonClose.setValue(ovo.get(0).getMonClose());
+				cbTueOpen.setValue(ovo.get(0).getMonOpen());
+				cbTueClose.setValue(ovo.get(0).getTueClose());
+				cbWedOpen.setValue(ovo.get(0).getMonOpen());
+				cbWedClose.setValue(ovo.get(0).getWedClose());
+				cbThuOpen.setValue(ovo.get(0).getMonOpen());
+				cbThuClose.setValue(ovo.get(0).getThuClose());
+				cbFriOpen.setValue(ovo.get(0).getMonOpen());
+				cbFriClose.setValue(ovo.get(0).getFriClose());
+				cbSatOpen.setValue(ovo.get(0).getMonOpen());
+				cbSatClose.setValue(ovo.get(0).getSatClose());
+				cbSunOpen.setValue(ovo.get(0).getMonOpen());
+				cbSunClose.setValue(ovo.get(0).getSunClose());
+			}
+
+			// 오프 체크 시 설정
+			chkMonOff.selectedProperty().addListener((e) -> {
+				if (chkMonOff.isSelected()) {
+					cbMonOpen.setValue("24:00");
+					cbMonClose.setValue("24:00");
+					cbMonOpen.setDisable(true);
+					cbMonClose.setDisable(true);
+				} else {
+					cbMonOpen.setDisable(false);
+					cbMonClose.setDisable(false);
+				}
+			});
 			
+			chkTueOff.selectedProperty().addListener((e) -> {
+				if (chkTueOff.isSelected()) {
+					cbTueOpen.setValue("24:00");
+					cbTueClose.setValue("24:00");
+					cbTueOpen.setDisable(true);
+					cbTueClose.setDisable(true);
+				} else {
+					cbTueOpen.setDisable(false);
+					cbTueClose.setDisable(false);
+				}
+			});
+			
+			chkWedOff.selectedProperty().addListener((e) -> {
+				if (chkWedOff.isSelected()) {
+					cbWedOpen.setValue("24:00");
+					cbWedClose.setValue("24:00");
+					cbWedOpen.setDisable(true);
+					cbWedClose.setDisable(true);
+				} else {
+					cbWedOpen.setDisable(false);
+					cbWedClose.setDisable(false);
+				}
+			});
+			
+			chkThuOff.selectedProperty().addListener((e) -> {
+				if (chkThuOff.isSelected()) {
+					cbThuOpen.setValue("24:00");
+					cbThuClose.setValue("24:00");
+					cbThuOpen.setDisable(true);
+					cbThuClose.setDisable(true);
+				} else {
+					cbThuOpen.setDisable(false);
+					cbThuClose.setDisable(false);
+				}
+			});
+			
+			chkFriOff.selectedProperty().addListener((e) -> {
+				if (chkFriOff.isSelected()) {
+					cbFriOpen.setValue("24:00");
+					cbFriClose.setValue("24:00");
+					cbFriOpen.setDisable(true);
+					cbFriClose.setDisable(true);
+				} else {
+					cbFriOpen.setDisable(false);
+					cbFriClose.setDisable(false);
+				}
+			});
+			
+			chkSatOff.selectedProperty().addListener((e) -> {
+				if (chkSatOff.isSelected()) {
+					cbSatOpen.setValue("24:00");
+					cbSatClose.setValue("24:00");
+					cbSatOpen.setDisable(true);
+					cbSatClose.setDisable(true);
+				} else {
+					cbSatOpen.setDisable(false);
+					cbSatClose.setDisable(false);
+				}
+			});
+			
+			chkSunOff.selectedProperty().addListener((e) -> {
+				if (chkSunOff.isSelected()) {
+					cbSunOpen.setValue("24:00");
+					cbSunClose.setValue("24:00");
+					cbSunOpen.setDisable(true);
+					cbSunClose.setDisable(true);
+				} else {
+					cbSunOpen.setDisable(false);
+					cbSunClose.setDisable(false);
+				}
+			});
 
-			btnOk.setOnAction((e3) -> {
+			// OK버튼을 누르면 빈칸이 없는지 확인 후 수정
+			btnOk.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					// 빈칸이 없으면 입력값을 가져와서 DB에 등록
+					try {
+						if (cbMonOpen.getValue().equals("") || cbMonClose.getValue().equals("")
+								|| cbTueOpen.getValue().equals("") || cbTueClose.getValue().equals("")
+								|| cbWedOpen.getValue().equals("") || cbWedClose.getValue().equals("")
+								|| cbThuOpen.getValue().equals("") || cbThuClose.getValue().equals("")
+								|| cbFriOpen.getValue().equals("") || cbFriClose.getValue().equals("")
+								|| cbSatOpen.getValue().equals("") || cbSatClose.getValue().equals("")
+								|| cbSunOpen.getValue().equals("") || cbSunClose.getValue().equals("")) {
+							SharedMethod.alertDisplay(5, "영업 시간 등록 실패", "영업 시간 등록 실패", "모든 요일의 정보를 입력해주세요");
+						}
+						// 입력값 가져오기
+						OpenVO openVO = new OpenVO(cbMonOpen.getValue(), cbMonClose.getValue(), cbTueOpen.getValue(),
+								cbTueClose.getValue(), cbWedOpen.getValue(), cbWedClose.getValue(),
+								cbThuOpen.getValue(), cbThuClose.getValue(), cbFriOpen.getValue(),
+								cbFriClose.getValue(), cbSatOpen.getValue(), cbSatClose.getValue(),
+								cbSunOpen.getValue(), cbSunClose.getValue());
+						
+						int result = 0; //insert 결과값을 받기 위한 변수 선언
+						if(flag) {
+							openDAO.getOpenHoursUpdate(openVO, selectedRest.get(0).getRestaurantID());
+						} else {
+							result = openDAO.getOpenHoursRegiste(openVO, selectedRest.get(0).getRestaurantID());
+							if( result > 0 ) {
+								SharedMethod.alertDisplay(5, "영업 시간 등록 성공", "영업 시간 등록 성공", "영업 시간이 정상적으로 등록되었습니다!");
+							}
+						}
+					} catch (Exception e) {
+						SharedMethod.alertDisplay(5, "영업 시간 등록 실패", "영업 시간 등록 실패", "모든 요일의 정보를 입력해주세요");
+					}
+					
+				}
+			});
+			
+			btnCancel.setOnAction((e) -> {
 				stage.close();
 			});
 
@@ -494,8 +690,7 @@ public class ManageRestController implements Initializable {
 			stage.setScene(scene);
 			stage.show();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SharedMethod.alertDisplay(5, "페이지 호출 실패", "영업 시간 등록 창 호출 실패", "영업 시간 등록 창 호출에 실패하였습니다.");
 		}
 	}
 
@@ -503,16 +698,16 @@ public class ManageRestController implements Initializable {
 	public void handlerMenuTableViewPressedAction() {
 		// 테이블 뷰 객체 없는 부분 클릭 시 방어
 
-		//메뉴 필드 활성화 
+		// 메뉴 필드 활성화
 		menuFieldInitSetting(false, false, false);
 
 		// 누른 위치와 해당 객체를 가져온다
 		selectedIndex = menuTable.getSelectionModel().getSelectedIndex();
 		selectedMenu = menuTable.getSelectionModel().getSelectedItems();
 		selectedMenuId = selectedMenu.get(0).getMenuID();
-		System.out.println("가격 "+selectedMenu.get(0).getMenuPrice());
-		System.out.println("아이디 "+selectedMenuId);
-		
+		System.out.println("가격 " + selectedMenu.get(0).getMenuPrice());
+		System.out.println("아이디 " + selectedMenuId);
+
 		try {
 			// 가져온 정보를 데이터 필드에 출력
 			txtMenuName.setText(selectedMenu.get(0).getMenuName());
@@ -548,7 +743,6 @@ public class ManageRestController implements Initializable {
 			stage.initOwner(btnNewRest.getScene().getWindow());
 			stage.setTitle("식당 추가하기");
 
-			ImageView imageView = (ImageView) barChartRoot.lookup("#imgView");
 			Button btnClose = (Button) barChartRoot.lookup("#btnClose");
 			Button btnRestRegiste = (Button) barChartRoot.lookup("#btnRestRegiste");
 			Button btnClear = (Button) barChartRoot.lookup("#btnClear");
@@ -570,18 +764,17 @@ public class ManageRestController implements Initializable {
 			cbNewReserve.setItems(booleanList);
 			cbNewPark.setItems(booleanList);
 			txtNewAddr.setText("123");
-			
+
 			cbNewKind.valueProperty().addListener(new ChangeListener<String>() {
 
 				@Override
 				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-					if(cbNewKind.getValue().equals("채식")) {
+					if (cbNewKind.getValue().equals("채식")) {
 						cbNewVege.setDisable(false);
 					}
 				}
 			});
-			
-			
+
 			AddressDAO addressDAO = new AddressDAO();
 			addressGuList = addressDAO.getGu();
 			cbGu.setItems(addressGuList);
@@ -594,10 +787,9 @@ public class ManageRestController implements Initializable {
 
 				}
 			});
-			
 
 			btnRestRegiste.setOnAction((e1) -> {
-				
+
 				if (txtNewName.getText().equals("") || txtNewAddr.getText().equals("")
 						|| txtNewPhone.getText().equals("")
 						|| cbNewKind.getSelectionModel().getSelectedItem().equals("")
@@ -642,7 +834,7 @@ public class ManageRestController implements Initializable {
 				cbNewPark.setValue("");
 				imageViewInit();
 			});
-			
+
 			btnClose.setOnAction((e3) -> {
 				// 메뉴 테이블을 다시 세팅하고 창 닫기
 				restData.removeAll(restData);
@@ -676,15 +868,9 @@ public class ManageRestController implements Initializable {
 			// 숫자 11자리만 입력받음(정수만 입력받음)
 			SharedMethod.inputDecimalFormatThirteenDigit(txtNewPrice);
 			SharedMethod.inputDecimalFormatThirteenDigit(txtMenuPrice);
+			
 
-			btnClose.setOnAction((e2) -> {
-				// 메뉴 테이블을 다시 세팅하고 창 닫기
-//				menuTable.setItems(null);
-//				MenuDAO menuDAO = new MenuDAO();
-//				menuTable.setItems(menuDAO.getMenu(restId));
-				stage.close();
-			});
-
+			// 메뉴 등록 실행 (insert, 테이블뷰 다시 세팅)
 			btnMenuRegiste.setOnAction((e3) -> {
 				try {
 					MenuVO mvo = new MenuVO(txtNewMenu.getText(), Integer.parseInt(txtNewPrice.getText()));
@@ -700,23 +886,23 @@ public class ManageRestController implements Initializable {
 							menuData = menuDAO.getMenu(restID);
 							menuTable.setItems(menuData);
 						} catch (Exception e4) {
-						SharedMethod.alertDisplay(1, "메뉴 가져오기 실패", "메뉴 가져오기 실패", "메뉴를 가져오는 데에 실패했습니다.");
+							SharedMethod.alertDisplay(1, "메뉴 가져오기 실패", "메뉴 가져오기 실패", "메뉴를 가져오는 데에 실패했습니다.");
 						}
 						SharedMethod.alertDisplay(5, "REGISTERATION SUCCESS", "메뉴 등록 성공 !", "메뉴 등록을 성공하였습니다.");
 						stage.close();
 					}
 				} catch (Exception e4) {
 					SharedMethod.alertDisplay(1, "REGISTERATION FAILED", "메뉴 등록 실패!", "메뉴 등록에 실패하였습니다ㅠㅠ");
-					e4.printStackTrace();
 				}
-			});
-			
-			btnClear.setOnAction(new EventHandler<ActionEvent>() {
 				
-				@Override
-				public void handle(ActionEvent event) {
-					
-				}
+				btnClose.setOnAction((e2) -> {
+					stage.close();
+				});
+			});
+
+			btnClear.setOnAction((event) -> {
+				txtNewMenu.clear();
+				txtNewPrice.clear();
 			});
 
 			Scene scene = new Scene(barChartRoot);

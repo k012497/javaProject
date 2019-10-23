@@ -69,7 +69,6 @@ public class ManageChartController implements Initializable {
 				lblPercent.setText(data.getName()+" "+text);
 			});
 		}
-
 	}
 
 	public void handlerStarsBarChartAction(MouseEvent e) {

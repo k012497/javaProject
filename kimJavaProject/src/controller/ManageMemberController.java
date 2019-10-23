@@ -76,7 +76,7 @@ public class ManageMemberController implements Initializable {
 		memTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
 
 		TableColumn colId = new TableColumn("ID");
-		colId.setMaxWidth(120);
+		colId.setPrefWidth(100);
 		colId.setStyle("-fx-alignment:CENTER;");
 		colId.setCellValueFactory(new PropertyValueFactory("memberID"));
 
@@ -86,7 +86,8 @@ public class ManageMemberController implements Initializable {
 		colPw.setCellValueFactory(new PropertyValueFactory("password"));
 		
 		TableColumn colName = new TableColumn("이름");
-		colName.setMaxWidth(80);
+		colName.setPrefWidth(90);
+		colName.setMaxWidth(120);
 		colName.setStyle("-fx-alignment:CENTER;");
 		colName.setCellValueFactory(new PropertyValueFactory("name"));
 
@@ -112,7 +113,7 @@ public class ManageMemberController implements Initializable {
 
 		// 컬럼 객체들을 테이블 뷰에 추가 & 항목 추가
 		memTable.setItems(data);
-		memTable.getColumns().addAll(colId, colPw, colName, colPhoneNum, colAddr, colGender, colAge);
+		memTable.getColumns().addAll(colId, colName, colPw, colPhoneNum, colAddr, colGender, colAge);
 
 	} // end of memberTableViewSetting
 
