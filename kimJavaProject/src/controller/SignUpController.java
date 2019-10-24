@@ -56,6 +56,10 @@ public class SignUpController implements Initializable {
 
 	ArrayList<MemberVO> dbMember;
 	boolean idCheck = false;
+	
+	// 영문 & 숫자만 입력받았는지 검사하는 플래그 
+	boolean result1;
+	boolean result2;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -79,7 +83,7 @@ public class SignUpController implements Initializable {
 		});
 
 		// 11자리의 숫자만 입력받게 하는 함수
-		SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
+		SharedMethod.inputDecimalFormatElevenDigit(txtPhoneNum);
 	}
 
 	// 콤보박스 셋팅
@@ -134,10 +138,12 @@ public class SignUpController implements Initializable {
 		Parent mainView = null;
 		Stage mainStage = null;
 
-		// 영어와 숫자 이외의 문자는 받지 않는 함수
-		SharedMethod.checkOnlyNumberAndEnglish(txtId.getText());
-		SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
-		SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
+		// 영어와 숫자 이외의 문자는 받지 않는 함수 (false를 반환)
+		result1 = SharedMethod.checkOnlyNumberAndEnglish(txtId.getText());
+		if(!result1) return;
+		result2 = SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
+		if(!result2) return;
+		SharedMethod.inputDecimalFormatElevenDigit(txtPhoneNum);
 
 		// 콤보박스 안에 값이 없을때 빈칸없이 입력
 		if (txtId.getText().equals("") || txtName.getText().equals("") || txtPhoneNum.getText().equals("")

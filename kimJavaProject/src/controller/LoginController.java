@@ -115,7 +115,7 @@ public class LoginController implements Initializable {
 									e2.toString() + e2.getMessage());
 						}
 					} else {
-						System.out.println("틀렸지롱");
+						SharedMethod.alertDisplay(1, "[김시스터즈]", "비밀번호오류", "비밀번호가 맞지 않습니다.");
 					}
 				}
 			});
@@ -148,7 +148,7 @@ public class LoginController implements Initializable {
 			stage.setScene(scene);
 			stage.show();
 		} catch (IOException e1) {
-			System.out.println("비번창 호출 실패 ");
+			SharedMethod.alertDisplay(1, "[김시스터즈]", "비밀번호오류", "비밀번호가 맞지 않습니다.");
 		}
 
 	}
@@ -192,6 +192,8 @@ public class LoginController implements Initializable {
 
 	}
 	
+	// 2. 회원가입 이벤트 처리
+	// 회원가입을 할 수 있는 signUp페이지를 열어준다
 
 	// 2. 회원가입 이벤트 처리
 	// 회원가입하는 SINGUP페이지를 열어준다
@@ -213,6 +215,8 @@ public class LoginController implements Initializable {
 		}
 	}
 	
+	// 3. ID찾기
+	// 로그인 페이지에서 [RINDID]를 누르면  FINDID.FXML을 열어준다
 
 	// 3. ID찾기
 	// 로그인 페이지에서 [RINDID]를 누르면  FINDID.FXML을 열어준다
@@ -229,12 +233,14 @@ public class LoginController implements Initializable {
 			TextField txtName = (TextField) barChartRoot.lookup("#txtName");
 			TextField txtPhoneNum = (TextField) barChartRoot.lookup("#txtPhoneNum");
 
-			SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
+			SharedMethod.inputDecimalFormatElevenDigit(txtPhoneNum);
 
 			btnOk.setOnAction((event) -> {
-				SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
+				//전화번호 필드에는 11자리의 번호만 들어가는 함수 적용
+				SharedMethod.inputDecimalFormatElevenDigit(txtPhoneNum);
 				String existID = null;
 				try {
+					// 모든 필드에 입력을 한값이 정확하다면  디비에서 정보를 불러와 아이디를 찾아준다
 					existID = MemberDAO.findIDByPhone(txtPhoneNum.getText(), txtName.getText());
 					System.out.println("existID" + existID);
 					int existPW = 0;
@@ -278,6 +284,7 @@ public class LoginController implements Initializable {
 		}
 	}
 	
+	// 4. PW찾기
 
 	// 4. PW찾기
 	public void handlerLabelFindPw() {
@@ -294,7 +301,7 @@ public class LoginController implements Initializable {
 			TextField txtPhoneNum = (TextField) barChartRoot.lookup("#txtPhoneNum");
 			TextField txtId = (TextField) barChartRoot.lookup("#txtId");
 
-			SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
+			SharedMethod.inputDecimalFormatElevenDigit(txtPhoneNum);
 
 			btnOk.setOnAction(e -> {
 				if (txtId.getText().equals("")) {

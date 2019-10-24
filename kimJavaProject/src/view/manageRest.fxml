@@ -148,7 +148,7 @@
          <font>
             <Font name="NanumSquareOTF ExtraBold" size="13.0" />
          </font></Label>
-      <TableView fx:id="menuTable" layoutX="23.0" layoutY="469.0" prefHeight="193.0" prefWidth="332.0" />
+      <TableView fx:id="menuTable" layoutX="23.0" layoutY="469.0" prefHeight="183.0" prefWidth="332.0" />
       <Button fx:id="btnNewRest" layoutX="525.0" layoutY="7.0" mnemonicParsing="false" style="-fx-background-color: #D98880;" text="+ NEW" />
       <Button fx:id="btnNewMenu" layoutX="514.0" layoutY="452.0" mnemonicParsing="false" style="-fx-background-color: #D98880;" text="+ NEW" />
       <Separator layoutX="14.0" layoutY="433.0" prefHeight="11.0" prefWidth="571.0" />

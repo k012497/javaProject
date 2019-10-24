@@ -69,7 +69,6 @@ public class OpenDAO {
 		try {
 			// DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
-			System.out.println(ovo.getFriOpen() + "금요일에 만나요 ");
 			// 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, ovo.getMonOpen());
@@ -90,15 +89,13 @@ public class OpenDAO {
 
 			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
-			System.out.println("11111");
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(1, "member info correction", "correction completed", "SUCCESS!");
+				SharedMethod.alertDisplay(1, "영업시간 수정 성공", "영업시간 수정 성공", "영업시간을 성공적으로 수정하였습니다.");
 			} else {
-				SharedMethod.alertDisplay(1, "member info correction error", "correction failed", "TRY AGAIN!");
+				SharedMethod.alertDisplay(1, "영업시간 수정 실패", "영업시간 수정 실패", "영업시간 수정에 실패했습니다.");
 				return null;
 			}
-			System.out.println("33333");
 
 		} catch (SQLException e) {
 			System.out.println("e=[" + e + "]");

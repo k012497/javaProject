@@ -121,7 +121,7 @@ public class MenuDAO {
 		return list;
 	}
 
-	// data 삭제 기능 - delete
+	// delete 
 	public void getMenuDelete(int no) throws Exception {
 		String dml = "delete from menuTBL where menuID = ?";
 		Connection con = null;
@@ -139,10 +139,10 @@ public class MenuDAO {
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(5, "delete menu", "delete completed", "SUCCESS!");
+				SharedMethod.alertDisplay(5, "메뉴 삭제 성공", "메뉴 삭제 성공", "메뉴 삭제에 성공하였습니다.");
 
 			} else {
-				SharedMethod.alertDisplay(1, "delete menu", "delete not completed", "FAIL!");
+				SharedMethod.alertDisplay(1, "메뉴 삭제 실패", "메뉴 삭제 실패", "메뉴 삭제에 실패하였습니다.");
 			}
 
 		} catch (SQLException e) {
@@ -183,9 +183,9 @@ public class MenuDAO {
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(1, "menu correction", "correction completed", "SUCCESS!");
+				SharedMethod.alertDisplay(1, "메뉴 수정 성공", "메뉴 수정 성공", "메뉴 수정에 성공하였습니다.");
 			} else {
-				SharedMethod.alertDisplay(1, "menu correction error", "correction failed", "TRY AGAIN!");
+				SharedMethod.alertDisplay(1, "메뉴 수정 실패", "메뉴 수정 실패", "메뉴 수정에 실패하였습니다.");
 				return null;
 			}
 

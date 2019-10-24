@@ -56,6 +56,8 @@ public class MyPageController implements Initializable {
 	@FXML
 	private Button btnCancel;
 	@FXML
+	private Button btnFavDelete;
+	@FXML
 	private TextField txtName;
 	@FXML
 	private TextField txtNumber;
@@ -80,6 +82,14 @@ public class MyPageController implements Initializable {
 	private boolean favFlag = false;
 	private boolean reviewFlag = false;
 
+	private int selectedIndex;
+	private ObservableList<RestaurantVO> selectedFav;
+	String selectedRestName;
+	
+	// 영문 & 숫자만 입력받았는지 검사하는 플래그 
+	boolean result1;
+	boolean result2;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// 콤보박스 세팅
@@ -92,60 +102,69 @@ public class MyPageController implements Initializable {
 		favTableColSetting();
 		reviewTableColSetting();
 
-		// 메인으로 버튼을 눌렀을 때 
+		// 테이블 뷰 속 객체를 눌렀을 때
+		favTable.setOnMousePressed((e) -> handlerTableViewPressedAction());
+
+		// 메인으로 버튼을 눌렀을 때
 		btnCancel.setOnAction((e) -> handlerButtonCancel());
-		
-		// 회원탈퇴 버튼을 눌렀을 때 
+
+		// 회원탈퇴 버튼을 눌렀을 때
 		btnLeave.setOnAction((e) -> handlerButtonLeaveAction());
-		
+
 		// 정보 수정 버튼을 눌렀을 때
 		btnEdit.setOnAction((e) -> handlerEditButtonAction());
 
-		/*
-		 * my찜뽕 탭을 열면 테이블뷰에 각 사용자에 해당하는 데이터를 가져오는 이벤트 처리 
-		 * favFlag를 이용하여 창이 다시 실행되지 않는 한 테이블뷰 로드는 한 번만 하도록 함
-		 * 만든이 : 김소진 
-		 */
-		favFlag = true;
-		favTab.setOnSelectionChanged((e) -> {handlerFavTabAction();});
+		// 찜뽕 취소 버튼을 눌렀을 때
+		btnFavDelete.setOnAction((e) -> handlerButtonDeleteAction());
 
 		/*
-		 * my review 탭을 열면 테이블뷰에 각 사용자에 해당하는 데이터를 가져오는 이벤트 처리 
-		 * reviewFlag를 이용하여 창이 다시 실행되지 않는 한 테이블뷰 로드는 한 번만 하도록 함
-		 * 만든이 : 김소진 
+		 * my찜뽕 탭을 열면 테이블뷰에 각 사용자에 해당하는 데이터를 가져오는 이벤트 처리 favFlag를 이용하여 창이 다시 실행되지 않는 한
+		 * 테이블뷰 로드는 한 번만 하도록 함 만든이 : 김소진
+		 */
+		favFlag = true;
+		favTab.setOnSelectionChanged((e) -> {
+			handlerFavTabAction();
+		});
+
+		/*
+		 * my review 탭을 열면 테이블뷰에 각 사용자에 해당하는 데이터를 가져오는 이벤트 처리 reviewFlag를 이용하여 창이 다시
+		 * 실행되지 않는 한 테이블뷰 로드는 한 번만 하도록 함 만든이 : 김소진
 		 */
 		reviewFlag = true;
 		reviewTab.setOnSelectionChanged((e) -> {
 			handlerReviewTabAction();
 		});
-		
+
 		// 휴대폰 번호 필드의 포맷 제한 - 11자리 숫자만
-		SharedMethod.inputDecimalFormatThirteenDigit(txtNumber);
+		SharedMethod.inputDecimalFormatElevenDigit(txtNumber);
 
 	}
 
-	// 정보 수정버튼을 눌렀을 때  
+	// 정보 수정버튼을 눌렀을 때
 	public void handlerEditButtonAction() {
 		// 패스워드는 영어 또는 숫자만 입력 가능
-        SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
-        SharedMethod.checkOnlyNumberAndEnglish(txtPwAgain.getText());
-        
+
+		result1 = SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
+		if(!result1) return;
+		result2 = SharedMethod.checkOnlyNumberAndEnglish(txtPwAgain.getText());
+		if(!result1 || !result2) return;
+
 		if (txtPw.getText().equals(txtPwAgain.getText())) {
 		} else {
 			SharedMethod.alertDisplay(1, "비밀번호 오류", "[비밀번호 오류]", "비밀번호 오류입니다 다시 확인 해주세요");
 			return;
 		}
-		
-	    // 비어있는 필드가 있을 경우 경고창 표시
+
+		// 비어있는 필드가 있을 경우 경고창 표시
 		try {
 			if (txtPw.getText().equals("") || txtName.getText().equals("") || txtNumber.getText().equals("")
 					|| cbGu.getValue().equals("") || cbDong.getValue().equals("") || cbGender.getValue().equals("")) {
 				throw new Exception();
 			} else {
 				MemberVO mvo = new MemberVO(lblMemberId.getText(), txtPw.getText(), txtName.getText(),
-					txtNumber.getText(), cbGu.getValue() + " " + cbDong.getValue() , cbGender.getValue(),
-					cbAge.getValue());
-				
+						txtNumber.getText(), cbGu.getValue() + " " + cbDong.getValue(), cbGender.getValue(),
+						cbAge.getValue());
+
 				MemberDAO memberDAO = new MemberDAO();
 				memberDAO.getMemberUpdate(mvo, lblMemberId.getText());
 			}
@@ -190,7 +209,7 @@ public class MyPageController implements Initializable {
 		AddressDAO addressDAO = new AddressDAO();
 		addressGuList = addressDAO.getGu();
 		cbGu.setItems(addressGuList);
-		
+
 		// 구를 선택하면 각 구에 속한 동의 리스트를 세팅하는 이벤트 처리
 		cbGu.valueProperty().addListener(new ChangeListener<String>() {
 
@@ -203,7 +222,7 @@ public class MyPageController implements Initializable {
 
 		cbAgeList = FXCollections.observableArrayList("10", "20", "30", "40", "50", "60", "70", "80", "90");
 		cbAge.setItems(cbAgeList);
-		
+
 		cbGenderList = FXCollections.observableArrayList("여", "남");
 		cbGender.setItems(cbGenderList);
 
@@ -228,6 +247,7 @@ public class MyPageController implements Initializable {
 		}
 	}
 
+	// my 찜뽕 테이블 컬럼 세팅
 	public void favTableColSetting() {
 		favData = FXCollections.observableArrayList();
 		favTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정
@@ -253,6 +273,7 @@ public class MyPageController implements Initializable {
 
 	} // end of favTableColSetting
 
+	// 해당 사용자의 찜 목록을 가져와서 테이블뷰에 세팅하는 메소드
 	public void handlerFavTabAction() {
 		if (favFlag) {
 			ArrayList<RestaurantVO> list = null;
@@ -271,6 +292,40 @@ public class MyPageController implements Initializable {
 			favTable.setItems(favData);
 		}
 		favFlag = false;
+	}
+
+	// 테이블 뷰에서 선택한 식당의 이름 정보를 저장해두는 메소드
+	public void handlerTableViewPressedAction() {
+		try {
+			// 누른 위치와 해당 객체를 가져온다
+			selectedIndex = favTable.getSelectionModel().getSelectedIndex();
+			selectedFav = favTable.getSelectionModel().getSelectedItems();
+			selectedRestName = selectedFav.get(0).getRestaurantName();
+		} catch (Exception e) {
+			SharedMethod.alertDisplay(5, "해당 식당 정보 로드 오류", "해당 식당 정보 로드 오류", "선택한 식당의 정보를 가져오지 못했습니다");
+		}
+	}
+
+	// 선택한 식당을 삭제하는 메소드
+	public void handlerButtonDeleteAction() {
+		try {
+			// 선택한 식당의 이름을 이용해 식당의 아이디를 받아옴 
+			RestaurantDAO restDAO = new RestaurantDAO();
+			RestaurantVO rvo = restDAO.getRestByName(selectedRestName).get(0);
+			int restId = rvo.getRestaurantID();
+			
+			// 식당의 아이디와 사용자 아이디로 삭제 실행
+			FavoriteDAO favDAO = new FavoriteDAO();
+			favDAO.getFavDelete(restId, lblMemberId.getText());
+			
+			// 테이블 뷰에 새로 정보 가져오기
+			favFlag = true;
+			favData.removeAll(favData);
+			handlerFavTabAction();
+			
+		} catch (Exception e) {
+			SharedMethod.alertDisplay(5, "즐겨찾기 삭제 실패", "즐겨찾기 삭제 실패", "즐겨찾기 목록에서 삭제하기를 실패하였습니다");
+		}
 	}
 
 	public void handlerReviewTabAction() {

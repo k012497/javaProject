@@ -96,7 +96,12 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="favTable" layoutX="7.0" layoutY="7.0" prefHeight="498.0" prefWidth="528.0" />
+                  <TableView fx:id="favTable" layoutX="7.0" layoutY="7.0" prefHeight="461.0" prefWidth="528.0" />
+                  <Button fx:id="btnFavDelete" layoutX="225.0" layoutY="477.0" mnemonicParsing="false" style="-fx-background-color: #F4D03F;" text="찜뽕 취소하기">
+                     <font>
+                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
         </content>

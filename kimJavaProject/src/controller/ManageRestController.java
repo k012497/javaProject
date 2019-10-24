@@ -864,8 +864,8 @@ public class ManageRestController implements Initializable {
 			TextField txtNewPrice = (TextField) barChartRoot.lookup("#txtNewPrice");
 
 			// 숫자 11자리만 입력받음(정수만 입력받음)
-			SharedMethod.inputDecimalFormatThirteenDigit(txtNewPrice);
-			SharedMethod.inputDecimalFormatThirteenDigit(txtMenuPrice);
+			SharedMethod.inputDecimalFormatElevenDigit(txtNewPrice);
+			SharedMethod.inputDecimalFormatElevenDigit(txtMenuPrice);
 			
 
 			// 메뉴 등록 실행 (insert, 테이블뷰 다시 세팅)

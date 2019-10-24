@@ -192,9 +192,9 @@ public class MemberDAO {
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(1, "member info correction", "correction completed", "SUCCESS!");
+				SharedMethod.alertDisplay(1, "멤버 정보 수정 성공", "멤버 정보 수정 성공", "정보를 성공적으로 수정하였습니다.");
 			} else {
-				SharedMethod.alertDisplay(1, "member info correction error", "correction failed", "TRY AGAIN!");
+				SharedMethod.alertDisplay(1, "멤버 정보 수정 실패", "멤버 정보 수정 실패", "멤버 정보 수정 실패하였습니다.");
 				return null;
 			}
 
@@ -204,7 +204,7 @@ public class MemberDAO {
 			System.out.println("e=[" + e + "]");
 		} finally {
 			try {
-				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				// 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
 				if (pstmt != null)
 					pstmt.close();
 				if (con != null)
@@ -217,27 +217,27 @@ public class MemberDAO {
 
 	// delete
 	public void getMemberDelete(String id) throws Exception {
-		// ② 데이터 처리를 위한 SQL 문
+		// 데이터 처리를 위한 SQL 문
 		String dml = "delete from memberTBL where memberID = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
+			// DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			// SQL문을 수행후 처리 결과를 얻어옴
 			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, id);
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(5, "delete student", "delete completed", "SUCCESS!");
+				SharedMethod.alertDisplay(5, "멤버 삭제 성공", "멤버 삭제 성공", "멤버를 성공적으로 삭제하였습니다.");
 
 			} else {
-				SharedMethod.alertDisplay(1, "delete student", "delete not completed", "FAIL!");
+				SharedMethod.alertDisplay(1, "멤버 삭제 성공", "멤버 삭제 성공", "멤버 삭제에 실패하였습니다.");
 			}
 
 		} catch (SQLException e) {
@@ -300,6 +300,7 @@ public class MemberDAO {
 	}
 
 	// 아이디를 찾기 위해 이름과 전화번호를 DB에서 가져와 확인 하는 메소드
+	
 	public static String findIDByPhone(String phone, String name) throws Exception {
 		StringBuffer checkTchID = new StringBuffer("select memberID from memberTBL where name = ? and phoneNumber= ?");
 		String resultString = null;
@@ -314,24 +315,21 @@ public class MemberDAO {
 			psmt.setString(1, name);
 			psmt.setString(2, phone);
 
-			// 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
+			// 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
 			rs = psmt.executeQuery();
 
 			while (rs.next()) {
-				System.out.println(rs.getString(1));
 				resultString = rs.getString(1);
 			}
 			if (resultString == null) {
-				// AdminController.callAlert("LOGIN 실패 : 존재하지 않는 아이디 입니다.");
 				return resultString;
 			}
 
 		} catch (SQLException e) {
-			// AdminController.callAlert("login 실패 : StudentDAO");
 			e.printStackTrace();
 		} finally {
 			try {
-				// 1.6 CLOSE DataBase psmt object
+				// CLOSE DataBase psmt object
 				// 제일 먼저 불렀던 것을 제일 나중에 닫는다.
 				// 반드시 있으면 닫아라.
 				if (psmt != null)
@@ -346,6 +344,7 @@ public class MemberDAO {
 
 		return resultString;
 	}
+	
 
 	// 비밀번호를 찾기 위해 이름과 전화번호,아이디를 DB에서 가져와 확인 하는 함수
 	public static String findPWByPhone(String txtName, String txtPhone, String iD) throws Exception {
@@ -359,14 +358,12 @@ public class MemberDAO {
 		try {
 			con = DBUtil.getConnection();
 			psmt = con.prepareStatement(checkTchPW.toString());
-			// 첫번째 물음표 자리 -> studentID 매치 시켜주는 작업
 
-			// 여기에 2 만 두개였음......
 			psmt.setString(2, txtName);
 			psmt.setString(3, txtPhone);
 			psmt.setString(1, iD);
 
-			// 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
+			// 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
 			rs = psmt.executeQuery();
 
 			while (rs.next()) {
@@ -375,15 +372,13 @@ public class MemberDAO {
 				resultString = member.getPassword();
 			}
 			if (resultString == null) {
-				// AdminController.callAlert("LOGIN 실패 : 존재하지 않는 아이디 입니다.");
 				return resultString;
 			}
 		} catch (SQLException e) {
-			// AdminController.callAlert("login 실패 : StudentDAO");
 			e.printStackTrace();
 		} finally {
 			try {
-				// 1.6 CLOSE DataBase psmt object
+				// CLOSE DataBase psmt object
 				// 제일 먼저 불렀던 것을 제일 나중에 닫는다.
 				// 반드시 있으면 닫아라.
 				if (psmt != null)

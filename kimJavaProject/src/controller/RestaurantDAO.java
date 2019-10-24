@@ -262,10 +262,10 @@ public class RestaurantDAO {
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(5, "delete restaurant", "delete completed", "SUCCESS!");
+				SharedMethod.alertDisplay(5, "식당 삭제 성공", "식당 삭제 성공", "식당을 성공적으로 삭제하였습니다.");
 
 			} else {
-				SharedMethod.alertDisplay(1, "delete restaurant", "delete not completed", "FAIL!");
+				SharedMethod.alertDisplay(1, "식당 삭제 실패", "식당 삭제 실패", "식당 삭제에 실패하였습니다.");
 			}
 
 		} catch (SQLException e) {
@@ -294,8 +294,6 @@ public class RestaurantDAO {
 
 		try {
 			con = DBUtil.getConnection();
-
-			// 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, rvo.getRestaurantName());
 			pstmt.setString(2, rvo.getAddress());
@@ -313,9 +311,9 @@ public class RestaurantDAO {
 			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
 			if (i == 1) {
-				SharedMethod.alertDisplay(1, " correction", "correction completed", "SUCCESS!");
+				SharedMethod.alertDisplay(1, " 식당 수정 ", "수정 성공", "정보를 성공적으로 수정하였습니다.");
 			} else {
-				SharedMethod.alertDisplay(1, " correction error", "correction failed", "TRY AGAIN!");
+				SharedMethod.alertDisplay(1, " 식당 수정 실패 ", "식당 수정 실패", "식당 수정 실패");
 				return null;
 			}
 
@@ -354,9 +352,9 @@ public class RestaurantDAO {
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
-				SharedMethod.alertDisplay(5, " 즐겨찾기 등록 ", "즐겨찾기에 추가되었습니다.", "SUCCESS!");
+				SharedMethod.alertDisplay(5, "즐겨찾기 등록 ", "즐겨찾기에 추가되었습니다.",  "성공적으로 등록되었습니다!");
 			} else {
-				SharedMethod.alertDisplay(1, " correction error", "correction failed", "TRY AGAIN!");
+				SharedMethod.alertDisplay(1, "즐겨찾기 등록 실패", "즐겨찾기 등록 실패", "즐겨찾기 등록 실패!");
 			}
 
 		} catch (SQLException e) {
@@ -396,7 +394,7 @@ public class RestaurantDAO {
 			if (i == 1) {
 				SharedMethod.alertDisplay(5, "리뷰 등록 성공!", "리뷰 등록 성공!!", "리뷰를 정상적으로 등록하였습니다 ");
 			} else {
-				SharedMethod.alertDisplay(1, " correction error", "correction failed", "TRY AGAIN!");
+				SharedMethod.alertDisplay(1, "리뷰 등록 실패 ", "리뷰 등록 실패", "리뷰 등록에 실패하였습니다.");
 				return;
 			}
 

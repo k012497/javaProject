@@ -98,6 +98,6 @@
             </HBox>
          </children>
       </VBox>
-      <Button id="btnOk" fx:id="btnOk" layoutX="144.0" layoutY="359.0" mnemonicParsing="false" text="OK" />
+      <Button id="btnOk" fx:id="btnOk" layoutX="144.0" layoutY="359.0" mnemonicParsing="false" style="-fx-background-color: #F4D03F;" text="OK" />
    </children>
 </AnchorPane>

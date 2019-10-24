@@ -11,12 +11,12 @@
 
 <AnchorPane prefHeight="636.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageChartController">
    <children>
-      <Label layoutX="31.0" layoutY="181.0" text="[음식종류 비율]">
+      <Label layoutX="48.0" layoutY="180.0" text="[음식종류 비율]">
          <font>
             <Font name="NanumSquareOTF Bold" size="18.0" />
          </font></Label>
       <PieChart fx:id="pieChart" layoutX="58.0" layoutY="185.0" prefHeight="395.0" prefWidth="435.0" />
-      <HBox fx:id="hTopStars" alignment="CENTER" layoutX="147.0" layoutY="51.0" prefHeight="35.0" prefWidth="257.0">
+      <HBox fx:id="hTopStars" alignment="CENTER" layoutX="31.0" layoutY="52.0" prefHeight="35.0" prefWidth="257.0">
          <children>
             <Label text="[별점이 높은 식당 TOP 10]">
                <font>
@@ -30,7 +30,7 @@
             </ImageView>
          </children>
       </HBox>
-      <HBox fx:id="hTopCount" alignment="CENTER" layoutX="147.0" layoutY="109.0" prefHeight="35.0" prefWidth="222.0">
+      <HBox fx:id="hTopCount" alignment="CENTER" layoutX="28.0" layoutY="110.0" prefHeight="35.0" prefWidth="222.0">
          <children>
             <Label text="[지역별 등록 식당 수]">
                <font>
@@ -44,7 +44,7 @@
             </ImageView>
          </children>
       </HBox>
-      <Label fx:id="lblPercent" layoutX="162.0" layoutY="179.0" prefHeight="32.0" prefWidth="159.0" textFill="#da9e69" wrapText="true">
+      <Label fx:id="lblPercent" layoutX="179.0" layoutY="178.0" prefHeight="32.0" prefWidth="159.0" textFill="#da9e69" wrapText="true">
          <font>
             <Font name="Nanum Brush Script" size="24.0" />
          </font></Label>
