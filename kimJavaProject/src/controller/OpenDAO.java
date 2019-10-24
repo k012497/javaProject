@@ -6,13 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import model.MemberVO;
 import model.OpenVO;
 
 public class OpenDAO {
 	public OpenDAO() {
 	}
 
+	// select - 식당ID로 영업시간 조회
 	public ArrayList<OpenVO> getOpenHours(int restId) {
 		ArrayList<OpenVO> list = new ArrayList<OpenVO>();
 		String dml = "select * from openTBL where restaurantID = ? ";
@@ -56,6 +56,7 @@ public class OpenDAO {
 		return list;
 	}
 
+	// update - 영업시간 수정
 	public OpenVO getOpenHoursUpdate(OpenVO ovo, int restId) throws Exception {
 		// 데이터 처리를 위한 SQL 문
 		String dml = "UPDATE openTBL " + "SET "
@@ -116,6 +117,7 @@ public class OpenDAO {
 		return ovo;
 	}
 
+	// insert - 영업시간 등록
 	public int getOpenHoursRegiste(OpenVO ovo, int restId) throws Exception {
 		String dml = "insert into openTBL values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "+
 				"?, ?, ?, ?, ?)";

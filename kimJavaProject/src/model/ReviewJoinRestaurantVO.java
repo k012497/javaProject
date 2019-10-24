@@ -1,12 +1,6 @@
 package model;
 
 public class ReviewJoinRestaurantVO {
-	@Override
-	public String toString() {
-		return "ReviewJoinRestaurantVO [restaurantName=" + restaurantName + ", stars=" + stars + ", registeDate="
-				+ registeDate + "]";
-	}
-
 
 	private String restaurantName; 
 	private Double stars; 

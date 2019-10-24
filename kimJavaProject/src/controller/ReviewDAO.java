@@ -10,6 +10,8 @@ import model.ReviewJoinRestaurantVO;
 import model.ReviewVO;
 
 public class ReviewDAO {
+	
+	// insert - 리뷰 등록
 	public int getReviewRegiste(ReviewVO rvo) throws Exception {
 		String dml = "insert into reviewTBL " + "(reviewID, memberID, restaurantID, stars, registeDate)" + " values "
 				+ "(null, ?, ?, ?, now())";
@@ -51,7 +53,6 @@ public class ReviewDAO {
 	// 특정 사용자의 리뷰 가져오기
 	public ArrayList<ReviewJoinRestaurantVO> getReveiw(String memberID) {
 		ArrayList<ReviewJoinRestaurantVO> list = new ArrayList<ReviewJoinRestaurantVO>();
-//			MenuVO list = null;
 		String dml = "select restaurantTBL.restaurantName, reviewTBL.stars, reviewTBL.registeDate "
 				+ "from restaurantTBL inner join reviewTBL on restaurantTBL.restaurantID = reviewTBL.restaurantID " + 
 				"where reviewTBL.memberId = ? order by reviewTBL.registeDate desc";

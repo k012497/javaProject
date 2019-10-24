@@ -10,6 +10,7 @@ import javafx.scene.control.TextFormatter;
 
 public class SharedMethod {
 
+	// 경고창 생성
 	public static void alertDisplay(int type, String title, String headerText, String contentText) {
 		Alert alert = null;
 		switch (type) {
@@ -138,12 +139,6 @@ public class SharedMethod {
 	
 	//영문 + 숫자만 입력 받는 함수
 	   public static boolean checkOnlyNumberAndEnglish(String textInput) {
-
-	      /*
-	       * SharedMethod.checkOnlyNumberAndEnglish(txtId.getText());
-	       * SharedMethod.checkOnlyNumberAndEnglish(txtPhoneNum.getText());
-	       * SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
-	       */
 	      char chrInput;
 
 	      for (int i = 0; i < textInput.length(); i++) {

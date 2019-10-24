@@ -10,7 +10,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminController">
    <children>
-      <TabPane fx:id="tabPane" layoutX="1.0" layoutY="43.0" prefHeight="693.0" prefWidth="599.0" style="-fx-background-color: lemon;">
+      <TabPane fx:id="tabPane" layoutX="1.0" layoutY="43.0" prefHeight="693.0" prefWidth="599.0" style="-fx-background-color: ;">
          <tabs>
             <Tab fx:id="memberPage" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumSquareOTF ExtraBold;" text=" 회원 관리 ">
                <content>

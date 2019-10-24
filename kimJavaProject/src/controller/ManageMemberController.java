@@ -129,7 +129,7 @@ public class ManageMemberController implements Initializable {
 					cbMemAge.getSelectionModel().getSelectedItem());
 				
 				MemberDAO memberDAO = new MemberDAO();
-				MemberVO memberVO = memberDAO.getMemberUpdate(mvo, selectedMember.get(0).getMemberID());
+				memberDAO.getMemberUpdate(mvo, selectedMember.get(0).getMemberID());
 				
 				data.remove(selectedIndex); // 선택된 레코드를 지워버리고
 				data.add(selectedIndex, mvo);

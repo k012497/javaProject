@@ -12,7 +12,6 @@ public class RestaurantDAO {
 
 	// 신규 식당 등록
 	public int getRestregiste(RestaurantVO rvo) throws Exception {
-
 		String dml = "insert into restaurantTBL "
 				+ "(restaurantID, restaurantName, address, telephone, kind, veganLevel, imageFileName, favCount, avgStars, registeDate, takeout, parking, reservation)"
 				+ " values " + "(null, ?, ?, ?, ?, ?, ?, ?, ?, now(), ?, ?, ?)";
@@ -21,10 +20,10 @@ public class RestaurantDAO {
 		PreparedStatement pstmt = null;
 		int count = 0;
 		try {
-			// ③ DBUtil 클래스의 getConnection( )메서드로 데이터베이스와 연결
+			// DBUtil 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
 
-			// ④ 입력받은 학생 정보를 처리하기 위하여 SQL문장을 생성
+			// 입력받은 학생 정보를 처리하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, rvo.getRestaurantName());
 			pstmt.setString(2, rvo.getAddress());
@@ -39,7 +38,7 @@ public class RestaurantDAO {
 			pstmt.setString(10, rvo.getParking());
 			pstmt.setString(11, rvo.getReservation());
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			// SQL문을 수행후 처리 결과를 얻어옴
 			count = pstmt.executeUpdate(); // workbench에서 번개 누르는 것. 몇 문장을 실행했는지를 리턴
 
 		} catch (SQLException e) {
@@ -48,7 +47,7 @@ public class RestaurantDAO {
 			System.out.println("e=[" + e + "]");
 		} finally {
 			try {
-				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				// 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
 				if (pstmt != null)
 					pstmt.close();
 				if (con != null)
@@ -111,7 +110,6 @@ public class RestaurantDAO {
 			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, kind);
 			rs = pstmt.executeQuery();
-			int i = 0;
 			while (rs.next()) { // 다음 레코드가 있을 동안
 				count = rs.getInt(1);
 			}
@@ -142,15 +140,12 @@ public class RestaurantDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null; // db에서 가져올 때 임시 보관 장소
 
-		RestaurantVO retval = null;
-
 		try {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement(dml);
 			String guToSearch = "%" + gu + "%";
 			pstmt.setString(1, guToSearch);
 			rs = pstmt.executeQuery();
-			int i = 0;
 			while (rs.next()) { // 다음 레코드가 있을 동안
 				count = rs.getInt(1);
 			}
@@ -251,20 +246,19 @@ public class RestaurantDAO {
 
 	// data 삭제 기능 - delete
 	public void getRestDelete(int no) throws Exception {
-		// ② 데이터 처리를 위한 SQL 문
+		// 데이터 처리를 위한 SQL 문
 		String dml = "delete from restaurantTBL where restaurantID = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			// SQL문을 수행후 처리 결과를 얻어옴
 			pstmt = con.prepareStatement(dml);
 			pstmt.setInt(1, no);
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
@@ -280,7 +274,7 @@ public class RestaurantDAO {
 			System.out.println("e=[" + e + "]");
 		} finally {
 			try {
-				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				// 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
 				if (pstmt != null)
 					pstmt.close();
 				if (con != null)
@@ -293,17 +287,15 @@ public class RestaurantDAO {
 
 	// 수정 기능
 	public RestaurantVO getRestUpdate(RestaurantVO rvo, int no) throws Exception {
-		// ② 데이터 처리를 위한 SQL 문
 		String dml = "update restaurantTBL set "
 				+ "restaurantName=?, address=?, telephone=?, kind=?, veganLevel=?, imageFileName=?, favCount=?, avgStars=?, takeout=?, parking=?, reservation=? where restaurantID=?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
 
-			// ④ 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
+			// 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, rvo.getRestaurantName());
 			pstmt.setString(2, rvo.getAddress());
@@ -317,7 +309,8 @@ public class RestaurantDAO {
 			pstmt.setString(10, rvo.getParking());
 			pstmt.setString(11, rvo.getReservation());
 			pstmt.setInt(12, no);
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			
+			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
 			if (i == 1) {
 				SharedMethod.alertDisplay(1, " correction", "correction completed", "SUCCESS!");
@@ -345,21 +338,19 @@ public class RestaurantDAO {
 
 	// favCount(즐겨찾기 개수) 수정
 	public void getFavCountUpdate(int count, int restId) throws Exception {
-		// ② 데이터 처리를 위한 SQL 문
 		String dml = "update restaurantTBL set favCount = ? where restaurantID = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
 
-			// ④ 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
+			// 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
 			pstmt.setInt(1, count);
 			pstmt.setInt(2, restId);
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
 
 			if (i == 1) {
@@ -374,7 +365,7 @@ public class RestaurantDAO {
 			System.out.println("e=[" + e + "]");
 		} finally {
 			try {
-				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				// 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
 				if (pstmt != null)
 					pstmt.close();
 				if (con != null)
@@ -386,22 +377,21 @@ public class RestaurantDAO {
 
 	// avgStars(평균 별점) 업데이트
 	public void getRestStarsUpdate(int restId) throws Exception {
-		// ② 데이터 처리를 위한 SQL 문
 		String dml = "update restaurantTBL set avgStars = (Select Round(Avg(stars), 2) from reviewTBL where restaurantId = ?) "
 				+ "where restaurantID = ? ";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			// ③ DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
+			// DBUtil이라는 클래스의 getConnection( )메서드로 데이터베이스와 연결
 			con = DBUtil.getConnection();
 
-			// ④ 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
+			// 수정한 학생 정보를 수정하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(dml);
 			pstmt.setInt(1, restId);
 			pstmt.setInt(2, restId);
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
 			if (i == 1) {
 				SharedMethod.alertDisplay(5, "리뷰 등록 성공!", "리뷰 등록 성공!!", "리뷰를 정상적으로 등록하였습니다 ");
@@ -416,7 +406,7 @@ public class RestaurantDAO {
 			System.out.println("e=[" + e + "]");
 		} finally {
 			try {
-				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				// 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
 				if (pstmt != null)
 					pstmt.close();
 				if (con != null)
@@ -557,7 +547,6 @@ public class RestaurantDAO {
 			pstmt = con.prepareStatement(dml);
 			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
-			int i = 0;
 			while (rs.next()) { // 다음 레코드가 있을 동안
 				avgStars = rs.getDouble(1);
 			}
@@ -579,11 +568,12 @@ public class RestaurantDAO {
 		return avgStars;
 	}
 
+	// 연령대별 인기 식당(즐겨찾기 수 내림차순) 가져오기
 	public ArrayList<RestaurantVO> getTopFavCounByAge(int ageGroup) {
 		ArrayList<RestaurantVO> list = new ArrayList<RestaurantVO>();
 		String dml = "select restaurantTBL.restaurantName, restaurantTBL.favCount from memberTBL INNER join favoriteTBL on memberTBL.memberID = favoriteTBL.memberID " + 
 				"INNER join restaurantTBL on restaurantTBL.restaurantID = favoriteTBL.restaurantID " + 
-				"where memberTBL.ageGroup = ? group by restaurantTBL.restaurantID order by count(restaurantTBL.restaurantID) desc limit 5";
+				"where memberTBL.ageGroup = ? group by restaurantTBL.restaurantID order by count(restaurantTBL.restaurantID) desc limit 10";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;

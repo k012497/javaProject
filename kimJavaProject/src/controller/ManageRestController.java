@@ -109,14 +109,12 @@ public class ManageRestController implements Initializable {
 	private ObservableList<RestaurantVO> selectedRest;
 	private ObservableList<MenuVO> selectedMenu;
 	int selectedMenuId;
-	private RestaurantDAO restaurantDAO;
 
 	private String selectFileName = ""; // 이미지 파일명
 	private String localUrl = ""; // 이미지 파일 경로
 	private Image localImage;
 	private String fileName = null;
 
-	private int no; // 삭제시 테이블에서 선택한 멤버의 번호 저장
 	private File selectedFile = null;
 
 	// 이미지 처리
@@ -182,8 +180,7 @@ public class ManageRestController implements Initializable {
 			} else {
 				MenuDAO menuDAO = new MenuDAO();
 				MenuVO mvo = new MenuVO(txtMenuName.getText(), Integer.parseInt(txtMenuPrice.getText()));
-				System.out.println(selectedMenuId);
-				MenuVO menuVO = menuDAO.getMenuUpdate(mvo, selectedMenuId);
+				menuDAO.getMenuUpdate(mvo, selectedMenuId);
 
 				menuData.remove(selectedIndex); // 선택된 레코드를 지워버리고
 				// 해당 식당의 메뉴를 불러온다.
@@ -232,7 +229,6 @@ public class ManageRestController implements Initializable {
 				// 변경사항을 DB로 보냄.
 				RestaurantDAO restaurantDAO = new RestaurantDAO();
 				RestaurantVO restaurantVO = restaurantDAO.getRestUpdate(rvo, selectedRest.get(0).getRestaurantID());
-				System.out.println("#333");
 				restData.remove(selectedIndex);
 				restData.add(selectedIndex, rvo); // 테이블에 들어가버림. setItems(data);해놨으니까.
 			}
@@ -421,7 +417,6 @@ public class ManageRestController implements Initializable {
 		selectedIndex = restTable.getSelectionModel().getSelectedIndex();
 		selectedRest = restTable.getSelectionModel().getSelectedItems();
 		int selectedRestId = selectedRest.get(0).getRestaurantID();
-		System.out.println("선택된 식" + selectedRestId);
 
 		menuFieldInitSetting(true, false, true);
 		btnMenuEdit.setOnAction((e) -> handlerBtnMenuEditAction());
@@ -704,8 +699,6 @@ public class ManageRestController implements Initializable {
 		selectedIndex = menuTable.getSelectionModel().getSelectedIndex();
 		selectedMenu = menuTable.getSelectionModel().getSelectedItems();
 		selectedMenuId = selectedMenu.get(0).getMenuID();
-		System.out.println("가격 " + selectedMenu.get(0).getMenuPrice());
-		System.out.println("아이디 " + selectedMenuId);
 
 		try {
 			// 가져온 정보를 데이터 필드에 출력

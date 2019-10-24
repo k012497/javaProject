@@ -7,7 +7,6 @@ public class ReviewVO {
 	private double stars;
 	private String registeDate;
 	
-	
 	public ReviewVO(int reviewID, String memberID, int restaurantID, double stars, String registeDate) {
 		super();
 		this.reviewID = reviewID;
