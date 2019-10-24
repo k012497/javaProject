@@ -10,46 +10,55 @@
 
 <TabPane prefHeight="550.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MyPageController">
    <tabs>
-      <Tab closable="false" text="정보수정">
+      <Tab closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumGothic ExtraBold;" text=" 정보수정 ">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnEdit" layoutX="37.0" layoutY="349.0" mnemonicParsing="false" prefWidth="88.0" text="수정확인" />
-                  <Button fx:id="btnLeave" layoutX="37.0" layoutY="392.0" mnemonicParsing="false" prefWidth="88.0" text="회원탈퇴" />
+                  <Button fx:id="btnEdit" layoutX="37.0" layoutY="349.0" mnemonicParsing="false" prefWidth="88.0" style="-fx-background-color: #F4D03F;" text="수정확인">
+                     <font>
+                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                     </font></Button>
+                  <Button fx:id="btnLeave" layoutX="37.0" layoutY="392.0" mnemonicParsing="false" prefWidth="88.0" style="-fx-background-color: #F4D03F;" text="회원탈퇴">
+                     <font>
+                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                     </font></Button>
                   <TextField fx:id="txtName" layoutX="165.0" layoutY="105.0" prefHeight="46.0" prefWidth="176.0" promptText="e) 김시스터즈" />
-                  <Button fx:id="btnCancel" layoutX="37.0" layoutY="307.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="88.0" text="메인으로" />
+                  <Button fx:id="btnCancel" layoutX="37.0" layoutY="307.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="88.0" style="-fx-background-color: #F4D03F;" text="메인으로">
+                     <font>
+                        <Font name="NanumSquareOTF Bold" size="13.0" />
+                     </font></Button>
                   <TextField fx:id="txtNumber" layoutX="165.0" layoutY="185.0" prefHeight="46.0" prefWidth="176.0" promptText="e) 010-0101-0101" />
                   <TextField fx:id="txtPw" layoutX="165.0" layoutY="341.0" prefHeight="46.0" prefWidth="365.0" promptText="비밀번호(Password)" />
                   <TextField fx:id="txtPwAgain" layoutX="167.0" layoutY="422.0" prefHeight="46.0" prefWidth="365.0" promptText="비밀번호확인(Password Check)" />
                   <Separator layoutX="14.0" layoutY="61.0" prefHeight="0.0" prefWidth="500.0" style="-fx-background-color: #dcdcdc;" />
                   <Label layoutX="16.0" layoutY="20.0" text="Information modification">
                      <font>
-                        <Font size="29.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="29.0" />
                      </font>
                   </Label>
                   <Label layoutX="166.0" layoutY="393.0" text="Password Check">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="18.0" />
                      </font>
                   </Label>
                   <Label layoutX="166.0" layoutY="314.0" text="Password">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="18.0" />
                      </font>
                   </Label>
                   <Label layoutX="166.0" layoutY="236.0" text="Address">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="18.0" />
                      </font>
                   </Label>
                   <Label layoutX="167.0" layoutY="156.0" prefHeight="21.0" prefWidth="78.0" text="Number">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="18.0" />
                      </font>
                   </Label>
                   <Label layoutX="166.0" layoutY="79.0" text="Name">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="18.0" />
                      </font>
                   </Label>
                   <ImageView fitHeight="119.0" fitWidth="106.0" layoutX="32.0" layoutY="100.0">
@@ -59,25 +68,31 @@
                   </ImageView>
                   <Label layoutX="358.0" layoutY="79.0" text="Age Group">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="18.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="cbAge" layoutX="358.0" layoutY="105.0" prefWidth="150.0" promptText="연령대 선택" />
-                  <ComboBox fx:id="cbDong" layoutX="310.0" layoutY="268.0" prefHeight="29.0" prefWidth="130.0" promptText="동 선택" />
-                  <ComboBox fx:id="cbGu" layoutX="165.0" layoutY="268.0" prefHeight="29.0" prefWidth="130.0" promptText="구 선택" />
-                  <Label id="lblMemberId" fx:id="lblMemberId" alignment="CENTER_RIGHT" layoutX="358.0" layoutY="29.0" prefHeight="17.0" prefWidth="103.0" />
-                  <Label layoutX="467.0" layoutY="29.0" text="님" />
-                  <ComboBox fx:id="cbGender" layoutX="358.0" layoutY="185.0" prefWidth="150.0" promptText="연령대 선택" />
+                  <ComboBox fx:id="cbAge" layoutX="358.0" layoutY="105.0" prefWidth="150.0" promptText="연령대 선택" style="-fx-background-color: white;" />
+                  <ComboBox fx:id="cbDong" layoutX="310.0" layoutY="268.0" prefHeight="29.0" prefWidth="130.0" promptText="동 선택" style="-fx-background-color: white;" />
+                  <ComboBox fx:id="cbGu" layoutX="165.0" layoutY="268.0" prefHeight="29.0" prefWidth="130.0" promptText="구 선택" style="-fx-background-color: white;" />
+                  <Label id="lblMemberId" fx:id="lblMemberId" alignment="CENTER_RIGHT" layoutX="390.0" layoutY="34.0" prefHeight="17.0" prefWidth="103.0">
+                     <font>
+                        <Font name="NanumSquareOTF Regular" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="499.0" layoutY="34.0" text="님">
+                     <font>
+                        <Font name="NanumSquareOTF Regular" size="13.0" />
+                     </font></Label>
+                  <ComboBox fx:id="cbGender" layoutX="358.0" layoutY="185.0" prefWidth="150.0" promptText="연령대 선택" style="-fx-background-color: white;" />
                   <Label layoutX="358.0" layoutY="159.0" text="Gender">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="NanumSquareOTF ExtraBold" size="18.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
         </content>
       </Tab>
-      <Tab fx:id="favTab" closable="false" text="my 찜뽕">
+      <Tab fx:id="favTab" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumGothic ExtraBold;" text=" my 찜뽕 ">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -86,7 +101,7 @@
             </AnchorPane>
         </content>
       </Tab>
-      <Tab fx:id="reviewTab" closable="false" text="my review">
+      <Tab fx:id="reviewTab" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumGothic;" text=" my review ">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>

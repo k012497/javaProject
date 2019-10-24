@@ -505,9 +505,8 @@ public class MainController implements Initializable {
 	public void handlerListViewPressed(MouseEvent e, ListView<CustomThing> listView) {
 		selectedRest = listView.getSelectionModel().getSelectedItems();
 		try {
-			int restId = selectedRest.get(0).getRestaurantID();
+			selectedRest.get(0).getRestaurantID();
 		} catch (Exception e2) {
-			SharedMethod.alertDisplay(1, "식당 정보 읽기 실패 ", "식당 정보 읽기 실패", "등록된 식당을 클릭해주세요");
 		}
 
 		RestaurantDAO restDAO = new RestaurantDAO();
@@ -523,7 +522,7 @@ public class MainController implements Initializable {
 				rvo = restDAO.getRestByName(selectedRest.get(0).getName());
 				selectedRestId = selectedRest.get(0).getRestaurantID();
 			} catch (Exception e1) {
-				SharedMethod.alertDisplay(1, "식당 정보오류", "식당 정보오류", "식당 정보를 불러올 수 없습니다. ");
+//				SharedMethod.alertDisplay(1, "식당 정보오류", "식당 정보오류", "식당 정보를 불러올 수 없습니다. ");
 				return;
 			}
 
@@ -585,7 +584,6 @@ public class MainController implements Initializable {
 							// 이미지 파일 경로
 							localUrl = selectedFile.toURI().toURL().toString();
 							localImage = new Image(localUrl, false);
-							System.out.println(localImage.toString());
 							imageView.setImage(localImage);
 							imageView.setFitHeight(250);
 							imageView.setFitWidth(230);
@@ -612,7 +610,7 @@ public class MainController implements Initializable {
 							Stage stage = new Stage(StageStyle.UTILITY);
 							stage.initModality(Modality.WINDOW_MODAL);
 							stage.initOwner(businessHours.getScene().getWindow());
-							stage.setTitle("아이디 찾기");
+							stage.setTitle("영업시간 정보");
 
 							Button btnOk = (Button) root.lookup("#btnOk");
 							Label cbMonOpen = (Label) root.lookup("#lblMonOpen");
@@ -636,7 +634,6 @@ public class MainController implements Initializable {
 							OpenDAO openDAO = new OpenDAO();
 							ArrayList<OpenVO> ovo = null;
 							ovo = openDAO.getOpenHours(selectedRestId);
-							System.out.println(ovo.get(0).getThuOpen());
 							cbMonOpen.setText(ovo.get(0).getMonOpen());
 							cbMonClose.setText(ovo.get(0).getMonClose());
 							cbTueOpen.setText(ovo.get(0).getTueOpen());
@@ -732,19 +729,6 @@ public class MainController implements Initializable {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/view/stars.fxml"));
 			Stage stage = new Stage();
-//			Stage stage = new Stage(StageStyle.UTILITY);
-//			stage.initModality(Modality.WINDOW_MODAL);
-//			stage.initOwner(imgStars.getScene().getWindow());
-//			stage.setTitle("아이디 찾기");
-//
-//			Button btnOk = (Button) root.lookup("#btnOk");
-//			Button btnCancel = (Button) root.lookup("#btnCancel");
-//			Label lblNum = (Label) root.lookup("#lblNum");
-//			Slider sldSize = (Slider) root.lookup("#sldSize");
-//
-//			btnCancel.setOnAction((e3) -> {
-//				stage.close();
-//			});
 
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
@@ -786,12 +770,12 @@ public class MainController implements Initializable {
 		menuData = FXCollections.observableArrayList();
 
 		TableColumn colName = new TableColumn("메뉴");
-		colName.setMaxWidth(300);
+		colName.setPrefWidth(250);
 		colName.setStyle("-fx-alignment:CENTER;");
 		colName.setCellValueFactory(new PropertyValueFactory("menuName"));
 
 		TableColumn colPrice = new TableColumn("가격");
-		colPrice.setMaxWidth(200);
+		colPrice.setPrefWidth(200);
 		colPrice.setStyle("-fx-alignment:CENTER;");
 		colPrice.setCellValueFactory(new PropertyValueFactory("menuPrice"));
 
@@ -844,13 +828,11 @@ public class MainController implements Initializable {
 		} else {
 			nowTime = nowHours + ":" + nowMinutes;
 		}
-		System.out.println(nowTime);
 
 		// get day of week
 		Calendar cal = Calendar.getInstance();
 		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 
-		System.out.println("ovo= " + ovo.toString());
 		String monOpen = ovo.get(0).getMonOpen();
 		String monClose = ovo.get(0).getMonClose();
 		String tueOpen = ovo.get(0).getTueOpen();

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -7,24 +8,75 @@
 
 <AnchorPane prefHeight="473.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageMemberController">
    <children>
-      <TextField fx:id="txtMemPhone" layoutX="331.0" layoutY="313.0" prefHeight="27.0" prefWidth="177.0" promptText="전화번호" />
-      <Label layoutX="274.0" layoutY="317.0" text="전화번호" />
-      <ComboBox fx:id="cbMemAge" layoutX="255.0" layoutY="386.0" prefHeight="27.0" prefWidth="65.0" />
-      <Label layoutX="22.0" layoutY="20.0" text="[회원 목록]" />
-      <Button fx:id="btnMemDelete" layoutX="298.0" layoutY="431.0" mnemonicParsing="false" text="회원 삭제" />
-      <Button fx:id="btnMemEdit" layoutX="210.0" layoutY="431.0" mnemonicParsing="false" text="정보 수정" />
-      <Label layoutX="322.0" layoutY="392.0" text="대" />
-      <Label layoutX="213.0" layoutY="391.0" text="연령대" />
-      <Label layoutX="84.0" layoutY="389.0" text="성 별" />
-      <Label layoutX="84.0" layoutY="353.0" text="주 소" />
-      <Label layoutX="290.0" layoutY="280.0" text="비밀번호" />
-      <Label layoutX="85.0" layoutY="317.0" text="이 름" />
-      <Label layoutX="77.0" layoutY="281.0" text="아이디" />
-      <TextField fx:id="txtMemAddr" layoutX="123.0" layoutY="349.0" prefHeight="27.0" prefWidth="386.0" promptText="주소" />
-      <TextField fx:id="txtMemPw" layoutX="347.0" layoutY="276.0" prefHeight="27.0" prefWidth="161.0" promptText="비밀번호" />
-      <TextField fx:id="txtMemName" layoutX="123.0" layoutY="313.0" prefHeight="27.0" prefWidth="126.0" promptText="이름" />
-      <TextField fx:id="txtMemGender" layoutX="123.0" layoutY="386.0" prefHeight="27.0" prefWidth="65.0" promptText="성별" />
-      <TextField fx:id="txtMemId" layoutX="123.0" layoutY="276.0" prefHeight="27.0" prefWidth="145.0" promptText="아이디" />
+      <TextField fx:id="txtMemPhone" layoutX="331.0" layoutY="313.0" prefHeight="27.0" prefWidth="177.0" promptText="전화번호">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></TextField>
+      <Label layoutX="274.0" layoutY="317.0" text="전화번호">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <ComboBox fx:id="cbMemAge" layoutX="255.0" layoutY="386.0" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: white;" />
+      <Label layoutX="22.0" layoutY="20.0" text="[회원 목록]">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Button fx:id="btnMemDelete" layoutX="298.0" layoutY="431.0" mnemonicParsing="false" style="-fx-background-color: #F4D03F;" text="회원 삭제">
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font></Button>
+      <Button fx:id="btnMemEdit" layoutX="210.0" layoutY="431.0" mnemonicParsing="false" style="-fx-background-color: #F4D03F;" text="정보 수정">
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font></Button>
+      <Label layoutX="322.0" layoutY="392.0" text="대">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="213.0" layoutY="391.0" text="연령대">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="84.0" layoutY="389.0" text="성 별">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="84.0" layoutY="353.0" text="주 소">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="290.0" layoutY="280.0" text="비밀번호">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="85.0" layoutY="317.0" text="이 름">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="77.0" layoutY="281.0" text="아이디">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <TextField fx:id="txtMemAddr" layoutX="123.0" layoutY="349.0" prefHeight="27.0" prefWidth="386.0" promptText="주소">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></TextField>
+      <TextField fx:id="txtMemPw" layoutX="347.0" layoutY="276.0" prefHeight="27.0" prefWidth="161.0" promptText="비밀번호">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></TextField>
+      <TextField fx:id="txtMemName" layoutX="123.0" layoutY="313.0" prefHeight="27.0" prefWidth="126.0" promptText="이름">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></TextField>
+      <TextField fx:id="txtMemGender" layoutX="123.0" layoutY="386.0" prefHeight="27.0" prefWidth="65.0" promptText="성별">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></TextField>
+      <TextField fx:id="txtMemId" layoutX="123.0" layoutY="276.0" prefHeight="27.0" prefWidth="145.0" promptText="아이디">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></TextField>
       <TableView fx:id="memTable" layoutX="17.0" layoutY="42.0" prefHeight="221.0" prefWidth="571.0" />
    </children>
 </AnchorPane>

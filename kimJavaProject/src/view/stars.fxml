@@ -11,13 +11,13 @@
 <AnchorPane prefHeight="280.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StarsController">
    <children>
       <Label fx:id="lblRestId" layoutX="7.0" layoutY="5.0" prefHeight="17.0" prefWidth="6.0" textFill="#d7d7d7" />
-      <Label layoutX="76.0" layoutY="18.0" text="소중한 별점을 남겨 주세요!">
+      <Label layoutX="76.0" layoutY="22.0" text="소중한 별점을 남겨 주세요!" textFill="#393939">
          <font>
-            <Font size="30.0" />
+            <Font name="NanumSquareOTF ExtraBold" size="30.0" />
          </font>
       </Label>
-      <Button id="btnCancel" fx:id="btnCancel" layoutX="244.0" layoutY="233.0" mnemonicParsing="false" text="cancel" />
-      <Button id="btnOk" fx:id="btnOk" layoutX="202.0" layoutY="233.0" mnemonicParsing="false" text="OK" />
+      <Button id="btnCancel" fx:id="btnCancel" layoutX="237.0" layoutY="232.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="69.0" style="-fx-background-color: #F4D03F;" text="cancel" />
+      <Button id="btnOk" fx:id="btnOk" layoutX="180.0" layoutY="232.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="51.0" style="-fx-background-color: #F4D03F;" text="OK" />
       <HBox layoutX="333.0" layoutY="179.0" prefHeight="27.0" prefWidth="137.0">
          <children>
             <ImageView fitHeight="27.0" fitWidth="27.0">
@@ -55,14 +55,14 @@
       </ImageView>
       <HBox alignment="CENTER" layoutX="166.0" layoutY="78.0" prefHeight="61.0" prefWidth="178.0">
          <children>
-            <Label id="txtNum" fx:id="lblNum" text="??">
+            <Label id="txtNum" fx:id="lblNum" text="??" textFill="#e89393">
                <font>
-                  <Font size="56.0" />
+                  <Font name="NanumSquareOTF ExtraBold" size="45.0" />
                </font>
             </Label>
-            <Label text="점">
+            <Label text="점" textFill="#e89393">
                <font>
-                  <Font size="45.0" />
+                  <Font name="NanumSquareOTF ExtraBold" size="45.0" />
                </font>
             </Label>
          </children>

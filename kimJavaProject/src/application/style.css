@@ -1,4 +1,7 @@
-#lblFindId, #lblFindPw {
-   -fx-font-family: 'NanumSquare';
-   -fx-font-weight: bold;
+Label {
+   -fx-font-family: 'NanumSquareOTF ExtraBold';
+}
+
+Button{
+	-fx-background-color : #F4D03F;
 }

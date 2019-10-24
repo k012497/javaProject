@@ -9,31 +9,73 @@
 
 <AnchorPane prefHeight="300.0" prefWidth="454.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="211.0" layoutY="111.0" text="채식 종류" />
-      <Label layoutX="153.0" layoutY="142.0" text="예약" />
-      <TextField id="txtNewName" layoutX="73.0" layoutY="75.0" prefHeight="27.0" prefWidth="229.0" promptText="상호명" />
-      <TextField id="txtNewAddr" layoutX="307.0" layoutY="169.0" prefHeight="27.0" prefWidth="128.0" promptText="주소" />
-      <Label layoutX="27.0" layoutY="80.0" text="상호명" />
-      <Label layoutX="14.0" layoutY="111.0" text="음식 종류" />
-      <Label layoutX="263.0" layoutY="143.0" text="주차" />
-      <Label layoutX="40.0" layoutY="174.0" text="주소" />
-      <Label layoutX="40.0" layoutY="142.0" text="포장" />
-      <Button id="btnRestRegiste" layoutX="192.0" layoutY="243.0" mnemonicParsing="false" text="식당 등록" />
-      <Button id="btnClear" fx:id="btnClear" layoutX="272.0" layoutY="243.0" mnemonicParsing="false" text="초기화" />
-      <Label layoutX="21.0" layoutY="22.0" text="신규 식당 등록">
+      <Label layoutX="215.0" layoutY="110.0" text="채식 종류">
          <font>
-            <Font size="24.0" />
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="154.0" layoutY="141.0" text="예약">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <TextField id="txtNewName" layoutX="73.0" layoutY="76.0" prefHeight="27.0" prefWidth="229.0" promptText="상호명">
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font></TextField>
+      <TextField id="txtNewAddr" layoutX="307.0" layoutY="170.0" prefHeight="27.0" prefWidth="128.0" promptText="주소">
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font></TextField>
+      <Label layoutX="27.0" layoutY="80.0" text="상호명">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="14.0" layoutY="111.0" text="음식 종류">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="264.0" layoutY="142.0" text="주차">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="40.0" layoutY="174.0" text="주소">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="40.0" layoutY="142.0" text="포장">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <Button id="btnRestRegiste" layoutX="126.0" layoutY="247.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="77.0" style="-fx-background-color: #F4D03F;" text="식당 등록">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Button>
+      <Button id="btnClear" fx:id="btnClear" layoutX="210.0" layoutY="247.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: #F4D03F;" text="초기화">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Button>
+      <Label alignment="CENTER" layoutX="136.0" layoutY="25.0" prefHeight="29.0" prefWidth="182.0" text="신규 식당 등록">
+         <font>
+            <Font name="NanumSquareOTF ExtraBold" size="24.0" />
          </font>
       </Label>
-      <ComboBox id="cbNewPark" layoutX="293.0" layoutY="138.0" prefHeight="27.0" prefWidth="63.0" />
-      <ComboBox id="cbNewReserve" layoutX="184.0" layoutY="137.0" prefHeight="27.0" prefWidth="63.0" />
-      <ComboBox id="cbNewTakeout" layoutX="73.0" layoutY="137.0" prefHeight="27.0" prefWidth="63.0" />
-      <Button id="btnClose" layoutX="336.0" layoutY="243.0" mnemonicParsing="false" text="취소" />
-      <ComboBox id="cbNewKind" layoutX="72.0" layoutY="106.0" prefHeight="27.0" prefWidth="128.0" />
-      <ComboBox id="cbNewVege" layoutX="272.0" layoutY="106.0" prefHeight="27.0" prefWidth="165.0" />
-      <Label layoutX="17.0" layoutY="206.0" text="전화번호" />
-      <TextField id="txtNewPhone" layoutX="73.0" layoutY="201.0" prefHeight="27.0" prefWidth="176.0" promptText="전화번호" />
-      <ComboBox id="cbDong" fx:id="cbDong" layoutX="190.0" layoutY="168.0" prefHeight="29.0" prefWidth="111.0" promptText="동 선택" />
-      <ComboBox id="cbGu" fx:id="cbGu" layoutX="73.0" layoutY="168.0" prefHeight="29.0" prefWidth="111.0" promptText="구 선택" />
+      <ComboBox id="cbNewPark" layoutX="293.0" layoutY="138.0" prefHeight="27.0" prefWidth="63.0" style="-fx-background-color: white;" />
+      <ComboBox id="cbNewReserve" layoutX="184.0" layoutY="137.0" prefHeight="27.0" prefWidth="63.0" style="-fx-background-color: white;" />
+      <ComboBox id="cbNewTakeout" layoutX="73.0" layoutY="137.0" prefHeight="27.0" prefWidth="63.0" style="-fx-background-color: white;" />
+      <Button id="btnClose" layoutX="280.0" layoutY="247.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="48.0" style="-fx-background-color: #F4D03F;" text="취소">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Button>
+      <ComboBox id="cbNewKind" layoutX="72.0" layoutY="106.0" prefHeight="27.0" prefWidth="128.0" style="-fx-background-color: white;" />
+      <ComboBox id="cbNewVege" layoutX="272.0" layoutY="106.0" prefHeight="27.0" prefWidth="165.0" style="-fx-background-color: white;" />
+      <Label layoutX="17.0" layoutY="206.0" text="전화번호">
+         <font>
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></Label>
+      <TextField id="txtNewPhone" layoutX="73.0" layoutY="202.0" prefHeight="27.0" prefWidth="176.0" promptText="전화번호">
+         <font>
+            <Font name="NanumSquareOTF Regular" size="13.0" />
+         </font></TextField>
+      <ComboBox id="cbDong" fx:id="cbDong" layoutX="190.0" layoutY="168.0" prefHeight="29.0" prefWidth="111.0" promptText="동 선택" style="-fx-background-color: white;" />
+      <ComboBox id="cbGu" fx:id="cbGu" layoutX="73.0" layoutY="168.0" prefHeight="29.0" prefWidth="111.0" promptText="구 선택" style="-fx-background-color: white;" />
    </children>
 </AnchorPane>
