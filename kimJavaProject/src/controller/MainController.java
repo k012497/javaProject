@@ -229,7 +229,7 @@ public class MainController implements Initializable {
 
 			StackPane root = new StackPane();
 			root.getChildren().addAll(listView);
-			stage.setScene(new Scene(root, 500, 700));
+			stage.setScene(new Scene(root, 500, 500));
 			stage.show();
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "리스트 창 호출 실패 ", "리스트 창 호출 실패", "리스트 창 호출 실패하였습니다. ");
@@ -443,6 +443,7 @@ public class MainController implements Initializable {
 				gu = "중랑구";
 			}
 		}
+		
 		lblRecommend.setText(gu);
 
 	}
@@ -477,7 +478,6 @@ public class MainController implements Initializable {
 				return;
 			}
 
-			////////////////////////////////////////////////////////////////////////
 
 			final ListView<CustomThing> listView = new ListView<CustomThing>(data);
 			listView.setCellFactory(new Callback<ListView<CustomThing>, ListCell<CustomThing>>() {
@@ -486,7 +486,6 @@ public class MainController implements Initializable {
 					return new CustomListCell();
 				}
 			});
-			////////////////////////////////////////////////////////////////////////
 
 			listView.setOnMousePressed((e) -> handlerListViewPressed(e, listView));
 

@@ -10,7 +10,7 @@
 
 <TabPane prefHeight="550.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MyPageController">
    <tabs>
-      <Tab closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumGothic ExtraBold;" text=" 정보수정 ">
+      <Tab closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumSquareOTF ExtraBold;" text=" 정보수정 ">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -92,7 +92,7 @@
             </AnchorPane>
         </content>
       </Tab>
-      <Tab fx:id="favTab" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumGothic ExtraBold;" text=" my 찜뽕 ">
+      <Tab fx:id="favTab" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumSquareOTF ExtraBold;" text=" my 찜뽕 ">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -101,7 +101,7 @@
             </AnchorPane>
         </content>
       </Tab>
-      <Tab fx:id="reviewTab" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumGothic;" text=" my review ">
+      <Tab fx:id="reviewTab" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumSquareOTF;" text=" my review ">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>

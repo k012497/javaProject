@@ -8,12 +8,15 @@
 
 <AnchorPane prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField id="txtPw" fx:id="txtPw" layoutX="16.0" layoutY="72.0" prefHeight="39.0" prefWidth="268.0" promptText="비밀번호(Password)" />
-      <Button id="btnCancel" fx:id="btnCancel" layoutX="174.0" layoutY="141.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="86.0" text="Cancel" />
-      <Button id="btnOk" fx:id="btnOk" layoutX="41.0" layoutY="141.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="86.0" text="Ok" />
-      <Label layoutX="18.0" layoutY="26.0" text="Admin Password Input">
+      <TextField id="txtPw" fx:id="txtPw" layoutX="16.0" layoutY="75.0" prefHeight="39.0" prefWidth="268.0" promptText="비밀번호(Password)">
          <font>
-            <Font size="24.0" />
+            <Font name="NanumSquareOTF Bold" size="13.0" />
+         </font></TextField>
+      <Button id="btnCancel" fx:id="btnCancel" layoutX="174.0" layoutY="141.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="86.0" style="-fx-background-color: #F4D03F;" text="Cancel" />
+      <Button id="btnOk" fx:id="btnOk" layoutX="41.0" layoutY="141.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="86.0" style="-fx-background-color: #F4D03F;" text="Ok" />
+      <Label layoutX="18.0" layoutY="26.0" text="Enter Admin Password">
+         <font>
+            <Font name="NanumSquareOTF ExtraBold" size="24.0" />
          </font>
       </Label>
    </children>

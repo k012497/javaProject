@@ -12,17 +12,17 @@
    <children>
       <TabPane fx:id="tabPane" layoutX="1.0" layoutY="43.0" prefHeight="693.0" prefWidth="599.0" style="-fx-background-color: lemon;">
          <tabs>
-            <Tab fx:id="memberPage" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumGothic ExtraBold;" text=" 회원 관리 ">
+            <Tab fx:id="memberPage" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumSquareOTF ExtraBold;" text=" 회원 관리 ">
                <content>
                   <fx:include source="manageMember.fxml" />
                </content>
             </Tab>
-            <Tab fx:id="restaurantPage" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumGothic ExtraBold;" text=" 식당 관리 ">
+            <Tab fx:id="restaurantPage" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumSquareOTF ExtraBold;" text=" 식당 관리 ">
                <content>
                   <fx:include source="manageRest.fxml" />
                </content>
             </Tab>
-            <Tab fx:id="chartPage" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumGothic ExtraBold;" text=" 차트 분석 ">
+            <Tab fx:id="chartPage" closable="false" style="-fx-background-color: #D98880; -fx-font-family: NanumSquareOTF ExtraBold;" text=" 차트 분석 ">
                <content>
                   <fx:include source="manageChart.fxml" />
                </content>
