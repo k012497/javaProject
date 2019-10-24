@@ -68,10 +68,9 @@ public class ManageMemberController implements Initializable {
 		
 		// 삭제 버튼을 눌렀을 때 
 		btnMemDelete.setOnAction((e)-> handlerBtnDeleteAction());
-
 	}
 
-	// 테이블 뷰의 칼럼에 세팅할 데이터, 이름, 너비를 정함 
+	// 테이블 뷰의 칼럼을 세팅하는 메소드 
 	public void memberTableColSetting() {
 		data = FXCollections.observableArrayList();
 		memTable.setEditable(false); // 테이블 뷰 편집 못 하게 설정

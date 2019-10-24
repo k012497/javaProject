@@ -40,9 +40,10 @@ import javafx.stage.StageStyle;
 import model.MenuVO;
 import model.OpenVO;
 import model.RestaurantVO;
-
+/*
+ * 관리자 모드 - 식당관리 탭 
+ */
 public class ManageRestController implements Initializable {
-	// restaurant management tab
 	@FXML
 	private TableView<RestaurantVO> restTable;
 	@FXML
@@ -167,7 +168,6 @@ public class ManageRestController implements Initializable {
 		try {
 			MenuDAO menuDAO = new MenuDAO();
 			menuDAO.getMenuDelete(selectedMenu.get(0).getMenuID());
-////////////////////////////////////////////////////////////////////////
 			menuData.removeAll(menuData);
 			menuTable.setItems(menuDAO.getMenu(selectedMenu.get(0).getRestaurantID()));
 		} catch (Exception e) {
@@ -176,7 +176,6 @@ public class ManageRestController implements Initializable {
 	}
 
 	public void handlerBtnMenuEditAction() {
-
 		try {
 			if (txtMenuName.getText().equals("") || txtMenuPrice.getText().equals("")) {
 				throw new Exception();

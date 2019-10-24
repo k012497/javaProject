@@ -132,7 +132,7 @@ public class ManageChartController implements Initializable {
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(pieChart.getScene().getWindow());
-			stage.setTitle("인기 지역 (식당)");
+			stage.setTitle("지역 별 등록 식당 수");
 
 			BarChart barChart = (BarChart) barChartRoot.lookup("#barChart");
 			Button btnClose = (Button) barChartRoot.lookup("#btnClose");

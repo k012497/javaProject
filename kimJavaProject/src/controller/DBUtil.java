@@ -13,7 +13,7 @@ public class DBUtil {
    private static String driver = "com.mysql.jdbc.Driver";
    
    // 데이터베이스 url
-   private static String url = "jdbc:mysql://localhost/mapDB"; 
+   private static String url = "jdbc:mysql://localhost/javaDB"; 
    
    // 드라이버를 적재하고 데이터베이스를 연결하는 함수 - DB를 연동하는 객체참조변수를 줌
    public static Connection getConnection() throws ClassNotFoundException, SQLException {

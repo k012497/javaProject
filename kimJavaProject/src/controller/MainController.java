@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -23,7 +24,6 @@ import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -87,7 +87,7 @@ public class MainController implements Initializable {
 	private Label lblAge;
 	@FXML
 	private Label lblMember;
-	private static String memberID;
+	private static String memberID; // 접속중인 사용자 정보
 
 	@FXML
 	private ComboBox<String> cbGu;
@@ -101,11 +101,9 @@ public class MainController implements Initializable {
 
 	@FXML
 	private ListView<CustomThing> listView;
-//	private final ObservableList<RestaurantVO> imageData = FXCollections.observableArrayList();
 	private String localUrl = "";
 	private Image localImage;
 
-//	private int selectedIndex;
 	private ObservableList<CustomThing> selectedRest;
 	ObservableList<RestaurantVO> restData;
 	ObservableList<MenuVO> menuData;
@@ -116,7 +114,7 @@ public class MainController implements Initializable {
 	String fileName;
 	private File selectedFile;
 
-	// 영업중인 식당을 계산하기 위해 현재 시간을 가져올 변수 선언
+	// 영업중인 식당을 계산하기 위해 현재 시간을 담을 변수
 	static Date now = new Date();
 	static int nowHours = now.getHours();
 	static int nowMinutes = now.getMinutes();
@@ -136,7 +134,7 @@ public class MainController implements Initializable {
 			getMemberInfo();
 		});
 
-		// 검색 버튼 눌렀을 때
+		// 검색 아이콘을 눌렀을 때
 		btnSearch.setOnAction((e) -> handlerSearchAction(e));
 
 		// 마이페이지 버튼 눌렀을 때
@@ -286,11 +284,7 @@ public class MainController implements Initializable {
 		}
 	}
 
-	public void handlerButtonAllAction() {
-		RestaurantDAO restaurantDAO = new RestaurantDAO();
-		restaurantDAO.getRestTotal();
-	}
-
+	// 회원 정보를 관리 및 조회할 수 있는 마이페이지 모달 창을 띄우는 메소드
 	public void handlerMyPageAction(ActionEvent e) {
 		Parent mainView = null;
 		Stage mainStage = null;
@@ -315,6 +309,7 @@ public class MainController implements Initializable {
 		}
 	}
 
+	// 구와 동이 선택되었을 경우에만 음식종류 버튼 활성화 
 	public void handlerSearchAction(ActionEvent e) {
 		try {
 			if (cbDong.getValue().equals("") || cbDong.getValue().equals("e) OO동")) {
@@ -328,126 +323,35 @@ public class MainController implements Initializable {
 		}
 	}
 
-	private void buttonInitSetting(boolean a, boolean b) {
-		btnAll.setDisable(a);
-		btnBuffet.setDisable(a);
-		btnCafe.setDisable(a);
-		btnChinese.setDisable(a);
-		btnGlobal.setDisable(a);
-		btnJapanese.setDisable(a);
-		btnKorean.setDisable(a);
-		btnVege.setDisable(a);
-		btnWestern.setDisable(a);
+	
 
-		btnSearch.setDisable(b);
-	}
-
-	public void addressComboBoxSetting() {
-		AddressDAO addressDAO = new AddressDAO();
-		addressGuList = addressDAO.getGu();
-		cbGu.setItems(addressGuList);
-
-		// lblMember의 주소를 불러오기
-		MemberDAO memberDAO = new MemberDAO();
-		ArrayList<MemberVO> memberList;
-		try {
-			memberList = memberDAO.getMemberInfoUsingId(lblMember.getText());
-			String addr = memberList.get(0).getAddress();
-			int idx = addr.indexOf(" ");
-			String gu = addr.substring(0, idx);
-			String dong = addr.substring(idx + 1);
-			cbGu.setValue(gu);
-			cbDong.setValue(dong);
-			buttonInitSetting(true, false);
-
-		} catch (Exception e) {
-			SharedMethod.alertDisplay(1, "사용자 정보 불러오기 실패", "사용자 정보 불러오기 실패", "사용자 정보 불러오기에 실패했습니다.");
-		}
-
-		cbGu.valueProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				cbDong.setValue("e) OO동");
-				addressDongList = addressDAO.getDong(cbGu.getValue());
-				cbDong.setItems(addressDongList);
-				cbDong.valueProperty().addListener(new ChangeListener<String>() {
-
-					@Override
-					public void changed(ObservableValue<? extends String> observable, String oldValue,
-							String newValue) {
-						buttonInitSetting(true, false);
-					}
-				});
-
-			}
-		});
-	}
-
+	// 식당 최다등록 지역(구)를 라벨에 세팅하는 메소드
+	// 지역 검색이 고민되는 사용자에게 등록된 식당이 많은 지역을 추천
 	public void recommendlabelSetting() {
-		RestaurantDAO restaurantDAO = new RestaurantDAO();
+		int count = 0;
 		int maxCount = 0;
 		String gu = "";
-		int count1 = restaurantDAO.getCountbyGu("강남구");
-		int count2 = restaurantDAO.getCountbyGu("관악구");
-		int count3 = restaurantDAO.getCountbyGu("광진구");
-		int count4 = restaurantDAO.getCountbyGu("동대문구");
-		int count5 = restaurantDAO.getCountbyGu("마포구");
-		int count6 = restaurantDAO.getCountbyGu("서대문구");
-		int count7 = restaurantDAO.getCountbyGu("성동구");
-		int count8 = restaurantDAO.getCountbyGu("성북구");
-		int count9 = restaurantDAO.getCountbyGu("용산구");
-		int count10 = restaurantDAO.getCountbyGu("은평구");
-		int count11 = restaurantDAO.getCountbyGu("종로구");
-		int count12 = restaurantDAO.getCountbyGu("중구");
-		int count13 = restaurantDAO.getCountbyGu("중랑구");
-
-		for (int i = 0; i < 13; i++) {
-			if (maxCount < count1) {
-				maxCount = count1;
-				gu = "강남구";
-			} else if (maxCount < count2) {
-				maxCount = count2;
-				gu = "관악구";
-			} else if (maxCount < count3) {
-				maxCount = count3;
-				gu = "광진구";
-			} else if (maxCount < count4) {
-				maxCount = count4;
-				gu = "동대문구";
-			} else if (maxCount < count5) {
-				maxCount = count5;
-				gu = "마포구";
-			} else if (maxCount < count6) {
-				maxCount = count6;
-				gu = "서대문구";
-			} else if (maxCount < count7) {
-				maxCount = count7;
-				gu = "성동구";
-			} else if (maxCount < count8) {
-				maxCount = count8;
-				gu = "성북구";
-			} else if (maxCount < count9) {
-				maxCount = count9;
-				gu = "용산구";
-			} else if (maxCount < count10) {
-				maxCount = count10;
-				gu = "은평구";
-			} else if (maxCount < count11) {
-				maxCount = count11;
-				gu = "종로구";
-			} else if (maxCount < count12) {
-				maxCount = count12;
-				gu = "중구";
-			} else if (maxCount < count13) {
-				maxCount = count13;
-				gu = "중랑구";
+		
+		// 구 리스트를 ArrayList에 저장 
+		ArrayList<String> guList = new ArrayList<String>(
+		Arrays.asList("강남구", "관악구", "광진구", "동대문구", "마포구", "서대문구", "성동구", "성북구", "용산구", "은평구", "종로구", "중구", "중랑구"));
+		RestaurantDAO restaurantDAO = new RestaurantDAO();
+		
+		// 0번 인덱스부터 끝까지 검사
+		for (int i = 0; i < guList.size(); i++) {
+			// ArrayList에 담긴 구 이름을 전달하여 해당 구의 식당 카운트를 받아옴  
+			count = restaurantDAO.getCountbyGu(guList.get(i));
+			// 최대 카운트를 리턴하는 구 이름을 gu에 저장  
+			if(maxCount < count) {
+				maxCount = count;
+				gu = guList.get(i);
 			}
 		}
 		
 		lblRecommend.setText(gu);
-
 	}
 
+	// 해당 지역의 모든 식당 리스트를 리스트뷰에 불러온 모달창을 호출하는 함수 - ALL버튼을 눌렀을 때  
 	public void setListWithImageAll() {
 		try {
 			Stage stage = new Stage(StageStyle.UTILITY);
@@ -501,6 +405,7 @@ public class MainController implements Initializable {
 		root.getChildren().add(listView);
 	}
 
+	// 해당 선택지에 맞는 리스트를 리스트뷰에 불러오는 메소드
 	public void handlerListViewPressed(MouseEvent e, ListView<CustomThing> listView) {
 		selectedRest = listView.getSelectionModel().getSelectedItems();
 		try {
@@ -521,7 +426,6 @@ public class MainController implements Initializable {
 				rvo = restDAO.getRestByName(selectedRest.get(0).getName());
 				selectedRestId = selectedRest.get(0).getRestaurantID();
 			} catch (Exception e1) {
-//				SharedMethod.alertDisplay(1, "식당 정보오류", "식당 정보오류", "식당 정보를 불러올 수 없습니다. ");
 				return;
 			}
 
@@ -550,12 +454,12 @@ public class MainController implements Initializable {
 					menuData = FXCollections.observableArrayList();
 
 					TableColumn colName = new TableColumn("메뉴");
-					colName.setMaxWidth(300);
+					colName.setPrefWidth(278);
 					colName.setStyle("-fx-alignment:CENTER;");
 					colName.setCellValueFactory(new PropertyValueFactory("menuName"));
 
 					TableColumn colPrice = new TableColumn("가격");
-					colPrice.setMaxWidth(200);
+					colPrice.setPrefWidth(200);
 					colPrice.setStyle("-fx-alignment:CENTER;");
 					colPrice.setCellValueFactory(new PropertyValueFactory("menuPrice"));
 
@@ -591,7 +495,7 @@ public class MainController implements Initializable {
 						SharedMethod.alertDisplay(1, "이미지뷰 세팅 실패", "이미지뷰 세팅 실패", "이미지뷰 세팅 실패");
 					}
 
-					// 영업중인지 검사
+					// 영업중인지 검사, 영업중이면 1, 영업이 종료되었으면 -1을 리턴
 					int resultNum = checkTime();
 					if (resultNum == 1) {
 						lblOpenHours.setText("영업중!");
@@ -688,12 +592,7 @@ public class MainController implements Initializable {
 		}
 	}
 
-	public static double refreshAvgStars() {
-		RestaurantDAO restDAO = new RestaurantDAO();
-		double result = restDAO.getAvgStarsbyId(selectedRestId);
-		return result;
-	}
-
+	// 등록된 즐겨찾기 정보를 DB에 저장하는 메소드 
 	public void handlerAddFavorite() {
 		// 즐겨찾기 테이블에 insert
 		FavoriteDAO favDAO = new FavoriteDAO();
@@ -708,12 +607,9 @@ public class MainController implements Initializable {
 				// 즐겨찾기 테이블에 등록
 				favDAO.getFavregiste(fvo, lblMember.getText());
 
-				// 즐겨찾기 테이블에 있는 식당아이디를 카운트해서
-				// 즐겨찾기 속성에 추가
+				// 즐겨찾기 테이블에 있는 식당아이디를 카운트해서 즐겨찾기 속성에 추가
 				RestaurantDAO restDAO = new RestaurantDAO();
 				int favoriteCount = favDAO.getFavCount(restId);
-//				System.out.println("식 아이디=" + restId);
-//				System.out.println("즐찾 수 = " + favoriteCount);
 				restDAO.getFavCountUpdate(favoriteCount, restId);
 			} catch (Exception e) {
 				SharedMethod.alertDisplay(1, "즐겨찾기 추가 실패", "즐겨찾기 추가 실패", "즐겨찾기 추가 실패");
@@ -724,10 +620,13 @@ public class MainController implements Initializable {
 
 	}
 
+	// 별점을 입력받는 모달창을 호출하는 메소드  
 	public void handlerAddStars(ImageView imgStars) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/view/stars.fxml"));
-			Stage stage = new Stage();
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(imgStars.getScene().getWindow());
 
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
@@ -737,14 +636,10 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
-	/*
-	 * 해당 식당의 지도를 새 창의 WebView로 띄워주는 메소드 Google map API URL을 이용하여 query에 상호명을 전달 만든이
-	 * 만든이 : 김소진
-	 */
+	
+	// 해당 식당의 지도를 새 창의 WebView로 띄워주는 메소드 Google map API URL을 이용하여 query에 상호명을 전달 
 	public void handlerLocationAction(ImageView imgLocation, String name) {
 		try {
-
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(imgLocation.getScene().getWindow());
@@ -760,11 +655,11 @@ public class MainController implements Initializable {
 			stage.setScene(scene);
 			stage.show();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SharedMethod.alertDisplay(5, "새 창 호출 실패", "새 창 호출 실패", "새 창을 불러오는 데 실패했습니다.");
 		}
 	}
 
+	// 메뉴 테이블뷰의 칼럼을 세팅하는 메소드 
 	public void menuTableColSetting(TableView<MenuVO> menuTable) {
 		menuData = FXCollections.observableArrayList();
 
@@ -784,8 +679,8 @@ public class MainController implements Initializable {
 
 	} // end of menuTableViewSetting
 
+	// 입력받은 별점을 받아서 변경사항을 DB에 저장하는 메소드 
 	public static int handlerAddStarsAction(String stars) {
-
 		// 1. 리뷰 테이블에 insert
 		ReviewVO rvo = new ReviewVO(memberID, selectedRestId, Double.parseDouble(stars));
 		ReviewDAO reviewDAO = new ReviewDAO();
@@ -805,7 +700,6 @@ public class MainController implements Initializable {
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(5, "리뷰 등록 실패 ", "리뷰 등록 실패 ㅠㅠ", "리뷰 등록 실패하였습니다 ");
 		}
-
 		return 0;
 	}
 
@@ -885,7 +779,9 @@ public class MainController implements Initializable {
 	 * compareTo()메소드를 이용하여 현재시간과 오픈시간, 마감시간을 비교함 (String ) time1.compareTo(time2)
 	 * => time1이 time2보다 이후 날짜이면 양수, 반대의 경우 음수, 같으면 0을 반환
 	 * 
-	 * 영업중인 경우 1을, 그렇지 않은 경우 -1을 반환. 만든이 : 김소진
+	 * 영업중인 경우 1을, 그렇지 않은 경우 -1을 반환. 
+	 * 
+	 * 만든이 : 김소진
 	 */
 	public static int checkOpenHour(String open, String close) {
 		try {
@@ -902,5 +798,64 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	// 검색아이콘 및 음식종류 버튼 활성화를 설정하는 메소드 
+	private void buttonInitSetting(boolean a, boolean b) {
+		btnAll.setDisable(a);
+		btnBuffet.setDisable(a);
+		btnCafe.setDisable(a);
+		btnChinese.setDisable(a);
+		btnGlobal.setDisable(a);
+		btnJapanese.setDisable(a);
+		btnKorean.setDisable(a);
+		btnVege.setDisable(a);
+		btnWestern.setDisable(a);
+
+		btnSearch.setDisable(b);
+	}
+
+	// 주소 선택 콤보박스를 세팅하는 메소드
+	public void addressComboBoxSetting() {
+		AddressDAO addressDAO = new AddressDAO();
+		addressGuList = addressDAO.getGu();
+		cbGu.setItems(addressGuList);
+
+		// 현재 접속중인 사용자의 주소를 불러오기
+		MemberDAO memberDAO = new MemberDAO();
+		ArrayList<MemberVO> memberList;
+		try {
+			memberList = memberDAO.getMemberInfoUsingId(lblMember.getText());
+			String addr = memberList.get(0).getAddress();
+			int idx = addr.indexOf(" ");
+			String gu = addr.substring(0, idx);
+			String dong = addr.substring(idx + 1);
+			
+			// 콤보박스 기본값으로 세팅  
+			cbGu.setValue(gu);
+			cbDong.setValue(dong);
+			buttonInitSetting(true, false);
+
+		} catch (Exception e) {
+			SharedMethod.alertDisplay(1, "사용자 정보 불러오기 실패", "사용자 정보 불러오기 실패", "사용자 정보 불러오기에 실패했습니다.");
+		}
+
+		cbGu.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				cbDong.setValue("e) OO동");
+				addressDongList = addressDAO.getDong(cbGu.getValue());
+				cbDong.setItems(addressDongList);
+				cbDong.valueProperty().addListener(new ChangeListener<String>() {
+
+					@Override
+					public void changed(ObservableValue<? extends String> observable, String oldValue,
+							String newValue) {
+						buttonInitSetting(true, false);
+					}
+				});
+
+			}
+		});
 	}
 }

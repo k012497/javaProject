@@ -9,7 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class AddressDAO {
-   //00구 찾기
+   // 00구 찾기
    public ObservableList<String> getGu() {
       ObservableList<String> list = FXCollections.observableArrayList();
       String dml = "select gu from addresstbl group by gu";
