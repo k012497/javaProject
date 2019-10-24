@@ -27,7 +27,6 @@ import javafx.stage.Stage;
 import model.MemberVO;
 import model.RestaurantVO;
 import model.ReviewJoinRestaurantVO;
-import model.ReviewVO;
 
 /*
  * 사용자가 본인의 정보(인적 정보, 즐겨찾기 목록, 별점 목록)을 관리할 수 있는 페이지를 위한 컨트롤러
@@ -125,7 +124,9 @@ public class MyPageController implements Initializable {
 
 	}
 
+	// 정보 수정버튼을 눌렀을 때  
 	public void handlerEditButtonAction() {
+		// 패스워드는 영어 또는 숫자만 입력 가능
         SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
         SharedMethod.checkOnlyNumberAndEnglish(txtPwAgain.getText());
         
@@ -135,6 +136,7 @@ public class MyPageController implements Initializable {
 			return;
 		}
 		
+	    // 비어있는 필드가 있을 경우 경고창 표시
 		try {
 			if (txtPw.getText().equals("") || txtName.getText().equals("") || txtNumber.getText().equals("")
 					|| cbGu.getValue().equals("") || cbDong.getValue().equals("") || cbGender.getValue().equals("")) {
@@ -145,24 +147,24 @@ public class MyPageController implements Initializable {
 					cbAge.getValue());
 				
 				MemberDAO memberDAO = new MemberDAO();
-				MemberVO memberVO = memberDAO.getMemberUpdate(mvo, lblMemberId.getText());
+				memberDAO.getMemberUpdate(mvo, lblMemberId.getText());
 			}
 		} catch (Exception e) {
 			SharedMethod.alertDisplay(1, "CORRECTION FAILED", "error!", e.toString());
 		}
 	}
 
+	// 창을 닫는 메소드
 	public void handlerButtonCancel() {
 		Stage stage = (Stage) (btnCancel.getScene().getWindow());
 		stage.close();
 	}
 
+	// 접속중인 사용자의 정보를 필드 및 콤보박스에 세팅하는 메소드
 	public void getMemberInfo() {
 		MemberDAO memberDAO = new MemberDAO();
 		try {
-			System.out.println(lblMemberId.getText() + "님");
 			memberList = memberDAO.getMemberInfoUsingId(lblMemberId.getText());
-			System.out.println(memberList.get(0).getName());
 			txtName.setText(memberList.get(0).getName());
 			txtNumber.setText(memberList.get(0).getPhoneNumer());
 			txtPw.setText(memberList.get(0).getPassword());
@@ -171,10 +173,10 @@ public class MyPageController implements Initializable {
 
 			String addr = memberList.get(0).getAddress();
 
-			// 공백 의 인덱스를 찾는다
+			// 공백의 인덱스를 찾는다
 			int idx = addr.indexOf(" ");
-			String gu = addr.substring(0, idx); // 공백 앞부분
-			String dong = addr.substring(idx + 1); // 공백 뒷부분
+			String gu = addr.substring(0, idx); // 공백 앞부분 (구)
+			String dong = addr.substring(idx + 1); // 공백 뒷부분 (동)
 			cbGu.setValue(gu);
 			cbDong.setValue(dong);
 		} catch (Exception e) {
@@ -183,10 +185,13 @@ public class MyPageController implements Initializable {
 
 	}
 
+	// 콤보박스 세팅
 	public void comboBoxInitSetting() {
 		AddressDAO addressDAO = new AddressDAO();
 		addressGuList = addressDAO.getGu();
 		cbGu.setItems(addressGuList);
+		
+		// 구를 선택하면 각 구에 속한 동의 리스트를 세팅하는 이벤트 처리
 		cbGu.valueProperty().addListener(new ChangeListener<String>() {
 
 			@Override
@@ -204,10 +209,9 @@ public class MyPageController implements Initializable {
 
 	}
 
+	// 회원 탈퇴를 할 것인지 예/아니오를 받아서 처리하는 메소드
 	public void handlerButtonLeaveAction() {
 		try {
-			MemberDAO memberDAO = new MemberDAO();
-			// SharedMethod.alertDisplay(2, "회원탈퇴", "회원탈퇴", "회원을 탈퇴하세요?");
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Confirmation Dialog");
 			alert.setHeaderText("회원을 탈퇴 하시겠습니까?");
@@ -218,8 +222,6 @@ public class MyPageController implements Initializable {
 				SharedMethod.alertDisplay(1, "bye", "USER_BYE",
 						"[ok]를 누르면 모든 프로그램이 종료 됩니다\n그동안 저희 프로그램을 이용해 주셔서 감사합니다 (#><#)\n");
 				Platform.exit();
-			} else {
-				// 취소를 누르면 다시 원래의 창으로 돌아 간다
 			}
 		} catch (Exception e) {
 

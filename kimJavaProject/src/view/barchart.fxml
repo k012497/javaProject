@@ -16,6 +16,6 @@
           <NumberAxis side="LEFT" upperBound="30.0" />
         </yAxis>
       </BarChart>
-      <Button id="btnClose" layoutX="232.0" layoutY="310.0" mnemonicParsing="false" text="OK" />
+      <Button id="btnClose" layoutX="232.0" layoutY="310.0" mnemonicParsing="false" style="-fx-background-color: lightgray;" text="OK" />
    </children>
 </AnchorPane>

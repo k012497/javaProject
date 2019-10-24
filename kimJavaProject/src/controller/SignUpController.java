@@ -78,10 +78,12 @@ public class SignUpController implements Initializable {
 			handelBtnCancelAction();
 		});
 
+		// 11자리의 숫자만 입력받게 하는 함수
 		SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
 	}
 
 	// 콤보박스 셋팅
+	// 구안에 있는 동을 보여주기 위한 콤보 박스 셋팅
 	public void comboBoxInitSetting() {
 		AddressDAO addressDAO = new AddressDAO();
 		addressGuList = addressDAO.getGu();
@@ -95,10 +97,10 @@ public class SignUpController implements Initializable {
 
 			}
 		});
-
+		// 나이 콤보 박스 셋팅
 		cbAgeList = FXCollections.observableArrayList("10", "20", "30", "40", "50", "60", "70", "80", "90");
 		cbAge.setItems(cbAgeList);
-
+		// 성별 콤보 박스 셋팅
 		cbGenderList = FXCollections.observableArrayList("여", "남");
 		cbGender.setItems(cbGenderList);
 
@@ -108,19 +110,22 @@ public class SignUpController implements Initializable {
 	public void handleBtnIdCheckAction(ActionEvent e) {
 		// 중복확인 버튼 이벤트 처리
 		MemberDAO memberDAO = new MemberDAO();
-		int i = memberDAO.getUserIdSearch(txtId.getText());
+		int i = memberDAO.getMemeberIdSearch(txtId.getText());
 
 		if (i == 1) {
+			// 아이디가 중복이 될경우
 			SharedMethod.alertDisplay(5, "아이디 중복", "이미 사용중인 아이디입니다.", "다른 아이디를 입력해주세요.");
 			return;
 		} else if (i == -1) {
+			// 아이디가 중복이 되지 않을 경우
 			idCheck = true;
 			SharedMethod.alertDisplay(5, "아이디 사용가능", "사용할 수 있는 아이디입니다.", "다른 항목도 입력해주세요.");
 		}
 	}
 
-	// 3. sign up버튼
+	// sign up버튼
 	public void handleBtnSignUpAction() {
+		// 비밀번호가 오류일 경우
 		if (txtPw.getText().equals(txtPwCheck.getText())) {
 		} else {
 			SharedMethod.alertDisplay(1, "비밀번호 오류", "[비밀번호 오류]", "비밀번호 오류입니다 다시 확인 해주세요");
@@ -129,6 +134,7 @@ public class SignUpController implements Initializable {
 		Parent mainView = null;
 		Stage mainStage = null;
 
+		// 영어와 숫자 이외의 문자는 받지 않는 함수
 		SharedMethod.checkOnlyNumberAndEnglish(txtId.getText());
 		SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
 		SharedMethod.inputDecimalFormatThirteenDigit(txtPhoneNum);
@@ -142,6 +148,7 @@ public class SignUpController implements Initializable {
 		}
 
 		else {
+			// 중복확인하는 검사
 			if (idCheck) {
 				try {
 					MemberDAO memberDAO = new MemberDAO();

@@ -190,7 +190,6 @@ public class MemberDAO {
 
 			// SQL문을 수행후 처리 결과를 얻어옴
 			int i = pstmt.executeUpdate();
-			System.out.println("11111");
 
 			if (i == 1) {
 				SharedMethod.alertDisplay(1, "member info correction", "correction completed", "SUCCESS!");
@@ -198,7 +197,6 @@ public class MemberDAO {
 				SharedMethod.alertDisplay(1, "member info correction error", "correction failed", "TRY AGAIN!");
 				return null;
 			}
-			System.out.println("33333");
 
 		} catch (SQLException e) {
 			System.out.println("e=[" + e + "]");
@@ -259,8 +257,8 @@ public class MemberDAO {
 
 	}
 
-	public int getUserIdSearch(String id) {
-
+	// ID중복 검사를 위해  해당 아이디가 존재하는지를 검사하는 메소드 
+	public int getMemeberIdSearch(String id) {
 		String saveId = null;
 		ArrayList<String> list = new ArrayList<String>();
 		String dml = "select memberID from memberTBL where memberID = ?";
@@ -273,7 +271,7 @@ public class MemberDAO {
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			if (id.equals("")) {
-				SharedMethod.alertDisplay(1, "id 사용 가능", ".", ".");
+				SharedMethod.alertDisplay(1, "ID 중복검사 실패", "아이디 입력 요망 ", "아이디를 입력해주세요");
 				return 0;
 			}
 			while (rs.next()) {
@@ -301,6 +299,7 @@ public class MemberDAO {
 		return 0;
 	}
 
+	// 아이디를 찾기 위해 이름과 전화번호를 DB에서 가져와 확인 하는 메소드
 	public static String findIDByPhone(String phone, String name) throws Exception {
 		StringBuffer checkTchID = new StringBuffer("select memberID from memberTBL where name = ? and phoneNumber= ?");
 		String resultString = null;
@@ -348,55 +347,7 @@ public class MemberDAO {
 		return resultString;
 	}
 
-	// 1.1 [WHERE ID=?] studentTbl에 존재하는 id인지 확인
-	public static int checkStudentId(String studentID) throws Exception {
-		StringBuffer checkTchID = new StringBuffer("select memberID from memberTBL where memberID = ? ");
-		int resultCount = 0;
-		Connection con = null;
-		PreparedStatement psmt = null;
-
-		ResultSet rs = null;
-		try {
-			System.out.println(studentID);
-			con = DBUtil.getConnection();
-			psmt = con.prepareStatement(checkTchID.toString());
-			// 첫번째 물음표 자리 -> studentID 매치 시켜주는 작업
-			psmt.setString(1, studentID);
-
-			// 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
-			// executeQuery -> 쿼리문 실행해서 결과를 *!가져올때!* 사용하는 번개문
-			// executeUpdate-> 쿼리문 실행해서 결과를 *!가지고 갈때!* 사용하는 번개문
-			rs = psmt.executeQuery();
-
-			while (rs.next()) {
-				System.out.println(rs.getInt(1));
-				resultCount = rs.getInt(1);
-			}
-			if (resultCount == 0) {
-				// AdminController.callAlert("LOGIN 실패 : 존재하지 않는 아이디 입니다.");
-				return resultCount;
-			}
-
-		} catch (SQLException e) {
-			// AdminController.callAlert("login 실패 : StudentDAO");
-			e.printStackTrace();
-		} finally {
-			try {
-				// 1.6 CLOSE DataBase psmt object
-				// 제일 먼저 불렀던 것을 제일 나중에 닫는다.
-				// 반드시 있으면 닫아라.
-				if (psmt != null)
-					psmt.close();
-				if (con != null)
-					con.close();
-			} catch (SQLException e) {
-				SharedMethod.alertDisplay(1, "경고", "pw찾기 실패", "자원 닫기 실패 : psmt & con (데이터 자원) 닫는 데에 문제가 발생했어요.");
-			}
-		}
-
-		return resultCount;
-	}
-
+	// 비밀번호를 찾기 위해 이름과 전화번호,아이디를 DB에서 가져와 확인 하는 함수
 	public static String findPWByPhone(String txtName, String txtPhone, String iD) throws Exception {
 		StringBuffer checkTchPW = new StringBuffer(
 				"select * from memberTBL where memberID = ? and name = ? and phoneNumber = ?");
@@ -447,7 +398,8 @@ public class MemberDAO {
 		return resultString;
 	}
 
-	public static String getuserIDPW(String id, String pw) { 
+	// 로그인 시도 시 해당 아이디와패스워드를 가진 사용자가 있는지 검색하는 함수 
+	public static String getMemberIDPW(String id, String pw) { 
         StringBuffer checkTchPW = new StringBuffer("select * from memberTBL where memberID = ? and password  = ?");
          String resultString =null;
             Connection con = null;
@@ -461,12 +413,10 @@ public class MemberDAO {
              SharedMethod.alertDisplay(1, "DB 연결 오류", "다시 시도해주세요", "다시 시도해주세요");
           }
                psmt = con.prepareStatement(checkTchPW.toString());
-               //첫번째 물음표 자리 -> studentID 매치 시켜주는 작업 
                
                psmt.setString(1, id);
                psmt.setString(2, pw);
          
-               // 3.5 실제 데이터를 연결한 쿼리문 실행하라 데이터 베이스에게 명령(번개문)
                rs = psmt.executeQuery();
                
                while(rs.next()) {
@@ -480,11 +430,10 @@ public class MemberDAO {
                   return resultString;
                }
             } catch (SQLException e) {
-               //AdminController.callAlert("login 실패 : StudentDAO");
                e.printStackTrace();
             } finally {
                try {
-                  // 1.6 CLOSE DataBase psmt object
+                  // CLOSE DataBase psmt object
                   // 제일 먼저 불렀던 것을 제일 나중에 닫는다.
                   // 반드시 있으면 닫아라.
                   if (psmt != null)
@@ -496,6 +445,5 @@ public class MemberDAO {
                }
             }
            return resultString;
-     
     }
 }

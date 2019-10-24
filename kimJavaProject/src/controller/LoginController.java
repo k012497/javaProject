@@ -154,10 +154,13 @@ public class LoginController implements Initializable {
 	}
 
 	// 1. SingIn으로 로그인
+	// memberDAO에서 memberID,PW를 디비에서 가져오는 함수를 통해 로그인페이지에서
+	// 아이디와 비밀번호가 비어있다면 입력하는 창을 주고
+	// 맞지않을경우 경고 메세지를 주고
+	// 맞을 경우 다음 메인페이지로 넘어가게 한다
 	public void handlerSignInAction() {
 
-		MemberDAO memberDAO = new MemberDAO();
-		String signIn = MemberDAO.getuserIDPW(txtId.getText(), txtPw.getText());
+		String signIn = MemberDAO.getMemberIDPW(txtId.getText(), txtPw.getText());
 
 		if (txtId.getText().trim().equals("") || txtPw.getText().trim().equals("")) {
 			SharedMethod.alertDisplay(1, "로그인 실패", "아이디, 패스워드 미입력", "다시 제대로 입력하시오");
@@ -188,8 +191,10 @@ public class LoginController implements Initializable {
 		}
 
 	}
+	
 
 	// 2. 회원가입 이벤트 처리
+	// 회원가입하는 SINGUP페이지를 열어준다
 	public void handlerLabelSignUpAction(MouseEvent e) {
 		Parent mainView = null;
 		Stage mainStage = null;
@@ -207,8 +212,10 @@ public class LoginController implements Initializable {
 			SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
 		}
 	}
+	
 
 	// 3. ID찾기
+	// 로그인 페이지에서 [RINDID]를 누르면  FINDID.FXML을 열어준다
 	public void handlerLabelFindId() {
 		try {
 			Parent barChartRoot = FXMLLoader.load(getClass().getResource("/view/findID.fxml"));
@@ -259,7 +266,7 @@ public class LoginController implements Initializable {
 					((Stage) btnSignIn.getScene().getWindow()).close();
 					mainStage.show();
 				} catch (Exception e1) {
-					SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
+					SharedMethod.alertDisplay(1, "로그인 창 부르기 실패", "로그인 창 부르기 실패", e1.toString() + e1.getMessage());
 				}
 			});
 
@@ -267,10 +274,10 @@ public class LoginController implements Initializable {
 			stage.setScene(scene);
 			stage.show();
 		} catch (IOException e) {
-			e.printStackTrace();
+			SharedMethod.alertDisplay(5, "새 창 로드 실패", "새 창 로드 실패", "새 창 로드에 실패했습니다");
 		}
-
 	}
+	
 
 	// 4. PW찾기
 	public void handlerLabelFindPw() {
