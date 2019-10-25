@@ -42,7 +42,7 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// setting for test
-		txtId.setText("a123");
+		txtId.setText("dongjin77");
 		txtPw.setText("123123");
 
 		// 아이디 찾기
@@ -214,9 +214,7 @@ public class LoginController implements Initializable {
 			SharedMethod.alertDisplay(1, "메인창 콜실패", "메인창 부르기 실패", e1.toString() + e1.getMessage());
 		}
 	}
-	
-	// 3. ID찾기
-	// 로그인 페이지에서 [RINDID]를 누르면  FINDID.FXML을 열어준다
+
 
 	// 3. ID찾기
 	// 로그인 페이지에서 [RINDID]를 누르면  FINDID.FXML을 열어준다
@@ -284,7 +282,6 @@ public class LoginController implements Initializable {
 		}
 	}
 	
-	// 4. PW찾기
 
 	// 4. PW찾기
 	public void handlerLabelFindPw() {

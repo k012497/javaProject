@@ -530,6 +530,21 @@ public class ManageRestController implements Initializable {
 			cbSunOpen.setItems(HoursRangeList);
 			cbSunClose.setItems(HoursRangeList);
 
+			// set for test
+			cbMonOpen.setValue("10:00");
+			cbTueOpen.setValue("10:00");
+			cbWedOpen.setValue("10:00");
+			cbThuOpen.setValue("10:00");
+			cbFriOpen.setValue("10:00");
+			cbSatOpen.setValue("10:00");
+			cbSunOpen.setValue("10:00");
+			cbMonClose.setValue("20:00");
+			cbTueClose.setValue("20:00");
+			cbWedClose.setValue("20:00");
+			cbThuClose.setValue("20:00");
+			cbFriClose.setValue("20:00");
+			cbSatClose.setValue("20:00");
+			
 			// 초기값 가져오기 (등록된 운영시간 정보가 있을 경우만)
 			// 수정인지 등록인지 구분하기 위한 flag
 			// 등록된 정보 있을 경우 수정이므로 flag = true, 없을 경우 등록이므로 flag = false;
@@ -756,6 +771,15 @@ public class ManageRestController implements Initializable {
 			cbNewReserve.setItems(booleanList);
 			cbNewPark.setItems(booleanList);
 			txtNewAddr.setText("123");
+			
+			// set for test
+			txtNewName.setText("콘반");
+			txtNewPhone.setText("02-3454-3665");
+			cbNewTakeout.setValue("Y");
+			cbNewPark.setValue("Y");
+			cbNewReserve.setValue("Y");
+			cbGu.setValue("동대문구");
+			cbDong.setValue("장안동");
 
 			cbNewKind.valueProperty().addListener(new ChangeListener<String>() {
 
@@ -788,6 +812,7 @@ public class ManageRestController implements Initializable {
 						return;
 					}
 				}
+				System.out.println(cbNewPark.getValue());
 				if (txtNewName.getText().equals("") || txtNewAddr.getText().equals("")
 						|| txtNewPhone.getText().equals("")
 						|| cbNewKind.getSelectionModel().getSelectedItem().equals("")

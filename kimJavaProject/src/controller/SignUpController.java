@@ -66,7 +66,15 @@ public class SignUpController implements Initializable {
 
 		// 콤보박스 셋팅
 		comboBoxInitSetting();
-
+		
+		// set for test
+		cbDong.setValue("");
+		cbGu.setValue("동대문구");
+		cbDong.setValue("휘경동");
+		txtId.setText("dongjin77");
+		txtName.setText("김동진");
+		txtPhoneNum.setText("01096782724");
+		
 		// 중복확인
 		btnIdCheck.setOnAction(e -> {
 			handleBtnIdCheckAction(e);
