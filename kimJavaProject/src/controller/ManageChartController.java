@@ -89,7 +89,6 @@ public class ManageChartController implements Initializable {
 			BarChart barChart = (BarChart) barChartRoot.lookup("#barChart");
 			Button btnClose = (Button) barChartRoot.lookup("#btnClose");
 
-			// 모든 학생들의 국어점수 가져와서 막대그래프에 넣기
 			XYChart.Series seriesStars = new XYChart.Series(); // chart label
 			seriesStars.setName("별점");
 			ObservableList starsList = FXCollections.observableArrayList();
@@ -102,12 +101,12 @@ public class ManageChartController implements Initializable {
 
 			XYChart.Series seriesFav = new XYChart.Series();
 			seriesFav.setName("즐찾 수");
-			ObservableList mathList = FXCollections.observableArrayList();
+			ObservableList favList = FXCollections.observableArrayList();
 			for (int i = 0; i < data.size(); i++) {
-				mathList.add(new XYChart.Data(data.get(i).getRestaurantName(), data.get(i).getFavCount()));
+				favList.add(new XYChart.Data(data.get(i).getRestaurantName(), data.get(i).getFavCount()));
 			}
 
-			seriesFav.setData(mathList);
+			seriesFav.setData(favList);
 			barChart.getData().add(seriesFav);
 
 			btnClose.setOnAction((event) -> {

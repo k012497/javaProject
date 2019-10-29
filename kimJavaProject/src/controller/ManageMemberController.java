@@ -135,7 +135,7 @@ public class ManageMemberController implements Initializable {
 				data.add(selectedIndex, mvo);
 			}
 		} catch (Exception e) {
-			SharedMethod.alertDisplay(1, "CORRECTION FAILED", "error!", e.toString());
+			SharedMethod.alertDisplay(1, "수정 실패 ", "error!", "정보를 수정하는 데 실패했습니다.");
 		}
 
 	}// end of handlerBtnMemEditAction
@@ -184,7 +184,7 @@ public class ManageMemberController implements Initializable {
 			data.removeAll(data); // 지우고
 			totalList(); // 다시 전체 부르기
 		} catch (Exception e) {
-			SharedMethod.alertDisplay(1, "DELETE ERROR", "error", "error");
+			SharedMethod.alertDisplay(1, "삭제 실패", "삭제 실패", "회원을 삭제하지 못했습니다.");
 		}
 	}
 }

@@ -146,8 +146,6 @@ public class MyPageController implements Initializable {
 
 		result1 = SharedMethod.checkOnlyNumberAndEnglish(txtPw.getText());
 		if(!result1) return;
-		result2 = SharedMethod.checkOnlyNumberAndEnglish(txtPwAgain.getText());
-		if(!result1 || !result2) return;
 
 		if (txtPw.getText().equals(txtPwAgain.getText())) {
 		} else {
@@ -169,7 +167,7 @@ public class MyPageController implements Initializable {
 				memberDAO.getMemberUpdate(mvo, lblMemberId.getText());
 			}
 		} catch (Exception e) {
-			SharedMethod.alertDisplay(1, "CORRECTION FAILED", "error!", e.toString());
+			SharedMethod.alertDisplay(1, "수정 실패", "정보 수정 실패!", "모든 항목을 입력해주세요");
 		}
 	}
 
